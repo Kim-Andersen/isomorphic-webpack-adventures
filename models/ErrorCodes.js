@@ -1,0 +1,36 @@
+import _ from 'lodash';
+
+let ErrorCodes = {
+
+ 	// 1xxxxx validation error
+
+	invalid_user: {
+		code: 10001,
+		message: 'Invalid user object',
+		status: 400
+	},
+	username_taken: {
+		code: 10002,
+		message: 'Username taken',
+		status: 409
+	},
+	email_taken: {
+		code: 10003,
+		message: 'Email taken',
+		status: 409
+	},
+
+	// 2xxxxx authentication error
+
+	invalid_credentials: {
+		code: 20003,
+		message: 'Invalid credentials',
+		status: 400
+	},
+};
+
+ErrorCodes.get = function(code){
+	return _.find(ErrorCodes, {code: code});
+};
+
+export default ErrorCodes;
