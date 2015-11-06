@@ -14,7 +14,6 @@ let LandingPage = React.createClass({
         <ul>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/contact">Contact</Link></li>
-          <li><Link to="/signin">Sign in</Link></li>
         </ul>
         {this.props.children}
       </div>  
@@ -58,7 +57,7 @@ let App = React.createClass({
   render() {
     return (
       <div>
-        <Header onSignInButtonClick={this.onSignInButtonClick} />
+        <Header user={this.props.user} onSignInButtonClick={this.onSignInButtonClick} />
         <Helmet title="[Name]"/>
         {this.props.signupDialogVisible ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
         {this.state.isAuthenticated ? <HomePage /> : <LandingPage />}
