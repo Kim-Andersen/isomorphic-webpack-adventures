@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Helmet from "react-helmet";
 import { connect } from 'react-redux'
-import { toggleSignupDialog } from '../shared/actions/'
+import { toggleSignupDialog, signOut } from '../shared/actions/'
 import Header from './Header'
 import SignInOverlay from './SignInOverlay'
 
@@ -57,7 +57,9 @@ let App = React.createClass({
   render() {
     return (
       <div>
-        <Header user={this.props.user} onSignInButtonClick={this.onSignInButtonClick} />
+        <Header 
+          user={this.props.user} 
+          onSignInButtonClick={this.onSignInButtonClick} />
         <Helmet title="[Name]"/>
         {this.props.signupDialogVisible ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
         {this.state.isAuthenticated ? <HomePage /> : <LandingPage />}

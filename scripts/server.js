@@ -67,6 +67,11 @@ var sendJsonErrorCode = function(res, errCode, data){
 	return res.status(errCode.status || 500).json(json);
 };
 
+router.get('/signout', function(req, res){
+	req.logout();
+	res.redirect('/');
+});
+
 router.get('/signup/username/:username', function(req, res){
 	var username_lower = _.trim(req.params.username.toLowerCase());
 	User
