@@ -22,8 +22,15 @@ app.use(express.static(publicPath));
 app.use(morgan('dev')); // log every request to the console
 
 app.use((req, res, next) => {
-  let store = createStore(reducer);
-  const initialState = store.getState();
+  let initialState = {};
+  if(req.isAuthenticated()){
+    initialState = {
+      user: req.user,
+      apiToken: req.user.generateApiToken(app.get('apiTokenSecret'))
+    }
+  }
+
+  const store = createStore(reducer, initialState);
 
   let location = createLocation(req.originalUrl);
   match({routes, location}, (error, redirectLocation, renderProps) => {
@@ -58,7 +65,7 @@ app.use((req, res, next) => {
            `</div>`,
         `</body>`,
         `<script>`,
-          `window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}`,
+          `window.__STATE__ = ${JSON.stringify(initialState)}`,
         `</script>`,
         `<script type="text/javascript" src="${assetsPath}/app.js"></script>`,
       `</html>`

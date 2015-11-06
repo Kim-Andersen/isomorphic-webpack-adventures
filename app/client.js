@@ -1,14 +1,11 @@
 import '../scss/main.scss';
-
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Router, Route } from 'react-router';
 import { createHistory } from 'history';
 import routes from './routes';
 import ApiClient from './ApiClient';
-
 import App from './components/App';
-
 import { createStore } from 'redux'
 import { default as reducer } from './shared/reducers/'
 import { Provider } from 'react-redux'
@@ -17,11 +14,10 @@ import { Provider } from 'react-redux'
 ApiClient.init({baseUrl: 'http://localhost:3000'});
 
 // Grab the state from a global injected into server-generated HTML.
-const initialState = window.__INITIAL_STATE__;
+const initialState = window.__STATE__;
 
 // Create Redux store with initial state
 let store = createStore(reducer, initialState);
-console.log('store', store);
 
 let unsubscribe = store.subscribe(() =>
   console.log(store.getState())

@@ -14,11 +14,22 @@ function signupDialogVisible(state = false, action){
 	}
 }
 
+function user(state = {}, action){
+	return state;
+}
+
+function apiToken(state = null, action){
+	return state;
+}
 
 let initialState = {
-	signupDialogVisible: false
+	signupDialogVisible: false,
+	user: {},
+	apiToken: undefined
 };
 
 export default combineReducers({
-	signupDialogVisible: signupDialogVisible
+	signupDialogVisible: signupDialogVisible,
+	user: user,
+	apiToken: apiToken
 });

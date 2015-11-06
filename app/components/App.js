@@ -56,8 +56,6 @@ let App = React.createClass({
   },
 
   render() {
-    console.log('App.render')
-
     return (
       <div>
         <Header onSignInButtonClick={this.onSignInButtonClick} />
