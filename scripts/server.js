@@ -11,7 +11,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import User from '../models/User';
 import _ from 'lodash';
-import ErrorCodes from '../models/ErrorCodes';
+import ErrorCodes from '../app/shared/ErrorCodes';
 
 const env = process.env;
 const host = env.npm_package_config_appServerHost;

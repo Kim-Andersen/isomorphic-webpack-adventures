@@ -1,6 +1,10 @@
-import React from 'react';
-import {Link} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Helmet from "react-helmet";
+import { connect } from 'react-redux'
+import { toggleSignupDialog } from '../shared/actions/'
+import Header from './Header'
+import SignInOverlay from './SignInOverlay'
 
 let LandingPage = React.createClass({
   render() {
@@ -35,16 +39,30 @@ let HomePage = React.createClass({
 
 let App = React.createClass({
 
-  getInitialState: function(){
+  getInitialState(){
     return {
-      isAuthenticated: true
+      isAuthenticated: false
     };
   },
 
+  onSignInButtonClick(e){
+    e.preventDefault();
+    this.props.dispatch(toggleSignupDialog(true));
+  },
+
+  onSignInOverlayCloseClick(e){
+    e.preventDefault();
+    this.props.dispatch(toggleSignupDialog(false));
+  },
+
   render() {
+    console.log('App.render')
+
     return (
       <div>
+        <Header onSignInButtonClick={this.onSignInButtonClick} />
         <Helmet title="[Name]"/>
+        {this.props.signupDialogVisible ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
         {this.state.isAuthenticated ? <HomePage /> : <LandingPage />}
         {this.props.children}
       </div>
@@ -52,4 +70,9 @@ let App = React.createClass({
   }
 });
 
-export default App;
+function select(state){
+  return state;
+}
+
+export default connect(select)(App);
+//export default App;

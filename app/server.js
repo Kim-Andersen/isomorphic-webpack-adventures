@@ -7,6 +7,9 @@ import Helmet from 'react-helmet';
 import {RoutingContext, match} from 'react-router';
 import routes from './routes';
 import morgan from 'morgan';
+import { createStore } from 'redux'
+import { default as reducer } from './shared/reducers/'
+import { Provider } from 'react-redux'
 
 const env = process.env;
 const assetsPath = `${env.npm_package_config_appWebpackBaseUrl}/${env.npm_package_version}`;
@@ -19,10 +22,10 @@ app.use(express.static(publicPath));
 app.use(morgan('dev')); // log every request to the console
 
 app.use((req, res, next) => {
-  var isAuthenticated = req.isAuthenticated();
+  let store = createStore(reducer);
+  const initialState = store.getState();
 
   let location = createLocation(req.originalUrl);
-
   match({routes, location}, (error, redirectLocation, renderProps) => {
     if (redirectLocation) return res.redirect(redirectLocation.pathname);
     if (error) return next(error.message);
@@ -30,7 +33,11 @@ app.use((req, res, next) => {
 
     //console.log('req.isAuthenticated()', req.isAuthenticated(), renderProps);
 
-    let markup = renderToString(<RoutingContext {...renderProps}/>);
+    let markup = renderToString(
+        <Provider store={store}>
+          <RoutingContext {...renderProps}/>
+        </Provider>
+    );
     let helmet = Helmet.rewind();
     let html = [
       `<!DOCTYPE html>`,
@@ -46,8 +53,13 @@ app.use((req, res, next) => {
           `<link rel="stylesheet" href="${assetsPath}/app.css"></link>`,
         `</head>`,
         `<body>`,
-          `<div id="app">${markup}</div>`,
+          `<div class="container-fluid">`,
+            `<div id="app">${markup}</div>`,
+           `</div>`,
         `</body>`,
+        `<script>`,
+          `window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}`,
+        `</script>`,
         `<script type="text/javascript" src="${assetsPath}/app.js"></script>`,
       `</html>`
     ].join('');
