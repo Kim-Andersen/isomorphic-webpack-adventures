@@ -5,6 +5,7 @@ import _ from 'lodash';
 let UsernameAvailabilityInput = React.createClass({
 
 	debouncedCheckUsernameAvailability: undefined,
+  xhr: undefined,
 
 	propTypes: {
 		username: React.PropTypes.string
@@ -16,9 +17,14 @@ let UsernameAvailabilityInput = React.createClass({
     };
   },
 
+  componentWillUnmount(){
+    if(this.xhr){
+      this.xhr.abort();
+    }
+  },
+
 	checkUsernameAvailability: function(username){
-  	console.log('checkUsernameAvailability', username);
-  	ApiClient.get('/signup/username/'+username)
+  	this.xhr = ApiClient.get('/signup/username/'+username)
   		.done(function(res){
   			this.props.onAvalabilityChange(res.available);
 	  	}.bind(this));

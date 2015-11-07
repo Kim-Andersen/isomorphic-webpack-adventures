@@ -67,7 +67,7 @@ let SignInFormOverlayDialog = React.createClass({
 				  </div>
 				  <div className="form-group text-left">
 				  	<label htmlFor="password" className="control-label">Password</label>
-				    <input type="password" name="password" ref="password" defaultValue={this.props.password} placeholder="" className="form-control" autoComplete="off" required />
+				    <input type="password" minLength={8} name="password" ref="password" defaultValue={this.props.password} placeholder="" className="form-control" autoComplete="off" required />
 				  </div>
 				  <button type="submit" className="btn btn-default">Create an account</button>
 				</form>

@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 import path from 'path';
 import express from 'express';
 import React from 'react';
@@ -7,9 +8,11 @@ import Helmet from 'react-helmet';
 import {RoutingContext, match} from 'react-router';
 import routes from './routes';
 import morgan from 'morgan';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { default as reducer } from './shared/reducers/'
 import { Provider } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import { initAuthentication } from './server/authentication'
 
 const env = process.env;
 const assetsPath = `${env.npm_package_config_appWebpackBaseUrl}/${env.npm_package_version}`;
@@ -21,16 +24,24 @@ app.set('x-powered-by', false);
 app.use(express.static(publicPath));
 app.use(morgan('dev')); // log every request to the console
 
+initAuthentication();
+
+// Prepare Redux store creator.
+const createStoreWithMiddleware = applyMiddleware(
+  thunkMiddleware
+)(createStore)
+
 app.use((req, res, next) => {
-  let initialState = {};
+  let initialState = {};  
+  
   if(req.isAuthenticated()){
-    initialState = {
+    initialState = Object.assign({}, initialState, {
       user: req.user,
       apiToken: req.user.generateApiToken(app.get('apiTokenSecret'))
-    }
+    });
   }
-
-  const store = createStore(reducer, initialState);
+  // Create Redux store with initial state (to inject into the html)
+  let store = createStoreWithMiddleware(reducer, initialState)
 
   let location = createLocation(req.originalUrl);
   match({routes, location}, (error, redirectLocation, renderProps) => {

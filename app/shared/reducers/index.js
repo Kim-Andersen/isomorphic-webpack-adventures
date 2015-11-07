@@ -1,18 +1,10 @@
 import { combineReducers } from 'redux'
-import { TOGGLE_SIGNUP_DIALOG } from '../actions/'
+//import { SHOW_SIGNIN_DIALOG, HIDE_SIGNIN_DIALOG } from '../actions/'
+import { signIn } from './signIn'
 
 /**
 	* reducers
 	*/
-
-function signupDialogVisible(state = false, action){
-	switch(action.type){
-		case TOGGLE_SIGNUP_DIALOG:
-			return action.visible;
-		default:
-			return state;
-	}
-}
 
 function user(state = null, action){
 	return state;
@@ -22,14 +14,8 @@ function apiToken(state = null, action){
 	return state;
 }
 
-let initialState = {
-	signupDialogVisible: false,
-	user: {},
-	apiToken: undefined
-};
-
 export default combineReducers({
-	signupDialogVisible,
+	signIn,
 	user,
 	apiToken
 });

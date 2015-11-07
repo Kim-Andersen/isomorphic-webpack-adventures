@@ -9,7 +9,7 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
-import User from '../models/User';
+import { User } from '../models';
 import _ from 'lodash';
 import ErrorCodes from '../app/shared/ErrorCodes';
 
@@ -29,21 +29,6 @@ router.use(bodyParser.urlencoded({'extended':'true'}));            // parse appl
 router.use(bodyParser.json());                                     // parse application/json
 router.use(methodOverride());
 router.use(cookieParser('92ZJX\lE23g156h')); // secret value can be anything.
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-//  When requests are received, this id is used to find the user, which will be restored to req.user.
-passport.deserializeUser(function(id, done) {
-  if(_.isObject(id)) id = id._id;
-
-  User.findById(id, function(err, user){
-    if (err) {
-      done(err, null)
-    } else done(err, user);
- })
-});
 
 let mongoStore = MongoStore(session);
 router.use(session({
@@ -96,6 +81,11 @@ router.get('/signup/email/:email', function(req, res){
 				res.status(200).json({available: count === 0});
 			}
 		});
+});
+
+router.post('/login', passport.authenticate('local'), function(req, res){
+	console.log('login successful', req.user);
+	res.status(200).json({});
 });
 
 router.post('/signup', function(req, res, next) {
