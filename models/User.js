@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 import _ from 'lodash';
+import { API_TOKEN_SECRET } from '../authConfig'
 
 // Define our user schema
 var UserSchema = new mongoose.Schema({
@@ -121,8 +122,8 @@ UserSchema.methods.verifyPassword = function(password, cb) {
   });
 };
 
-UserSchema.methods.generateApiToken = function(apiTokenSecret){
-  var token = jwt.sign(this, apiTokenSecret, {
+UserSchema.methods.generateApiToken = function(){
+  var token = jwt.sign(this, API_TOKEN_SECRET, {
     expiresIn: 60*60*24 // seconds
   });
 

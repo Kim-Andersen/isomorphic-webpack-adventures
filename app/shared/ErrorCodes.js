@@ -19,6 +19,11 @@ let ErrorCodes = {
 		message: 'Email taken',
 		status: 409
 	},
+	invalid_story: {
+		code: 10004,
+		message: 'Invalid story object',
+		status: 400
+	},
 
 	// 2xxxxx authentication error
 
@@ -33,4 +38,4 @@ ErrorCodes.get = function(code){
 	return _.find(ErrorCodes, {code: code});
 };
 
-export default ErrorCodes;
+export default { ErrorCodes }

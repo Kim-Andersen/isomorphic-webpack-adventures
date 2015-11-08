@@ -1,3 +1,4 @@
 export default {
-	User: require('./User')
+	User: require('./User'),
+	Story: require('./Story')
 }
