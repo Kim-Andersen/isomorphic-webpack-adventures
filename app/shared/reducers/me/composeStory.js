@@ -1,18 +1,19 @@
 
 function stories(state = [], action){
 	switch(action.type){
-		case 'REQUEST_STORIES':
+		case 'REQUEST_SAVE_STORY':
 			return Object.assign({}, state, {
-				isFetching: true
+				isSaving: true,
+				text: action.text
 			})
-		case 'RECEIVE_STORIES':
+		case 'RECEIVE_SAVE_STORY':
 			return Object.assign({}, state, {
-				isFetching: false,
-				items: action.stories
+				isSaving: false,
+				story: action.story
 			})
-		case 'FETCH_MY_STORIES_ERROR':
+		case 'SAVE_STORY_ERROR':
 			return Object.assign({}, state, {
-				isFetching: false,
+				isSaving: false,
 				error: action.error
 			})
 		default:

@@ -7,6 +7,19 @@ let SYNC_STATUS = {
 };
 
 let me = {
+	fetchMyStories(){
+		return dispatch => {
+			dispatch(this.requestStories());
+			return ApiClient.get('/me/stories')
+				.done((stories) => {
+					dispatch(this.receiveStories(stories));
+				}.bind(this))
+				.error((res) => {
+					dispatch(this.fetchMyStoriesError(res.responseJSON));
+				}.bind(this));
+		}
+	},
+
 	requestStories(){
 		return {
 			type: 'REQUEST_STORIES'
@@ -20,24 +33,45 @@ let me = {
 		}	
 	},
 
-	error(error){
+	fetchMyStoriesError(error){
 		return {
-			type: 'ERROR',
+			type: 'FETCH_MY_STORIES_ERROR',
 			error: error
 		}	
 	},
 
-	fetchMyStories: function(){
+	saveStory(text){
 		return dispatch => {
-			dispatch(this.requestStories());
-			return ApiClient.get('/me/stories')
-				.done((stories) => {
-					dispatch(this.receiveStories(stories));
+			dispatch(this.requestSaveStory(text));
+			return ApiClient.post('/me/stories', {text: text})
+				.done((story) => {
+					dispatch(this.receiveSaveStory(story));
 				}.bind(this))
 				.error((res) => {
-					dispatch(this.error(res.responseJSON));
+					dispatch(this.saveStoryError(res.responseJSON));
 				}.bind(this));
 		}
+	},
+
+	requestSaveStory(text){
+		return {
+			type: 'REQUEST_SAVE_STORY',
+			text: text
+		}	
+	},
+
+	receiveSaveStory(story){
+		return {
+			type: 'RECEIVE_SAVE_STORY',
+			story: story
+		}	
+	},
+
+	saveStoryError(error){
+		return {
+			type: 'SAVE_STORY_ERROR',
+			error: error
+		}	
 	}
 }
 
