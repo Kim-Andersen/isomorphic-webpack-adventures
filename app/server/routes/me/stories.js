@@ -34,13 +34,16 @@ router.post('/stories', function(req, res, next){
 });
 
 router.get('/stories', function(req, res, next){
-	Story.find({userId: req.user.id}, function(err, stories){
-		if(err){
-			return next(err);
-		} else {
-			res.status(200).json(stories);
-		}
-	});
+	Story
+		.find({userId: req.user.id})
+		.sort({'createdAt': 'desc'})
+		.exec(function(err, stories){
+			if(err){
+				return next(err);
+			} else {
+				res.status(200).json(stories);
+			}
+		});
 });
 
 router.patch('/stories/:storyId', function(req, res, next){
