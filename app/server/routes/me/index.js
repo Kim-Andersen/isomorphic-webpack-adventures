@@ -7,9 +7,4 @@ router.use(requireApiToken);
 
 router.use('/', stories);
 
-router.get('/signout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
-
 export { router as me }

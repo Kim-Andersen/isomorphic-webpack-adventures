@@ -10,7 +10,7 @@ let Header = React.createClass({
   		rightSide = (
   			<div>
   				<span>{user.username}</span>
-  				<a href="/me/signout" className="btn btn-default">Sign out</a>
+  				<a href="/signout" className="btn btn-default">Sign out</a>
   			</div>  			
   		);
   	} else {

@@ -136,7 +136,11 @@ router.use('/*', (req, res, next) => {
     res.setHeader('Content-Type', 'text/html');
     res.send(html);
   });
+});
 
+router.get('/signout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 
 router.use(function clientErrorHandler(err, req, res, next) {
