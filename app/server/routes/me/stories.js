@@ -37,6 +37,7 @@ router.get('/stories', function(req, res, next){
 	Story
 		.find({userId: req.user.id})
 		.sort({'createdAt': 'desc'})
+		.limit(10)
 		.exec(function(err, stories){
 			if(err){
 				return next(err);
