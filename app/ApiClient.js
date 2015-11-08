@@ -16,6 +16,7 @@ let ApiClient = {
 		$.ajaxSetup({
 			timeout: options.timeout || 5000,
 			dataType: 'json',
+			headers: options.headers,
 			statusCode: {
 				500: function(){
 					alert('ApiClient: Something happened on the server and we might not be able to complete your request at the moment.');

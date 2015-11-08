@@ -13,11 +13,13 @@ import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-// Init ApiClient.
-ApiClient.init({baseUrl: 'http://localhost:3000'});
-
 // Grab the state from a global injected into server-generated HTML.
 const initialState = window.__STATE__;
+
+// Init ApiClient.
+ApiClient.init({baseUrl: 'http://localhost:3000', headers: {
+	'x-access-token': initialState.apiToken
+}});
 
 // init redux logger
 const loggerMiddleware = createLogger()

@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
-//import { SHOW_SIGNIN_DIALOG, HIDE_SIGNIN_DIALOG } from '../actions/'
 import { signIn } from './signIn'
-import { story } from './story'
+import me from './me/'
 
 /**
 	* reducers
@@ -19,5 +18,5 @@ export default combineReducers({
 	signIn,
 	user,
 	apiToken,
-	story
+	me
 });

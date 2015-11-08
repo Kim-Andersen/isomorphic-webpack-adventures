@@ -1,4 +1,5 @@
 import ApiClient from '../../ApiClient';
+import me from './me'
 
 /**
 	* action types
@@ -152,5 +153,6 @@ let actions = {
 };
 
 export {
-	signIn
+	signIn,
+	me
 };

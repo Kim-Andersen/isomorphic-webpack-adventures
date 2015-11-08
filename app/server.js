@@ -88,7 +88,8 @@ router.use('/*', (req, res, next) => {
     console.log('req.user', req.user);
     initialState = Object.assign({}, initialState, {
       user: req.user,
-      apiToken: req.user.generateApiToken()
+      apiToken: req.user.generateApiToken(),
+      me: {}
     });
   }
   // Create Redux store with initial state (to inject into the html)

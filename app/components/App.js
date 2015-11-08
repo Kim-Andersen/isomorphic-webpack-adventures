@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { signIn } from '../shared/actions'
 import Header from './Header'
 import SignInOverlay from './SignInOverlay'
+import { HomePage } from '../pages/'
 
 let LandingPage = React.createClass({
   render() {
@@ -17,21 +18,6 @@ let LandingPage = React.createClass({
         </ul>
         {this.props.children}
       </div>  
-    );
-  }
-});
-
-let HomePage = React.createClass({
-  render() {
-    return (
-      <div>
-        <h1>Home page</h1>        
-        <ul>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-        </ul>
-        {this.props.children}
-      </div>
     );
   }
 });

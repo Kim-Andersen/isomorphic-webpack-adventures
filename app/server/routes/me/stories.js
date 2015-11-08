@@ -17,7 +17,7 @@ let router = express.Router({mergeParams: true});
 router.post('/stories', function(req, res, next){
 	let story = new Story()
 	story.text = _.trim(req.body.text)
-	story.userId = req.user._id
+	story.userId = req.user.id
 
 	let err = story.validateSync();
 	if(err){
@@ -34,7 +34,7 @@ router.post('/stories', function(req, res, next){
 });
 
 router.get('/stories', function(req, res, next){
-	Story.find({userId: req.user._id}, function(err, stories){
+	Story.find({userId: req.user.id}, function(err, stories){
 		if(err){
 			return next(err);
 		} else {
@@ -47,7 +47,7 @@ router.patch('/stories/:storyId', function(req, res, next){
 	var text = _.trim(req.body.text)
 	console.log('PATCH', text);
 
-	Story.findOne({_id: req.params.storyId, userId: req.user._id}, 
+	Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
 		function(err, story){
 			if(err){
 				return next(err);
@@ -67,7 +67,7 @@ router.patch('/stories/:storyId', function(req, res, next){
 });
 
 router.delete('/stories/:storyId', function(req, res, next){
-	Story.findOne({_id: req.params.storyId, userId: req.user._id}, 
+	Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
 		function(err, story){
 			if(err){
 				return next(err);

@@ -16,7 +16,7 @@ function requireApiToken(req, res, next) {
         //return next(err);
       } else {
         // if everything is good, save to request for use in other routes
-        req.user = _.pick(decodedUser, '_id');
+        req.user = decodedUser;
         next();
       }
     });
