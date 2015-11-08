@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { Router, Route } from 'react-router';
 import { createHistory } from 'history';
-import routes from './routes';
+import routes from './shared/routes';
 import ApiClient from './ApiClient';
 import App from './components/App';
 import { createStore, applyMiddleware } from 'redux'

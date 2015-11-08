@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route} from 'react-router';
-import App from './components/App';
-import pages from './pages';
+import App from '../components/App';
+import pages from '../pages';
 
 export default (
   <Route path="/" component={App}>

@@ -6,7 +6,7 @@ import {renderToString} from 'react-dom/server';
 import createLocation from 'history/lib/createLocation';
 import Helmet from 'react-helmet';
 import {RoutingContext, match} from 'react-router';
-import routes from './routes';
+import routes from './shared/routes';
 import { createStore, applyMiddleware } from 'redux'
 import { default as reducer } from './shared/reducers/'
 import { Provider } from 'react-redux'
