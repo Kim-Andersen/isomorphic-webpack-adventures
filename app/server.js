@@ -146,8 +146,10 @@ function renderIsomorphicPage(req, res, next, initialState = {}){
 var publicProfileHandler = (req, res, next) => {
   console.log('publicProfileHandler');
   if(_.isString(req.params.username)){
-    User.findOne({username_lower: req.params.username.toLowerCase()}, 
-      function(err, user){
+    User
+      .findOne({username_lower: req.params.username.toLowerCase()})
+      .populate('latestStories', 'text createdAt')
+      .exec(function(err, user){
         if(err){
           return next(err)
         } else if(!user) {

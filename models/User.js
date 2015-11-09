@@ -67,7 +67,8 @@ userSchema.methods.toJSON = function() {
     'email', 
     'name', 
     'created', 
-    'twitter'
+    'twitter',
+    'latestStories'
   );
 }
 
