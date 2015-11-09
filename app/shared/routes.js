@@ -1,12 +1,21 @@
 import React from 'react';
-import {Route} from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 import App from '../components/App';
 import pages from '../pages';
 
+/*
+	IMPORTANT.
+	Order is critical here. "/:username" must be placed last in the routing table.
+	Oterwise it will catch routes like "/contact " or "/signin".
+*/
 export default (
   <Route path="/" component={App}>
+  	<IndexRoute component={pages.Root}/>
   	<Route path="/signin" component={pages.SignIn}/>
     <Route path="/about" component={pages.About}/>
     <Route path="/contact" component={pages.Contact}/>
+
+    /* Place /:username last so it doesn't catch other routes. */
+  	<Route path="/:username" component={pages.ProfilePage}/>  	
   </Route>
 );

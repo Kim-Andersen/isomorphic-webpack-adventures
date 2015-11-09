@@ -35,14 +35,17 @@ let App = React.createClass({
   },
 
   render() {
+    let user = this.props.session && this.props.session.user
+
     return (
       <div>
-        <Header 
-          user={this.props.user} 
-          onSignInButtonClick={this.onSignInButtonClick} />
         <Helmet title="[Name]"/>
+        
+        <Header 
+          user={user} 
+          onSignInButtonClick={this.onSignInButtonClick} />
+        
         {this.props.signIn.show ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
-        {this.props.user ? <HomePage /> : <LandingPage />}
         {this.props.children}
       </div>
     )

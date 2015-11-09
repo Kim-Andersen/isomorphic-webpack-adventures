@@ -7,7 +7,7 @@ import InlineStoryComposer from '../components/InlineStoryComposer'
 let HomePage = React.createClass({
 
   componentDidMount(){
-    this.fetchMyStories();
+    //this.fetchMyStories();
   },
 
   fetchMyStories(){
@@ -15,9 +15,10 @@ let HomePage = React.createClass({
   },
 
   render() {
-    let stories = this.props.me.stories && this.props.me.stories.items || []
+    let storyItems = this.props.me && this.props.me.stories && this.props.me.stories.items || []
+    let storiesError = this.props.me && this.props.me.stories && this.props.me.stories.error
 
-    let showConnectTwitterButton = !this.props.user.twitter;
+    let showConnectTwitterButton = this.props.user && !this.props.user.twitter;
     console.log('this.props.user', this.props.user);
 
     return (
@@ -30,9 +31,9 @@ let HomePage = React.createClass({
           onStorySaved={this.fetchMyStories} />
         <hr />
         
-        { this.props.me.stories && this.props.me.stories.error ? 'Your stories are not available at the moment.' : null }
+        { storiesError ? 'Your stories are not available at the moment.' : null }
 
-        {stories.map((story, index) =>
+        {storyItems.map((story, index) =>
           <div key={index}>
             {story.text}
           </div>
@@ -50,10 +51,11 @@ let HomePage = React.createClass({
           <li><Link to="/about">About</Link></li>
           <li><Link to="/contact">Contact</Link></li>
         </ul>
-        {this.props.children}
+        
       </div>
     );
   }
 });
 
-export default connect((state) => state)(HomePage)
+//export default connect((state) => state)(HomePage)
+export default HomePage

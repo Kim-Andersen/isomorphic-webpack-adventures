@@ -13,7 +13,7 @@ let InlineStoryComposer = React.createClass({
           <textarea ref="text"></textarea>
           
           {this.props.showTweetOption ? 
-            <div class="tweet-story">
+            <div className="tweet-story">
               <label htmlFor="tweet">Tweet</label>
               <input type="checkbox" name="tweet" ref="tweet" />
             </div> 

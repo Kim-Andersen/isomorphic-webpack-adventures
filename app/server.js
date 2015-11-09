@@ -85,17 +85,20 @@ const createStoreWithMiddleware = applyMiddleware(
   thunkMiddleware
 )(createStore)
 
-router.use('/*', (req, res, next) => {
-  let initialState = {};  
-  
+router.get('/signout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+function renderIsomorphicPage(req, res, next, initialState = {}){
+
   if(req.isAuthenticated()){
-    console.log('req.user', req.user);
-    initialState = Object.assign({}, initialState, {
-      user: req.user,
+    initialState['session'] = {
       apiToken: req.user.generateApiToken(),
-      me: {}
-    });
+      user: req.user
+    };
   }
+  
   // Create Redux store with initial state (to inject into the html)
   let store = createStoreWithMiddleware(reducer, initialState)
 
@@ -104,8 +107,6 @@ router.use('/*', (req, res, next) => {
     if (redirectLocation) return res.redirect(redirectLocation.pathname);
     if (error) return next(error.message);
     if (renderProps == null) return next(error);
-
-    //console.log('req.isAuthenticated()', req.isAuthenticated(), renderProps);
 
     let markup = renderToString(
         <Provider store={store}>
@@ -120,7 +121,6 @@ router.use('/*', (req, res, next) => {
           `<title>${helmet.title}</title>`,
           helmet.meta,
           helmet.link,
-          `<meta charset="utf-8"/>`,
           `<meta charset="utf-8">`,
           `<meta http-equiv="X-UA-Compatible" content="IE=edge">`,
           `<meta name="viewport" content="width=device-width, initial-scale=1">`,
@@ -140,12 +140,53 @@ router.use('/*', (req, res, next) => {
     res.setHeader('Content-Type', 'text/html');
     res.send(html);
   });
-});
+}
 
-router.get('/signout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
+// Public profile.
+var publicProfileHandler = (req, res, next) => {
+  console.log('publicProfileHandler');
+  if(_.isString(req.params.username)){
+    User.findOne({username_lower: req.params.username.toLowerCase()}, 
+      function(err, user){
+        if(err){
+          return next(err)
+        } else if(!user) {
+          console.log('user not found');
+          next();
+        } else {        
+          let initialState = {
+            profile: {
+              user: user
+            }
+          };
+          /*if(!req.user || req.user.id !== user.id){
+            initialState['profile'] = {
+              user: user
+            };  
+          }*/
+          renderIsomorphicPage(req, res, next, initialState);
+        }
+      }
+    )  
+  } else {
+    next();
+  }
+}
+
+var isomorphicHandler = (req, res, next) => {
+  console.log('isomorphicHandler');
+  let initialState = {};
+  renderIsomorphicPage(req, res, next, initialState);
+}
+
+router.use(['/:username', '/*'], publicProfileHandler, isomorphicHandler)
+
+// Dynamic isomorphic routing.
+/*router.use('/*', (req, res, next) => {
+  let initialState = {};
+
+  renderIsomorphicPage(req, res, next, initialState);
+});*/
 
 router.use(function clientErrorHandler(err, req, res, next) {
   if (req.xhr) {

@@ -6,17 +6,17 @@ import me from './me/'
 	* reducers
 	*/
 
-function user(state = null, action){
+function session(state = null, action){
 	return state;
 }
 
-function apiToken(state = null, action){
+function profile(state = null, action){
 	return state;
 }
 
 export default combineReducers({
+	profile,
 	signIn,
-	user,
-	apiToken,
+	session,
 	me
 });
