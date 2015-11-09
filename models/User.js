@@ -48,6 +48,7 @@ var UserSchema = new mongoose.Schema({
   twitter: {
     id: { type: String, required: true },
     token: { type: String, required: false }, /* Not required so user can unlink account */
+    tokenSecret: { type: String, required: false },
     displayName: { type: String, required: false },
     username: { type: String, required: true },
     photo: { type: String, required: false }

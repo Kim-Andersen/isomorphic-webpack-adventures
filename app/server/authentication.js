@@ -76,6 +76,7 @@ export default function authentication(){
 							newUser.twitter.displayName = profile.displayName
 							newUser.twitter.username = profile.username
 							newUser.twitter.token = token
+							newUser.twitter.tokenSecret = tokenSecret;
 							if(_.isArray(profile.photos) && profile.photos.length > 0){
 								newUser.twitter.photo = profile.photos[0].value
 							}
@@ -98,6 +99,7 @@ export default function authentication(){
 				user.twitter.displayName = profile.displayName
 				user.twitter.username = profile.username
 				user.twitter.token = token
+				user.twitter.tokenSecret = tokenSecret;
 				if(_.isArray(profile.photos) && profile.photos.length > 0){
 					user.twitter.photo = profile.photos[0].value
 				}
