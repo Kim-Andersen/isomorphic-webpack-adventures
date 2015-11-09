@@ -1,11 +1,13 @@
-var mongoose = require('mongoose');
+import mongoose from 'mongoose'
 import _ from 'lodash';
+import { ModelUtils } from './'
 
 // Define our user schema
-var StorySchema = new mongoose.Schema({
+var storySchema = new mongoose.Schema({
   userId: {
     type: String,
-    required: true
+    required: true,
+    ref: 'User'
   },
   text: {
     type: String,
@@ -24,14 +26,25 @@ var StorySchema = new mongoose.Schema({
   }
 });
 
-StorySchema.methods.toJSON = function() {
+storySchema.post('save', function(story){
+  ModelUtils.updateLatestStoriesOnUser(story.userId, function(err, user){
+    console.log(err, user);
+    if(err) {
+      console.log('Failed to update "latestStories" on user after saving story.', err);
+    } else {
+      console.log('storySchema: Successfully updated "latestStories" on user', user.id);  
+    }    
+  });
+})
+
+storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
   return _.pick(story, 'id', 'userId', 'text', 'createdAt');
 }
 
-StorySchema.pre('update', function() {
+storySchema.pre('update', function() {
   this.update({},{ $set: { updatedAt: new Date() } });
 });
 
-module.exports = mongoose.model('Story', StorySchema);
+module.exports = mongoose.model('Story', storySchema);

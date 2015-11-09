@@ -1,5 +1,5 @@
 import express from 'express';
-import { Story } from '../../../../models'
+import { Story } from '../../../../models'
 import { ErrorCodes } from '../../../shared/ErrorCodes'
 import _ from 'lodash';
 import twitterApi from '../../twitterApi'

@@ -1,11 +1,13 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var jwt = require('jsonwebtoken');
-import _ from 'lodash';
+import mongoose from 'mongoose'
+import bcrypt from 'bcrypt-nodejs'
+import jwt from 'jsonwebtoken'
+import _ from 'lodash'
 import { API_TOKEN_SECRET } from '../authConfig'
 
+let Schema = mongoose.Schema
+
 // Define our user schema
-var UserSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
@@ -36,7 +38,7 @@ var UserSchema = new mongoose.Schema({
     unique: false,
     required: false
   },
-  created: { 
+  createdAt: { 
     type: Date, 
     default: Date.now, 
     required: true
@@ -46,16 +48,17 @@ var UserSchema = new mongoose.Schema({
     required: false
   },
   twitter: {
-    id: { type: String, required: true },
+    id: { type: String, required: false },
     token: { type: String, required: false }, /* Not required so user can unlink account */
     tokenSecret: { type: String, required: false },
     displayName: { type: String, required: false },
-    username: { type: String, required: true },
+    username: { type: String, required: false },
     photo: { type: String, required: false }
-  }
+  },
+  latestStories : [{ type: Schema.Types.ObjectId, ref: 'Story' }]
 });
 
-UserSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function() {
   var user = this.toObject();
   user['id'] = user._id;
   return _.pick(user, 
@@ -69,7 +72,7 @@ UserSchema.methods.toJSON = function() {
 }
 
 // Execute before each user.save() call
-UserSchema.pre('save', function(callback) {
+userSchema.pre('save', function(callback) {
   var user = this;
 
   if(user.email) {
@@ -95,18 +98,18 @@ UserSchema.pre('save', function(callback) {
   });
 });
 
-UserSchema.pre('update', function() {
+userSchema.pre('update', function() {
   this.update({},{ $set: { updatedAt: new Date() } });
 });
 
-UserSchema.methods.verifyPassword = function(password, cb) {
+userSchema.methods.verifyPassword = function(password, cb) {
   bcrypt.compare(password, this.password, function(err, isMatch) {
     if (err) return cb(err);
     cb(null, isMatch);
   });
 };
 
-UserSchema.methods.generateApiToken = function(){
+userSchema.methods.generateApiToken = function(){
   var token = jwt.sign(this, API_TOKEN_SECRET, {
     expiresIn: 60*60*24 // seconds
   });
@@ -114,4 +117,4 @@ UserSchema.methods.generateApiToken = function(){
   return token;
 };
 
-module.exports = mongoose.model('User', UserSchema);
+export default mongoose.model('User', userSchema)
