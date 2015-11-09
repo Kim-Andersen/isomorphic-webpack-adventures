@@ -21,7 +21,7 @@ let PassswordOverlayDialog = React.createClass({
 				<h4>Enter your password to sign in to your account</h4>
 				<form onSubmit={this.onSubmit} autoComplete="off">
 				  <div className="form-group">
-				    <input type="password" name="password" ref="password" defaultValue="" placeholder="" className="form-control" />
+				    <input type="password" autoFocus={true} name="password" ref="password" defaultValue="" placeholder="" className="form-control" />
 				  </div>
 				  <button type="submit" className="btn btn-default">Submit</button>
 				</form>

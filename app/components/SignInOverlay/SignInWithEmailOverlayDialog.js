@@ -21,7 +21,7 @@ let SignInWithEmailOverlayDialog = React.createClass({
 				<h4>Enter your email address to sign in or create an account</h4>
 				<form onSubmit={this.onSubmit} autoComplete="off">
 				  <div className="form-group">
-				    <input type="email" name="email" ref="email" defaultValue="kimandersen1@gmail.com" placeholder="youremail@example.com" className="form-control" />
+				    <input type="email" autoFocus={true} name="email" ref="email" defaultValue="kimandersen1@gmail.com" placeholder="youremail@example.com" className="form-control" />
 				  </div>
 				  <button type="submit" className="btn btn-default">Submit</button>
 				</form>
