@@ -25,7 +25,9 @@ let HomePage = React.createClass({
         <h1>Home page</h1>
 
         <hr />
-        <InlineStoryComposer onStorySaved={this.fetchMyStories} />
+        <InlineStoryComposer 
+          showTweetOption={true}
+          onStorySaved={this.fetchMyStories} />
         <hr />
         
         { this.props.me.stories && this.props.me.stories.error ? 'Your stories are not available at the moment.' : null }

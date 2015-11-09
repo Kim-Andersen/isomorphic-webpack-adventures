@@ -2,6 +2,7 @@ import express from 'express';
 import { Story } from '../../../../models'
 import { ErrorCodes } from '../../../shared/ErrorCodes'
 import _ from 'lodash';
+import twitterApi from '../../twitterApi'
 
 var sendJsonErrorCode = function(res, errCode, data){
 	var json = {
@@ -27,6 +28,29 @@ router.post('/stories', function(req, res, next){
  			if(err){
  				return next(err)
  			} else {
+
+ 				// Check if user want's to tweet this story.
+ 				let tweet = req.body.tweet == 'true';
+ 				if(tweet && req.user.twitter && req.user.twitter.token && req.user.twitter.tokenSecret){
+ 					process.nextTick(function(){
+ 						console.log('Attempting to tweet story...', story);
+
+ 						twitterApi.statuses("update", {
+ 								status: story.text
+				    	},
+				    	req.user.twitter.token,
+				    	req.user.twitter.tokenSecret,
+				    	function(error, data, response) {
+			        	if (error) {
+				          console.log('Failed to tweet story');
+				        } else {
+				        	console.log('Tweeted story successfully!', data, response);
+				        }
+					    }
+						);
+ 					});	
+ 				}				
+
  				res.status(200).json({story: story});
  			}
  		})

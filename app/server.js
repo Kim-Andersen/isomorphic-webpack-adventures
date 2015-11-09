@@ -26,6 +26,7 @@ import _ from 'lodash';
 import ErrorCodes from './shared/ErrorCodes';
 import { COOKIE_PARSER_SECRET } from '../authConfig'
 import { signup, login, me } from './server/routes/'
+import twitterApi from './server/twitterAPI'
 
 const env = process.env;
 const mongoConnection = env.npm_package_config_appMongoConnection;
@@ -65,6 +66,10 @@ router.use(signup)
 router.use(login)
 router.use(authentication());
 router.use('/me', me)
+
+// Init Twitter API
+//twitterApi.init({});
+//console.log('twitterApi', twitterApi.statuses);
 
 var sendJsonErrorCode = function(res, errCode, data){
   var json = {

@@ -40,10 +40,10 @@ let me = {
 		}	
 	},
 
-	saveStory(text){
+	saveStory(text, tweet){
 		return dispatch => {
 			dispatch(this.requestSaveStory(text));
-			return ApiClient.post('/me/stories', {text: text})
+			return ApiClient.post('/me/stories', {text: text, tweet: tweet})
 				.done((story) => {
 					dispatch(this.receiveSaveStory(story));
 				}.bind(this))
