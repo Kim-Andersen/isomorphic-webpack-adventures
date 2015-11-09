@@ -8,7 +8,7 @@ let ProfilePage = React.createClass({
   render() {
   	if(this.props.session){
   		return (
-	    	<Profile user={this.props.session.user}>	
+	    	<Profile user={this.props.session.user}>
 	    	</Profile>
     	)
   	} else if(this.props.profile) {
@@ -18,7 +18,10 @@ let ProfilePage = React.createClass({
     	)
   	} else {
   		return (
-  			<h1>User not found</h1>
+        <div>
+          <Helmet title="User not found"/>
+  			  <h1>User not found</h1>
+        </div>
   		)
   	}  	
   }

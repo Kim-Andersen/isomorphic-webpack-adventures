@@ -39,8 +39,10 @@ let App = React.createClass({
 
     return (
       <div>
-        <Helmet title="[Name]"/>
-        
+        <Helmet
+          title="welcome"
+          titleTemplate="%s | [app name]"
+        />
         <Header 
           user={user} 
           onSignInButtonClick={this.onSignInButtonClick} />
