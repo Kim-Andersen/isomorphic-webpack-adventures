@@ -11,7 +11,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { default as reducer } from './shared/reducers/'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
-import { initAuthentication } from './server/authentication'
+import authentication from './server/authentication'
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import morgan from 'morgan';
@@ -61,10 +61,9 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
-initAuthentication();
-
 router.use(signup)
 router.use(login)
+router.use(authentication());
 router.use('/me', me)
 
 var sendJsonErrorCode = function(res, errCode, data){

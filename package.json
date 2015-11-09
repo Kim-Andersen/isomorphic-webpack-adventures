@@ -29,6 +29,7 @@
     "express": "^4.13.3",
     "history": "^1.12.5",
     "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-helmet": "^2.1.0",

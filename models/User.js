@@ -29,9 +29,7 @@ var UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    minlength: 8,
-    maxlength: 30
+    required: true
   },
   name: {
     type: String,
@@ -46,42 +44,27 @@ var UserSchema = new mongoose.Schema({
   updatedAt: {
     type: Date, 
     required: false
-  }/*,
-  loginProvider: {
-    type: String,
-    required: false
   },
-  facebookId: {
-    type: String,
-    unique: true,
-    required: false
-  },
-  linkedinId: {
-    type: String,
-    unique: true,
-    required: false
-  },
-  twitterId: {
-    type: String,
-    unique: true,
-    required: false
-  },
-  oauthAccessToken: {
-    type: String,
-    unique: true,
-    required: false
-  },
-  oauthRefreshToken: {
-    type: String,
-    unique: true,
-    required: false
-  }*/
+  twitter: {
+    id: { type: String, required: true },
+    token: { type: String, required: false }, /* Not required so user can unlink account */
+    displayName: { type: String, required: false },
+    username: { type: String, required: true },
+    photo: { type: String, required: false }
+  }
 });
 
 UserSchema.methods.toJSON = function() {
   var user = this.toObject();
   user['id'] = user._id;
-  return _.pick(user, 'id', 'username', 'email', 'name', 'created');
+  return _.pick(user, 
+    'id', 
+    'username', 
+    'email', 
+    'name', 
+    'created', 
+    'twitter'
+  );
 }
 
 // Execute before each user.save() call
