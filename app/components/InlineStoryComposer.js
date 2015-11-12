@@ -34,7 +34,7 @@ let InlineStoryComposer = React.createClass({
       <div className="inline-story-composer">
         <h2>InlineStoryComposer</h2>
         <form onSubmit={this.onSubmit}>
-          <textarea ref="text" rows="5" onChange={this.onTextChange}></textarea>
+          <textarea ref="text" rows="5" onChange={this.onTextChange} className="form-control"></textarea>
 
           <StoryHashtags hashtags={this.state.hashtags} />
           

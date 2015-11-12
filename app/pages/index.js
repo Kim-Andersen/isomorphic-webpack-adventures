@@ -3,6 +3,7 @@ import About from './About';
 import Contact from './Contact';
 import HomePage from './HomePage';
 import ProfilePage from './ProfilePage'
+import EditProfile from './EditProfile'
 import Root from './Root'
 
 let pages = {
@@ -11,7 +12,8 @@ let pages = {
 	HomePage: HomePage,
 	About: About,
 	Contact: Contact,
-	ProfilePage: ProfilePage
+	ProfilePage: ProfilePage,
+	EditProfile: EditProfile
 };
 
 export default pages;

@@ -55,26 +55,34 @@ var userSchema = new mongoose.Schema({
     username: { type: String, required: false },
     photo: { type: String, required: false }
   },
-  latestStories : [{ type: Schema.Types.ObjectId, ref: 'Story' }]
+  latestStories : [{ type: Schema.Types.ObjectId, ref: 'Story' }],
+  profile: {
+    bio: { type: String, required: false },
+    name: { type: String, required: false },
+    location: { type: String, required: false }
+  }
 });
 
 userSchema.methods.toJSON = function() {
   var user = this.toObject();
   user['id'] = user._id;
   return _.pick(user, 
-    'id', 
+    'id',
     'username', 
     'email', 
     'name', 
     'created', 
     'twitter',
-    'latestStories'
+    'latestStories',
+    'profile'
   );
 }
 
 // Execute before each user.save() call
 userSchema.pre('save', function(callback) {
   var user = this;
+
+  user.updatedAt = new Date();
 
   if(user.email) {
     user.email = user.email.toLowerCase();

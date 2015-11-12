@@ -1,8 +1,18 @@
 import express from 'express';
 import _ from 'lodash';
 import { User, Story } from '../../../models';
+import ErrorCodes from '../../shared/ErrorCodes'
 
 let router = express.Router({mergeParams: true});
+
+var sendJsonErrorCode = function(res, errCode, data){
+  var json = {
+    message: errCode.message, 
+    error_code: errCode.code
+  };
+  _.extend(json, {}, data);
+  return res.status(errCode.status || 500).json(json);
+};
 
 router.get('/signup/username/:username', function(req, res){
   var username_lower = _.trim(req.params.username.toLowerCase());
