@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import Helmet from "react-helmet";
+import moment from 'moment'
 
 let Profile = React.createClass({
 
@@ -17,10 +18,12 @@ let Profile = React.createClass({
 					{latestStories.map((story, index) =>
           <li key={index}>
           	<div>
-          		{story.text}
+          		<p>{story.text}</p>
+          		<div className="date">{moment(story.createdAt).calendar()}</div>
           		<div>{story.hashtags.map(function(hashtag, index){
           			return (<a href="#" key={index}>#{hashtag}&nbsp;</a>)
           		})}</div>
+          		<hr/>
           	</div>
           </li>
         )}
