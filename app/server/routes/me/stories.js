@@ -19,6 +19,7 @@ router.post('/stories', function(req, res, next){
 	let story = new Story()
 	story.text = _.trim(req.body.text)
 	story.userId = req.user.id
+	story.hashtags = req.body.hashtags
 
 	let err = story.validateSync();
 	if(err){

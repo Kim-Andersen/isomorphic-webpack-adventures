@@ -27,6 +27,7 @@
     "babel-runtime": "^5.8.25",
     "es6-promise": "^3.0.2",
     "express": "^4.13.3",
+    "find-hashtags": "^1.0.0",
     "history": "^1.12.5",
     "node-twitter-api": "^1.6.1",
     "passport-local": "^1.0.0",

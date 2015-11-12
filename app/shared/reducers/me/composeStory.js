@@ -4,7 +4,7 @@ function stories(state = [], action){
 		case 'REQUEST_SAVE_STORY':
 			return Object.assign({}, state, {
 				isSaving: true,
-				text: action.text
+				story: action.story
 			})
 		case 'RECEIVE_SAVE_STORY':
 			return Object.assign({}, state, {

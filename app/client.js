@@ -18,7 +18,7 @@ const initialState = window.__STATE__;
 
 // Init ApiClient.
 ApiClient.init({baseUrl: 'http://localhost:3000', headers: {
-	'x-access-token': initialState.apiToken
+	'x-access-token': initialState.session && initialState.session.apiToken
 }});
 
 // init redux logger

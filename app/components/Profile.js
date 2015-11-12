@@ -4,6 +4,9 @@ import Helmet from "react-helmet";
 let Profile = React.createClass({
 
 	render(){
+		var latestStories = this.props.user.latestStories || [];
+		console.log('latestStories', latestStories);
+
 		return (
 			<div className="profile">
 				<Helmet title={this.props.user.username}/>
@@ -11,9 +14,14 @@ let Profile = React.createClass({
 				<h1>{this.props.user.username}</h1>
 
 				<ul>
-					{this.props.user.latestStories.map((story, index) =>
+					{latestStories.map((story, index) =>
           <li key={index}>
-            {story.text}
+          	<div>
+          		{story.text}
+          		<div>{story.hashtags.map(function(hashtag, index){
+          			return (<a href="#" key={index}>#{hashtag}&nbsp;</a>)
+          		})}</div>
+          	</div>
           </li>
         )}
 				</ul>

@@ -23,6 +23,10 @@ var storySchema = new mongoose.Schema({
   updatedAt: {
     type: Date, 
     required: false
+  },
+  hashtags: {
+    type: [String],
+    required: false
   }
 });
 
@@ -40,7 +44,7 @@ storySchema.post('save', function(story){
 storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
-  return _.pick(story, 'id', 'userId', 'text', 'createdAt');
+  return _.pick(story, 'id', 'userId', 'text', 'createdAt', 'hashtags');
 }
 
 storySchema.pre('update', function() {

@@ -148,7 +148,7 @@ var publicProfileHandler = (req, res, next) => {
   if(_.isString(req.params.username)){
     User
       .findOne({username_lower: req.params.username.toLowerCase()})
-      .populate('latestStories', 'text createdAt')
+      .populate('latestStories', 'text createdAt hashtags')
       .exec(function(err, user){
         if(err){
           return next(err)

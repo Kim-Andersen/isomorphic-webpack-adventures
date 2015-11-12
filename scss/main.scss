@@ -134,3 +134,10 @@ label {
     }
   }
 }
+
+.inline-story-composer {
+  textarea {
+    width: 100%;
+    max-width: 400px;
+  }
+}

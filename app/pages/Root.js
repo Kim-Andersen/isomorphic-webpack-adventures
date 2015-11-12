@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import Profile from '../components/Profile'
+import InlineStoryComposer from '../components/InlineStoryComposer'
 
 let Root = React.createClass({
 
@@ -8,7 +9,12 @@ let Root = React.createClass({
 		if(this.props.session){
   		return (
 	    	<div>
-	   		  my home page
+
+	   		  <hr />
+          <InlineStoryComposer 
+            showTweetOption={true} />
+          <hr />
+
 	    	</div>      
     	)
   	} else {
