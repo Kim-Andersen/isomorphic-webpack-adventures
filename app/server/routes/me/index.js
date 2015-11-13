@@ -3,7 +3,9 @@ import { requireApiToken } from './../middleware'
 import stories from './stories'
 import _ from 'lodash'
 import { User } from '../../../../models'
+import validate from 'express-validation'
 import ErrorCodes from '../../../shared/ErrorCodes'
+import validation from '../api/validation'
 
 let router = express.Router({mergeParams: true});
 router.use(requireApiToken);
@@ -18,8 +20,8 @@ var sendJsonErrorCode = function(res, errCode, data){
   _.extend(json, {}, data);
   return res.status(errCode.status || 500).json(json);
 };
- 
-router.patch('/', (req, res, next) => {
+
+router.patch('/', validate(validation.me.patch), (req, res, next) => {
 	let update = undefined
 
 	if(_.isObject(req.body.profile)){
@@ -33,7 +35,7 @@ router.patch('/', (req, res, next) => {
 	}
 
 	if(!update){
-		res.status(204).send();
+		res.json(204);
 	} else {
 
 		User.findById(req.user.id, (err, user) => {
@@ -53,7 +55,7 @@ router.patch('/', (req, res, next) => {
 						if(err) {
 							return next(err);
 						} else {
-							res.status(200).json({message: 'User updated successfully'});
+							res.json(200);
 						}					
 					});
 				}

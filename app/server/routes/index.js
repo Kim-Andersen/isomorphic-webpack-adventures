@@ -1,9 +1,5 @@
-import { me } from './me'
-import { signup } from './signup'
-import { login } from './login'
+import api from './api'
 
 export {
-	me,
-	signup,
-	login
+	api
 }

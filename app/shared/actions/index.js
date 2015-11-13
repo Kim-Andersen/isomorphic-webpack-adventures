@@ -76,7 +76,7 @@ let signIn = {
 	checkEmailAvailability(email){
 		return dispatch => {
 			dispatch(this.requestCheckEmail(email));
-			return ApiClient.get('/signup/email/'+email)
+			return ApiClient.get('/signup/email_available/'+email)
 				.done(function(data){
 					dispatch(this.receiveCheckEmail(email, data.available));
 				}.bind(this))	
@@ -86,7 +86,7 @@ let signIn = {
 	login(email, password){
 		return dispatch => {
 			dispatch(this.requestLogin(email));
-			return ApiClient.post('/login', {email: email, password: password})
+			return ApiClient.post('/signin', {email: email, password: password})
 				.done(function(data){
 					dispatch(this.receiveLogin(email));
 					window.location.reload(true);

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 let self = undefined;
 let DEFAULT_OPTIONS = {
-	baseUrl: 'http://localhost:3000',
+	baseUrl: 'http://localhost:3000/api',
 	timeout: 5000
 };
 

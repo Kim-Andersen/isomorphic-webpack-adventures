@@ -24,7 +24,7 @@ let UsernameAvailabilityInput = React.createClass({
   },
 
 	checkUsernameAvailability: function(username){
-  	this.xhr = ApiClient.get('/signup/username/'+username)
+  	this.xhr = ApiClient.get('/api/signup/username_available/'+username)
   		.done(function(res){
   			this.props.onAvalabilityChange(res.available);
 	  	}.bind(this));

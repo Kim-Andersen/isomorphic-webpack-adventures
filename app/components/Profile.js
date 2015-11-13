@@ -20,7 +20,7 @@ let Profile = React.createClass({
           	<div>
           		<p>{story.text}</p>
           		<div className="date">{moment(story.createdAt).calendar()}</div>
-          		<div>{story.hashtags.map(function(hashtag, index){
+          		<div>{story.hashtags && story.hashtags.map(function(hashtag, index){
           			return (<a href="#" key={index}>#{hashtag}&nbsp;</a>)
           		})}</div>
           		<hr/>

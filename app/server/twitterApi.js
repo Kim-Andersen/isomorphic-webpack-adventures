@@ -1,5 +1,4 @@
 import twitterAPI from 'node-twitter-api'
-import _ from 'lodash'
 
 export default new twitterAPI({
   consumerKey: 'bK3fQIpXepJ05vbDMdTbcIyR8',

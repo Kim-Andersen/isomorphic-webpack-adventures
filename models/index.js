@@ -32,7 +32,6 @@ let ModelUtils = {
 	                console.log('Failed to update "latestStories" on user. Error saving user', userId, err);
 	              } else {
 	              	callback(null, user);
-	              	console.log('Successfully updated "latestStories" on user', user);
 	              }              
 	            });
 	          }

@@ -10,7 +10,7 @@ let me = {
 	fetchMyStories(){
 		return dispatch => {
 			dispatch(this.requestStories());
-			return ApiClient.get('/me/stories')
+			return ApiClient.get('/stories')
 				.done((stories) => {
 					dispatch(this.receiveStories(stories));
 				}.bind(this))
@@ -43,7 +43,7 @@ let me = {
 	saveStory(story, tweet){
 		return dispatch => {
 			dispatch(this.requestSaveStory(story));
-			return ApiClient.post('/me/stories', story)
+			return ApiClient.post('/stories', story)
 				.done((story) => {
 					dispatch(this.receiveSaveStory(story));
 				}.bind(this))

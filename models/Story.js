@@ -35,8 +35,6 @@ storySchema.post('save', function(story){
     console.log(err, user);
     if(err) {
       console.log('Failed to update "latestStories" on user after saving story.', err);
-    } else {
-      console.log('storySchema: Successfully updated "latestStories" on user', user.id);  
     }    
   });
 })

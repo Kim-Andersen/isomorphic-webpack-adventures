@@ -25,7 +25,7 @@ import { User, Story } from '../models';
 import _ from 'lodash';
 import ErrorCodes from './shared/ErrorCodes';
 import { COOKIE_PARSER_SECRET } from '../authConfig'
-import { signup, login, me } from './server/routes/'
+import { api } from './server/routes/'
 import twitterApi from './server/twitterAPI'
 
 const env = process.env;
@@ -62,10 +62,12 @@ router.use(session({
 router.use(passport.initialize());
 router.use(passport.session());
 
-router.use(signup)
-router.use(login)
+//router.use(signup)
+//router.use(login)
 router.use(authentication());
-router.use('/me', me)
+//router.use('/me', me)
+
+router.use('/api', api);
 
 // Init Twitter API
 //twitterApi.init({});
