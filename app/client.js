@@ -13,6 +13,10 @@ import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
+// Make sure jQuery is loaded before bootstrap.
+window.jQuery = window.$ = require('jquery')
+require('bootstrap')
+
 // Grab the state from a global injected into server-generated HTML.
 const initialState = window.__STATE__;
 

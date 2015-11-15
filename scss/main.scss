@@ -3,10 +3,8 @@
 @import 'keyframes';
 //@import url(https://fonts.googleapis.com/css?family=Noto+Serif|Open+Sans);
 
-html{
+html {
   overflow-y: scroll;
-	//font-size: 62.5%;
-  //font-family: sans-serif;
 }
 
 html, body {
@@ -14,12 +12,6 @@ html, body {
 }
 
 body {
-	//font-family: 'Noto Serif', serif;
-	
-  //line-height: 1.4;
-  //letter-spacing: 0;
-  //font-weight: 400;
-  font-style: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }

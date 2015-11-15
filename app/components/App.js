@@ -43,12 +43,16 @@ let App = React.createClass({
           title="welcome"
           titleTemplate="%s | [app name]"
         />
+
         <Header 
           user={user} 
           onSignInButtonClick={this.onSignInButtonClick} />
         
-        {this.props.signIn.show ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
-        {this.props.children}
+        <div className="container">
+          {this.props.children}
+        </div>
+
+        {this.props.signIn.show ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}        
       </div>
     )
   }
