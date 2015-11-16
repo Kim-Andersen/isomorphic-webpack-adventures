@@ -25,7 +25,6 @@ let HomePage = React.createClass({
       <div>
         <h1>Home page</h1>
 
-        <hr />
         <InlineStoryComposer 
           showTweetOption={true}
           onStorySaved={this.fetchMyStories} />

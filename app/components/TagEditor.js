@@ -16,8 +16,13 @@ let TagEditor = React.createClass({
     let tagRegex = '^[a-zA-Z0-9_ -]*$' // letters A-Z, numbers, spaces, and dashes.
 
     let tagNodes = tags.map(function(tag, index){
-      return (<div className="tag" key={index}>{tag}</div>)
-    })
+      return (
+        <div className="tag" key={index}>{tag} 
+          <button type="button" 
+            onClick={this.removeTag.bind(this, index)}
+            className="btn btn-link btn-xs remove-tag">x</button>
+        </div>)
+    }, this)
 
     return (
       <div className="tag-editor">
@@ -88,6 +93,7 @@ let TagEditor = React.createClass({
   },
 
   addTag(tag){
+    tag = _.trim(tag)
     let tags = this.state.tags || []
     let tagExists = false
 
@@ -111,6 +117,16 @@ let TagEditor = React.createClass({
       if(_.isFunction(this.props.onChange)){
         this.props.onChange(this.state.tags);
       }
+    }
+  },
+
+  removeTag(index){
+    if(_.remove(this.state.tags, (tag, _index) => {
+      return _index === index
+    })) {
+      this.setState({
+        tags: this.state.tags
+      })
     }
   },
 

@@ -153,6 +153,16 @@ label {
       padding: 5px 10px;
       border-radius: 3px;
       border: 1px solid #f0f0f0;
+
+      > button.remove-tag {
+        margin-left: 5px;
+        color: rgba(0,0,0,.3);
+        outline: none;
+        &:hover {
+          color: rgba(0,0,0,.8);
+          text-decoration: none;
+        }
+      }
     }
     > .input-wrapper{
       position: relative;

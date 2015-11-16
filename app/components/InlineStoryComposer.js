@@ -2,22 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { me as meActions } from '../shared/actions'
 import _ from 'lodash'
-import findHashtags from 'find-hashtags';
 import TagEditor from './TagEditor'
-
-/*
-let StoryHashtags = React.createClass({
-  render(){
-    return (
-      <div>
-        {this.props.hashtags.map(function(hashtag, index){
-          return (<span key={index}>#{hashtag}&nbsp;</span>)
-        })}
-      </div>
-    )
-  }
-})
-*/
 
 let InlineStoryComposer = React.createClass({
 
@@ -27,14 +12,9 @@ let InlineStoryComposer = React.createClass({
     }
   },
 
-  componentDidMount: function(){
-    //this.detectHashtags = _.debounce(this.detectHashtags, 250, {leading: false});
-  },
-
   render() {
     return (
       <div className="inline-story-composer">
-        <h2>InlineStoryComposer</h2>
         <form onSubmit={this.onSubmit}>
           <textarea ref="text" rows="5" className="form-control" placeholder="What are you working on?"></textarea>
 
@@ -46,7 +26,7 @@ let InlineStoryComposer = React.createClass({
               <input type="checkbox" name="tweet" ref="tweet" />
             </div> 
           : null}
-          <button type="submit" className="btn btn-default">Post story</button>
+          <button type="submit" className="btn btn-default">Publish</button>
         </form>
       </div>
     );
@@ -57,25 +37,6 @@ let InlineStoryComposer = React.createClass({
       tags: tags
     })    
   },
-
-  /*onTextChange(e){
-    e.preventDefault;
-    this.detectHashtags();
-  },*/
-
-  /*detectHashtags(){
-    let text = this.refs.text.value
-    let hashtags = [];
-    if(text.length > 2){
-      hashtags = findHashtags(text);
-      console.log('hashtags', hashtags);
-      this.setState({
-        hashtags: hashtags
-      });      
-    }
-    
-    return hashtags;
-  },*/
 
   onSubmit(e){
     e.preventDefault()
