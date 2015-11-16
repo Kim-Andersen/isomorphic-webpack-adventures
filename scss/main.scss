@@ -59,6 +59,14 @@ label {
   }
 }
 
+/*
+  Popover
+============================================*/
+.popover {
+  @include box-shadow(0 2px 1px rgba(0, 0, 0, 0.05));
+  border-color: #ccc;
+}
+
 /*  Overlay
 ============================================*/
 .overlay {

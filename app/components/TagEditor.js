@@ -49,6 +49,13 @@ let TagEditor = React.createClass({
   componentDidMount(){
     // Cache DOM node references.
     this.$tagInput = $(ReactDOM.findDOMNode(this.refs.tagInput))
+    this.$tagInput.popover({
+      content: '',
+      placement: 'bottom',
+      trigger: 'manual',
+      container: 'body'
+    })
+
     this.$inputPlaceholder = $(ReactDOM.findDOMNode(this.refs.inputPlaceholder))
   },
 
@@ -61,6 +68,7 @@ let TagEditor = React.createClass({
       this.toggleInputPlaceholder(true);
     } else {
       this.toggleInputPlaceholder(false);
+      this.hidePopover();
     }
   },
 
@@ -144,26 +152,21 @@ let TagEditor = React.createClass({
   },
 
   showPopover(content){
-    this.$tagInput.popover({
-      content: content,
-      placement: 'bottom',
-      trigger: 'manual',
-      viewport: {'selector': 'body'},
-      container: 'body'
-    })
-      .popover('show', {content: content})
-
     if(this.tagPopoverTimer){
       window.clearTimeout(this.tagPopoverTimer)
     }
+
+    this.$tagInput.data('bs.popover').options.content = content
+    this.$tagInput.popover('show')
     
-    this.tagPopoverTimer = window.setTimeout(() => {
-      this.$tagInput.popover('hide')
-    }.bind(this), 5000)
+    this.tagPopoverTimer = window.setTimeout(this.hidePopover, 5000)
   },
 
   hidePopover(){
     this.$tagInput.popover('hide')
+    if(this.tagPopoverTimer){
+      window.clearTimeout(this.tagPopoverTimer)
+    }
   }
 })
 

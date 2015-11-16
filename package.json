@@ -29,7 +29,6 @@
     "es6-promise": "^3.0.2",
     "express": "^4.13.3",
     "express-validation": "^0.4.5",
-    "find-hashtags": "^1.0.0",
     "history": "^1.12.5",
     "moment": "^2.10.6",
     "node-twitter-api": "^1.6.1",
