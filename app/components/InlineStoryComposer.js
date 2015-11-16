@@ -32,7 +32,6 @@ let InlineStoryComposer = React.createClass({
   },
 
   render() {
-    console.log('render')
     return (
       <div className="inline-story-composer">
         <h2>InlineStoryComposer</h2>

@@ -4,22 +4,11 @@ import ContentEditable from './ContentEditable'
 import _ from 'lodash';
 
 let TagEditor = React.createClass({
+
   getInitialState: function(){
     return {
       tags: []
     }
-  },
-
-  componentDidMount(){
-    this.$tagInput = $(ReactDOM.findDOMNode(this.refs.tagInput))
-      .popover({
-        content: 'Tags only support letters A-Z, numbers, spaces, and dashes.',
-        placement: 'bottom',
-        trigger: 'manual',
-        viewport: {'selector': 'body'}
-      });
-
-    this.$inputPlaceholder = $(ReactDOM.findDOMNode(this.refs.inputPlaceholder))
   },
 
   render(){
@@ -41,6 +30,7 @@ let TagEditor = React.createClass({
               whitelistRegex={tagRegex}
               onInvalidInput={this.onInvalidInput}
               onTabKey={this.onInputTabKey}
+              onEnterKey={this.onInputEnterKey}
               onEmptyBackspace={this.onInputEmptyBackspace} 
               onChange={this.onInputChange}
               />
@@ -51,16 +41,18 @@ let TagEditor = React.createClass({
     )
   },
 
-  toggleInputPlaceholder(show){
-    if(show) {
-      this.$inputPlaceholder.fadeIn(150)
-    } else {
-      this.$inputPlaceholder.hide()
-    }
+  componentDidMount(){
+    // Cache DOM node references.
+    this.$tagInput = $(ReactDOM.findDOMNode(this.refs.tagInput))
+    this.$inputPlaceholder = $(ReactDOM.findDOMNode(this.refs.inputPlaceholder))
   },
 
-  onInputChange(e){
-    if(e.target.value.length === 0){
+  componentWillUnmount(){
+    this.$tagInput.popover('destroy')
+  },
+
+  onInputChange(tag){
+    if(tag.length === 0){
       this.toggleInputPlaceholder(true);
     } else {
       this.toggleInputPlaceholder(false);
@@ -75,32 +67,46 @@ let TagEditor = React.createClass({
 
       this.$tagInput.popover('hide');
       this.toggleInputPlaceholder(true);
+      this.hidePopover();
     }    
   },
 
   onInvalidInput(){
-    console.log('Tags only support letters A-Z, numbers, spaces, and dashes.')
-    this.$tagInput.popover('show');
-
-    if(this.tagPopoverTimer){
-      window.clearTimeout(this.tagPopoverTimer);
-    }
-    
-    this.tagPopoverTimer = window.setTimeout(() => {
-      this.$tagInput.popover('hide');
-    }.bind(this), 5000)
+    this.showPopover(this.PopoverContent.INVALID_TAG);
   },
 
   onInputTabKey(tag){
     if(tag.length > 0){
-      let tags = this.state.tags || []
+      this.addTag(tag);      
+    }
+  },
+
+  onInputEnterKey(tag){
+    if(tag.length > 0){
+      this.addTag(tag);      
+    }
+  },
+
+  addTag(tag){
+    let tags = this.state.tags || []
+    let tagExists = false
+
+    _.forEach(tags, function(_tag){
+      if(_tag.toLowerCase() == tag.toLowerCase()){
+        tagExists = true
+      }
+    })
+
+    if(tagExists){
+      this.showPopover(this.PopoverContent.TAG_EXISTS);
+    } else {
       tags.push(tag)
-      
       this.setState({
         tags: tags
       })
 
       this.toggleInputPlaceholder(true);
+      this.hidePopover();
 
       if(_.isFunction(this.props.onChange)){
         this.props.onChange(this.state.tags);
@@ -108,6 +114,41 @@ let TagEditor = React.createClass({
     }
   },
 
+  toggleInputPlaceholder(show){
+    if(show) {
+      this.$inputPlaceholder.fadeIn(150)
+    } else {
+      this.$inputPlaceholder.hide()
+    }
+  },
+
+  PopoverContent: {
+    TAG_EXISTS: 'You have already added this tag.',
+    INVALID_TAG: 'Tags only support letters A-Z, numbers, spaces, and dashes.'
+  },
+
+  showPopover(content){
+    this.$tagInput.popover({
+      content: content,
+      placement: 'bottom',
+      trigger: 'manual',
+      viewport: {'selector': 'body'},
+      container: 'body'
+    })
+      .popover('show', {content: content})
+
+    if(this.tagPopoverTimer){
+      window.clearTimeout(this.tagPopoverTimer)
+    }
+    
+    this.tagPopoverTimer = window.setTimeout(() => {
+      this.$tagInput.popover('hide')
+    }.bind(this), 5000)
+  },
+
+  hidePopover(){
+    this.$tagInput.popover('hide')
+  }
 })
 
 export default TagEditor

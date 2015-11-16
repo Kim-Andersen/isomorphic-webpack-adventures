@@ -40,6 +40,14 @@ let ContentEditable = React.createClass({
         this.props.onTabKey(html);
       }      
     }
+
+    if(keyCode == this.KeyCodes.ENTER){
+      if(_.isFunction(this.props.onEnterKey)){
+        e.preventDefault();
+        let html = this.DOMNode.innerHTML
+        this.props.onEnterKey(html);
+      }      
+    }
   },
 
   onKeyPress(e){
@@ -82,11 +90,7 @@ let ContentEditable = React.createClass({
   emitChange(){
     var html = this.DOMNode.innerHTML;
     if (this.props.onChange && html !== this.lastHtml) {
-      this.props.onChange({
-        target: {
-          value: html
-        }
-      });
+      this.props.onChange(html);
     }
     this.lastHtml = html;
   }
