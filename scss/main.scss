@@ -136,6 +136,48 @@ label {
 }
 
 /*
-  List group
+  tag-editor
 ====================================================*/
+.tag-editor {
+  width:100%;
 
+  > .tags {
+    > .tag {
+      position: relative;
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      background-color: #fff;
+      color: rgba(0,0,0,.8);
+      border-color: rgba(0,0,0,.15);
+      padding: 5px 10px;
+      border-radius: 3px;
+      border: 1px solid #f0f0f0;
+    }
+    > .input-wrapper{
+      position: relative;
+      display: inline-block;
+
+      > div[contenteditable] {
+        z-index:2;
+        position:relative;
+        padding: 9px 0;
+        text-rendering: auto;
+        min-width: 100px;
+        display: inline-block;
+        white-space: nowrap;
+        outline: none;
+      }
+
+      > span.default-value {
+        position: absolute;
+        color: rgba(0, 0, 0, 0.3);
+        top: 50%;
+        left: 2px;
+        height: 18px;
+        overflow: hidden;
+        margin-top: -9px;
+      }
+    }
+  }
+}

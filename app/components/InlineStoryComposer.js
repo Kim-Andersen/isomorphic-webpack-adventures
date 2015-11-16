@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { me as meActions } from '../shared/actions'
 import _ from 'lodash'
 import findHashtags from 'find-hashtags';
+import TagEditor from './TagEditor'
 
+/*
 let StoryHashtags = React.createClass({
   render(){
     return (
@@ -15,17 +17,18 @@ let StoryHashtags = React.createClass({
     )
   }
 })
+*/
 
 let InlineStoryComposer = React.createClass({
 
   getInitialState: function(){
     return {
-      hashtags: []
+      tags: []
     }
   },
 
-  componentWillMount: function(){
-    this.detectHashtags = _.debounce(this.detectHashtags, 250, {leading: false});
+  componentDidMount: function(){
+    //this.detectHashtags = _.debounce(this.detectHashtags, 250, {leading: false});
   },
 
   render() {
@@ -34,9 +37,9 @@ let InlineStoryComposer = React.createClass({
       <div className="inline-story-composer">
         <h2>InlineStoryComposer</h2>
         <form onSubmit={this.onSubmit}>
-          <textarea ref="text" rows="5" onChange={this.onTextChange} className="form-control"></textarea>
+          <textarea ref="text" rows="5" className="form-control" placeholder="What are you working on?"></textarea>
 
-          <StoryHashtags hashtags={this.state.hashtags} />
+          <TagEditor onChange={this.onTagsChanged} />
           
           {this.props.showTweetOption ? 
             <div className="tweet-story">
@@ -50,12 +53,18 @@ let InlineStoryComposer = React.createClass({
     );
   },
 
-  onTextChange(e){
-    e.preventDefault;
-    this.detectHashtags();
+  onTagsChanged(tags){
+    this.setState({
+      tags: tags
+    })    
   },
 
-  detectHashtags(){
+  /*onTextChange(e){
+    e.preventDefault;
+    this.detectHashtags();
+  },*/
+
+  /*detectHashtags(){
     let text = this.refs.text.value
     let hashtags = [];
     if(text.length > 2){
@@ -67,17 +76,17 @@ let InlineStoryComposer = React.createClass({
     }
     
     return hashtags;
-  },
+  },*/
 
   onSubmit(e){
     e.preventDefault()
     let text = _.trim(this.refs.text.value)
-    let hashtags = this.state.hashtags
+    let tags = this.state.tags
     let tweet = this.refs.tweet && this.refs.tweet.checked
 
     let story = {
       text: text,
-      hashtags: hashtags,
+      hashtags: tags,
       tweet: tweet
     }
     
@@ -94,6 +103,9 @@ let InlineStoryComposer = React.createClass({
 
   reset(){
     this.refs.text.value = '';
+    this.setState({
+      tags: []
+    })    
   }
 });
 
