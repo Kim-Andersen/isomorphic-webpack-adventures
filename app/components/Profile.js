@@ -1,33 +1,33 @@
 import React, { PropTypes } from 'react'
 import Helmet from "react-helmet";
 import moment from 'moment'
+import StoryList from './StoryList'
 
 let Profile = React.createClass({
-
 	render(){
-		var latestStories = this.props.user.latestStories || [];
-		console.log('latestStories', latestStories);
+		var user = this.props.user,
+				latestStories = user.latestStories || [];
+
+				user.profile = user.profile || {};
 
 		return (
 			<div className="profile">
-				<Helmet title={this.props.user.username}/>
-				<h5 className="subheader">PROFILE</h5>
-				<h1>{this.props.user.username}</h1>
+				<Helmet title={user.username}/>
 
-				<ul>
-					{latestStories.map((story, index) =>
-          <li key={index}>
-          	<div>
-          		<p>{story.text}</p>
-          		<div className="date">{moment(story.createdAt).calendar()}</div>
-          		<div>{story.hashtags && story.hashtags.map(function(hashtag, index){
-          			return (<a href="#" key={index}>#{hashtag}&nbsp;</a>)
-          		})}</div>
-          		<hr/>
-          	</div>
-          </li>
-        )}
-				</ul>
+				<div className="row">
+				
+			  	<div className="col-xs-12 col-sm-3 col-md-2">
+			  		<h1 className="h3">{user.profile.name || user.username}</h1>
+			  		<p>{user.profile.location}</p>
+			  		<p>{user.profile.bio}</p>
+			  	</div>
+
+			  	<div className="col-xs-12 col-sm-9 col-md-10">
+			  		<StoryList stories={latestStories} />
+			  	</div>
+
+				</div>
+
 			</div>
 		)
 	}

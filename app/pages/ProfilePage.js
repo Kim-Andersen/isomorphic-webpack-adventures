@@ -6,12 +6,7 @@ import Profile from '../components/Profile'
 
 let ProfilePage = React.createClass({
   render() {
-  	if(this.props.session){
-  		return (
-	    	<Profile user={this.props.session.user}>
-	    	</Profile>
-    	)
-  	} else if(this.props.profile) {
+  	if(this.props.profile) {
   		return (
 	    	<Profile user={this.props.profile.user}>
 	    	</Profile>

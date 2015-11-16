@@ -21,7 +21,7 @@ require('bootstrap')
 const initialState = window.__STATE__;
 
 // Init ApiClient.
-ApiClient.init({baseUrl: 'http://localhost:3000', headers: {
+ApiClient.init({baseUrl: 'http://localhost:3000/api', headers: {
 	'x-access-token': initialState.session && initialState.session.apiToken
 }});
 

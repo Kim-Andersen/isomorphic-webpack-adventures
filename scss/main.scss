@@ -1,6 +1,7 @@
 @import 'bootstrap-custom';
 @import 'bootstrap';
 @import 'keyframes';
+@import 'responsive-align';
 //@import url(https://fonts.googleapis.com/css?family=Noto+Serif|Open+Sans);
 
 html {
@@ -133,3 +134,8 @@ label {
     max-width: 400px;
   }
 }
+
+/*
+  List group
+====================================================*/
+
