@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 let Header = React.createClass({
 
@@ -12,7 +13,8 @@ let Header = React.createClass({
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{user.username} <span className="caret"></span></a>
             <ul className="dropdown-menu">
-              <li><a href="/settings">Settings</a></li>
+              <li><Link to={`/${user.username}`}>Profile</Link></li>
+              <li><Link to="/settings">Settings</Link></li>
               <li role="separator" className="divider"></li>
               <li><a href="/signout">Sign out</a></li>
             </ul>

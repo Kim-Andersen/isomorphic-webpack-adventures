@@ -10,6 +10,7 @@ import stories from './stories'
 import signup from './signup'
 import signin from './signin'
 import me from './me'
+import profile from './profile'
 
 validate.options({
   flatten : true,
@@ -26,6 +27,7 @@ router.use('/stories', stories(Story, validation.stories).use(requireApiToken))
 router.use('/signup', signup(User, validation.signup))
 router.use('/signin', signin)
 router.use('/me', me(User, validation.me).use(requireApiToken))
+router.use('/profile', profile(User, validation.profile))
 
 // API error handler
 router.use(function (err, req, res, next) {

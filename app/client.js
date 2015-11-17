@@ -18,7 +18,7 @@ window.jQuery = window.$ = require('jquery')
 require('bootstrap')
 
 // Grab the state from a global injected into server-generated HTML.
-const initialState = window.__STATE__;
+const initialState = window.__STATE__
 
 // Init ApiClient.
 ApiClient.init({baseUrl: 'http://localhost:3000/api', headers: {

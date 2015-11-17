@@ -146,30 +146,21 @@ function renderIsomorphicPage(req, res, next, initialState = {}){
 var publicProfileHandler = (req, res, next) => {
   console.log('publicProfileHandler');
   if(_.isString(req.params.username)){
-    User
-      .findOne({username_lower: req.params.username.toLowerCase()})
-      .populate('latestStories', 'text createdAt hashtags')
-      .exec(function(err, user){
-        if(err){
-          return next(err)
-        } else if(!user) {
-          console.log('user not found');
-          next();
-        } else {        
-          let initialState = {
-            profile: {
-              user: user
-            }
-          };
-          /*if(!req.user || req.user.id !== user.id){
-            initialState['profile'] = {
-              user: user
-            };  
-          }*/
-          renderIsomorphicPage(req, res, next, initialState);
-        }
+    User.getProfileByUsername(req.params.username, function(err, user){
+      if(err){
+        return next(err)
+      } else if(!user) {
+        console.log('user not found');
+        next();
+      } else {        
+        let initialState = {
+          profile: {
+            user: user
+          }
+        };
+        renderIsomorphicPage(req, res, next, initialState)
       }
-    )  
+    })
   } else {
     next();
   }

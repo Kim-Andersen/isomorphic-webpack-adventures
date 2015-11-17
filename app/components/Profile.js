@@ -4,6 +4,7 @@ import moment from 'moment'
 import StoryList from './StoryList'
 
 let Profile = React.createClass({
+	
 	render(){
 		var user = this.props.user,
 				latestStories = user.latestStories || [];

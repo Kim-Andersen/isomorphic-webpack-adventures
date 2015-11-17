@@ -126,4 +126,14 @@ userSchema.methods.generateApiToken = function(){
   return token;
 };
 
+userSchema.statics.getProfileByUsername = function(username, callback){
+  if(!_.isString(username) || username.length === 0) throw Error('Invalid param <username>.');
+  if(!_.isFunction(callback)) throw Error('Invalid param <callback>.');
+
+  this
+    .findOne({username_lower: username.toLowerCase()})
+    .populate('latestStories', 'text createdAt hashtags')
+    .exec(callback)
+}
+
 export default mongoose.model('User', userSchema)
