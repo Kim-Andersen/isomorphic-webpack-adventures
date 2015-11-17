@@ -12,11 +12,11 @@ export default {
 	    allowUnknownCookies: false 
 	  },
 		body: {
-			profile: Joi.object().keys({
-				name: Joi.string(),
-				location: Joi.string(),
-				bio: Joi.string()
-			})
+			profile: {	
+				name: Joi.any().optional(),
+				location: Joi.any().optional(),
+				bio: Joi.any().optional()
+			}
 		}
 	}
 }

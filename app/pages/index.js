@@ -2,7 +2,7 @@ import SignIn from './SignIn';
 import Contact from './Contact';
 import HomePage from './HomePage';
 import ProfilePage from './ProfilePage'
-import EditProfile from './EditProfile'
+import Settings from './Settings'
 import Root from './Root'
 import Write from './Write'
 
@@ -12,7 +12,7 @@ let pages = {
 	HomePage: HomePage,
 	Contact: Contact,
 	ProfilePage: ProfilePage,
-	EditProfile: EditProfile,
+	Settings: Settings,
 	Write: Write
 };
 
