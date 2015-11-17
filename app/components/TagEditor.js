@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom';
 import ContentEditable from './ContentEditable'
 import _ from 'lodash';
+import regex from '../shared/regex'
 
 let TagEditor = React.createClass({
 
@@ -13,7 +14,6 @@ let TagEditor = React.createClass({
 
   render(){
     let tags = this.state.tags || [];
-    let tagRegex = '^[a-zA-Z0-9_ -]*$' // letters A-Z, numbers, spaces, and dashes.
 
     let tagNodes = tags.map(function(tag, index){
       return (
@@ -32,7 +32,7 @@ let TagEditor = React.createClass({
             <ContentEditable html={''} 
               ref="tagInput"
               singleLine={true}
-              whitelistRegex={tagRegex}
+              whitelistRegex={regex.TAG}
               onInvalidInput={this.onInvalidInput}
               onTabKey={this.onInputTabKey}
               onEnterKey={this.onInputEnterKey}
