@@ -13,8 +13,7 @@ export default (
   	<IndexRoute component={pages.Root}/>
     <Route path="/settings" component={pages.EditProfile}/>
   	<Route path="/signin" component={pages.SignIn}/>
-    <Route path="/about" component={pages.About}/>
-    <Route path="/contact" component={pages.Contact}/>
+    <Route path="/write" component={pages.Write}/>
 
     /* Place /:username last so it doesn't catch other routes. */
   	<Route path="/:username" component={pages.ProfilePage}/>  	

@@ -10,6 +10,7 @@ let Header = React.createClass({
   	if(this.props.user){
   		navbarRight = (
         <ul className="nav navbar-nav navbar-right">
+          <li><a href="/write">Write</a></li>
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{user.username} <span className="caret"></span></a>
             <ul className="dropdown-menu">

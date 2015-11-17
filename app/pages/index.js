@@ -1,19 +1,19 @@
 import SignIn from './SignIn';
-import About from './About';
 import Contact from './Contact';
 import HomePage from './HomePage';
 import ProfilePage from './ProfilePage'
 import EditProfile from './EditProfile'
 import Root from './Root'
+import Write from './Write'
 
 let pages = {
 	Root: Root,
 	SignIn: SignIn,
 	HomePage: HomePage,
-	About: About,
 	Contact: Contact,
 	ProfilePage: ProfilePage,
-	EditProfile: EditProfile
+	EditProfile: EditProfile,
+	Write: Write
 };
 
 export default pages;
