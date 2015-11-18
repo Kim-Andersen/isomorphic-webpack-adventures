@@ -16,7 +16,7 @@ let ApiClient = {
 		self = this
 		self.opt = _.extend({}, DefaultOptions, options)
 
-		_.forEach(['get', 'post', 'put', 'del', 'patch'], function(method){
+		_.forEach(['get', 'post', 'put', 'delete', 'patch'], function(method){
 			self[method] = function(uri, body, callback){
 				if(!callback && typeof body === 'function'){
 					callback = body;

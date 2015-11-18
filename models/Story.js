@@ -15,6 +15,12 @@ var storySchema = new mongoose.Schema({
     required: true,
     minlength: 1
   },
+  textShort: {
+    type: String,
+    unique: false,
+    required: false,
+    maxlength: 140
+  },
   createdAt: { 
     type: Date, 
     default: Date.now, 
@@ -35,22 +41,45 @@ var storySchema = new mongoose.Schema({
   }
 });
 
-storySchema.post('save', function(story){
+storySchema.pre('save', function(next) {
+  this.textShort = this.text.substring(0,140);
+  next();
+})
+
+storySchema.post('save', function(story, next){
   ModelUtils.updateLatestStoriesOnUser(story.userId, function(err, user){
     if(err) {
-      console.log('Failed to update "latestStories" on user after saving story.', err);
-    }    
+      next(err)
+    } else {
+      next();
+    }
+  });
+})
+
+storySchema.post('remove', function(story, next){
+  ModelUtils.updateLatestStoriesOnUser(story.userId, function(err, user){
+    if(err) {
+      var err = new Error('Failed to update "latestStories" on user after saving story.', err);
+      next(err)
+    } else {
+      next();
+    }
   });
 })
 
 storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
-  return _.pick(story, 'id', 'userId', 'text', 'createdAt', 'hashtags');
+  return _.pick(story, 'id', 'userId', 'text', 'textShort', 'createdAt', 'hashtags', 'isPublished');
 }
 
 storySchema.pre('update', function() {
-  this.update({},{ $set: { updatedAt: new Date() } });
+  this.update({},{ 
+    $set: { 
+      updatedAt: new Date(),
+      textShort: this.text.substring(0,140)
+    } 
+  });
 });
 
 module.exports = mongoose.model('Story', storySchema);

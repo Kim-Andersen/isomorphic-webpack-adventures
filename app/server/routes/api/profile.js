@@ -4,7 +4,7 @@ import express from 'express';
 import _ from 'lodash';
 import validate from 'express-validation'
 
-export default (User, validation) => {
+export default (validation, User) => {
 
 	let router = express.Router({mergeParams: true})
 

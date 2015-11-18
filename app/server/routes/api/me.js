@@ -5,14 +5,12 @@ import _ from 'lodash';
 import validate from 'express-validation'
 import bodyParser from 'body-parser'
 
-export default (User, validation) => {
+export default (validation, User, Story) => {
 
 	let router = express.Router({mergeParams: true})
 	
 	router.patch('/', validate(validation.patch), (req, res, next) => {
 		let update = undefined
-
-		console.log('req.body', req.body)
 
 		if(_.isObject(req.body.profile)){
 			update = _.assign({}, update, {
@@ -54,6 +52,24 @@ export default (User, validation) => {
 				}
 			})
 		}
+	})
+
+	router.get('/stories', validate(validation.stories.get), function(req, res, next){
+		let MAX_LIMIT = 200
+
+		Story
+			.find({userId: req.user.id})
+			.lean()
+			.select('id userId textShort hashtags createdAt isPublished')
+			.limit(req.query.limit || MAX_LIMIT)
+			.sort({'createdAt': 'desc'})
+			.exec(function(err, stories){
+				if(err){
+					return next(err)
+				} else {
+					res.status(200).json(stories)
+				}
+		})
 	})
 	
 	return router

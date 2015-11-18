@@ -18,6 +18,14 @@ export default {
 				bio: Joi.any().optional()
 			}
 		}
+	},
+
+	stories: {
+		get: {
+			query: {
+				limit: Joi.number().min(1).max(200).optional()
+			}
+		}
 	}
 }
 

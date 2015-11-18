@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from "react-helmet";
 import { connect } from 'react-redux'
 import _ from "lodash";
-import { toggleSignupDialog } from '../shared/actions/'
 import ApiClient from '../ApiClient'
 
 let Settings = React.createClass({
@@ -12,7 +11,7 @@ let Settings = React.createClass({
 
   	return (
       <div>
-        <Helmet title="Edit profile"/>
+        <Helmet title="Settings"/>
 
         <form onSubmit={this.onSubmit} autoComplete="off">
           <div className="form-group text-left">

@@ -5,7 +5,7 @@ import _ from 'lodash';
 import twitterApi from '../../twitterApi'
 import validate from 'express-validation'
 
-export default (Story, validation) => {
+export default (validation, Story) => {
 
 	let router = express.Router({mergeParams: true})
 
@@ -119,13 +119,13 @@ export default (Story, validation) => {
 				if(err){
 					return next(err);
 				} else if (!story) {
-					res.status(404).json({message: 'Story not found'});
+					res.status(404).send();
 				} else {
 					story.remove(function(err){
 						if(err){
 							return next(err);
 						} else {
-							res.status(200).json({message: 'Story deleted'});
+							res.status(200).send();
 						}
 					});
 				}

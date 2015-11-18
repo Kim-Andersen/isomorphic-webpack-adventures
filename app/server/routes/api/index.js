@@ -24,11 +24,11 @@ validate.options({
 
 let router = express.Router({mergeParams: true})
 
-router.use('/stories', requireApiToken, stories(Story, validation.stories))
-router.use('/signup', signup(User, validation.signup))
+router.use('/stories', requireApiToken, stories(validation.stories, Story))
+router.use('/signup', signup(validation.signup, User))
 router.use('/signin', signin)
-router.use('/me', requireApiToken, me(User, validation.me))
-router.use('/profile', profile(User, validation.profile))
+router.use('/me', requireApiToken, me(validation.me, User, Story))
+router.use('/profile', profile(validation.profile, User))
 
 // API error handler
 router.use(function (err, req, res, next) {
