@@ -47,7 +47,7 @@ export default (Story, validation) => {
 	 					});	
 	 				}*/			
 
-	 				res.status(200).json({story: story});
+	 				res.status(200).json(story);
 	 			}
 	 		})
 	 	}

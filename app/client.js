@@ -1,4 +1,5 @@
-require('es6-promise').polyfill();
+//require('es6-promise').polyfill();
+import 'babel-core/polyfill'
 import '../scss/main.scss';
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -21,9 +22,15 @@ require('bootstrap')
 const initialState = window.__STATE__
 
 // Init ApiClient.
-ApiClient.init({baseUrl: 'http://localhost:3000/api', headers: {
-	'x-access-token': initialState.session && initialState.session.apiToken
-}});
+ApiClient.init({
+	baseUrl: 'http://localhost:3000/api', 
+	timeout: 5000,
+	headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'x-access-token': initialState.session && initialState.session.apiToken
+  }
+});
 
 // init redux logger
 const loggerMiddleware = createLogger()

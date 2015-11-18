@@ -49,10 +49,10 @@ let Settings = React.createClass({
     console.log('payload', payload);
 
     ApiClient.patch('/me', payload)
-      .done(() => {
+      .then(() => {
         console.log('user updated successfully');
       }.bind(this))
-      .fail((res) => {
+      .catch((res) => {
         switch(res.status){
           case 400:
             console.log('invalid', res.responseJSON);

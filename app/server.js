@@ -43,7 +43,7 @@ let router = express.Router({mergeParams: true});
 router.use(express.static(publicPath));
 router.use(morgan('dev')); // log every request to the console
 router.use(compression());
-router.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+router.use(bodyParser.urlencoded({'extended': true}));            // parse application/x-www-form-urlencoded
 router.use(bodyParser.json());                                     // parse application/json
 router.use(methodOverride());
 router.use(cookieParser(COOKIE_PARSER_SECRET)); // secret value can be anything.

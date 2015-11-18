@@ -68,7 +68,7 @@ let ProfilePage = React.createClass({
 
   fetchProfile(username){
     ApiClient.get('/profile/'+username)
-      .done((user) => {
+      .then((user) => {
 
         this.setState({
           user: user,
@@ -76,7 +76,7 @@ let ProfilePage = React.createClass({
         })
 
       }.bind(this))
-      .fail((res) => {
+      .catch((res) => {
         if(res.status === 404){
           console.log('User not found');
         } else {

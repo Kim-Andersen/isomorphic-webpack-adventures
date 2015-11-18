@@ -51,19 +51,20 @@ let me = {
 			dispatch(this.requestSaveStory(story));
 			if(storyId){
 				return ApiClient.patch('/stories/'+storyId, payload)
-					.done((story) => {
-						debugger;
+					.then((story) => {
 						dispatch(this.receiveSaveStory(story));
+						return story;
 					}.bind(this))
-					.error((res) => {
+					.catch((res) => {
 						dispatch(this.saveStoryError(res.responseJSON));
 					}.bind(this));
 			} else {
 				return ApiClient.post('/stories', payload)
-					.done((story) => {
+					.then((story) => {
 						dispatch(this.receiveSaveStory(story));
+						return story;
 					}.bind(this))
-					.error((res) => {
+					.catch((res) => {
 						dispatch(this.saveStoryError(res.responseJSON));
 					}.bind(this));
 			}

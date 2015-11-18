@@ -37,7 +37,6 @@ var storySchema = new mongoose.Schema({
 
 storySchema.post('save', function(story){
   ModelUtils.updateLatestStoriesOnUser(story.userId, function(err, user){
-    console.log(err, user);
     if(err) {
       console.log('Failed to update "latestStories" on user after saving story.', err);
     }    

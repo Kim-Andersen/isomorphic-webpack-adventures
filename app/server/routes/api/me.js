@@ -3,13 +3,16 @@
 import express from 'express';
 import _ from 'lodash';
 import validate from 'express-validation'
+import bodyParser from 'body-parser'
 
 export default (User, validation) => {
 
 	let router = express.Router({mergeParams: true})
-
+	
 	router.patch('/', validate(validation.patch), (req, res, next) => {
 		let update = undefined
+
+		console.log('req.body', req.body)
 
 		if(_.isObject(req.body.profile)){
 			update = _.assign({}, update, {

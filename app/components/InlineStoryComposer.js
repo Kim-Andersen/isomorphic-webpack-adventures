@@ -14,8 +14,8 @@ let InlineStoryComposer = React.createClass({
     }
   },
 
-  componentDidMount: function(){
-    this.autoSaveStory = _.throttle(this.autoSaveStory, 5000, {leading: false});
+  componentWillMount: function(){
+    this.autoSaveStory = _.throttle(this.autoSaveStory, 3000, {leading: false});
   },
 
   render() {
@@ -24,7 +24,7 @@ let InlineStoryComposer = React.createClass({
         <form onSubmit={this.onSubmit}>
           <textarea 
             ref="text" 
-            rows="5" 
+            rows="3" 
             className="form-control" 
             placeholder="What are you working on?"
             onChange={this.onTextChange}>
@@ -60,10 +60,10 @@ let InlineStoryComposer = React.createClass({
 
   autoSaveStory(){
     this.saveStory()
-      .done((res) => {
-        debugger
-        if(res.story){
-          this.story = res.story
+      .then((story) => {
+        
+        if(story){
+          this.story = story
         }
 
         this.setState({
@@ -82,12 +82,11 @@ let InlineStoryComposer = React.createClass({
     this.story.isPublished = true
 
     if(this.refs.text.value.length === 0){
-      console.log('You need to write something.');
       return
     } else {
       this.saveStory()
-        .done((res) => {
-          debugger;
+        .then((story) => {
+          alert('Published OK')
           this.reset();
           if(_.isFunction(this.props.onStorySaved)){
             this.props.onStorySaved(this.story);
@@ -104,8 +103,10 @@ let InlineStoryComposer = React.createClass({
     })
 
     this.story = story
-    
-    return this.props.dispatch(meActions.saveStory(story))
+
+    if(story.text.length > 0){
+      return this.props.dispatch(meActions.saveStory(story))  
+    }
   },
 
   reset(){
