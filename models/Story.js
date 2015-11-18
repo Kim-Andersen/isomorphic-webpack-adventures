@@ -27,6 +27,11 @@ var storySchema = new mongoose.Schema({
   hashtags: {
     type: [String],
     required: false
+  },
+  isPublished: {
+    type: Boolean, 
+    default: false,
+    required: false
   }
 });
 

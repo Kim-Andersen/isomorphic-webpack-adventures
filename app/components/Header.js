@@ -15,7 +15,7 @@ let Header = React.createClass({
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{user.username} <span className="caret"></span></a>
             <ul className="dropdown-menu">
               <li><Link to={`/${user.username}`}>Profile</Link></li>
-              <li><Link to="/settings">Settings</Link></li>
+              <li><Link to="/me/settings">Settings</Link></li>
               <li role="separator" className="divider"></li>
               <li><a href="/signout">Sign out</a></li>
             </ul>

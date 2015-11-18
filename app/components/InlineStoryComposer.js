@@ -2,21 +2,33 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { me as meActions } from '../shared/actions'
 import _ from 'lodash'
+import moment from 'moment'
 import TagEditor from './TagEditor'
 
 let InlineStoryComposer = React.createClass({
 
   getInitialState: function(){
     return {
-      tags: []
+      tags: [],
+      autoSavedAt: undefined
     }
+  },
+
+  componentDidMount: function(){
+    this.autoSaveStory = _.throttle(this.autoSaveStory, 5000, {leading: false});
   },
 
   render() {
     return (
       <div className="inline-story-composer">
         <form onSubmit={this.onSubmit}>
-          <textarea ref="text" rows="5" className="form-control" placeholder="What are you working on?"></textarea>
+          <textarea 
+            ref="text" 
+            rows="5" 
+            className="form-control" 
+            placeholder="What are you working on?"
+            onChange={this.onTextChange}>
+          </textarea>
 
           <TagEditor onChange={this.onTagsChanged} />
           
@@ -27,6 +39,7 @@ let InlineStoryComposer = React.createClass({
             </div> 
           : null}
           <button type="submit" className="btn btn-default">Publish</button>
+          {this.state.autoSavedAt ? ' Auto-saved '+ moment(this.state.autoSavedAt).fromNow() : null}
         </form>
       </div>
     );
@@ -35,37 +48,73 @@ let InlineStoryComposer = React.createClass({
   onTagsChanged(tags){
     this.setState({
       tags: tags
-    })    
+    })
+    this.autoSaveStory();
+  },
+
+  onTextChange(e){
+    if(this.refs.text.value.length > 0){
+      this.autoSaveStory();
+    }    
+  },
+
+  autoSaveStory(){
+    this.saveStory()
+      .done((res) => {
+        debugger
+        if(res.story){
+          this.story = res.story
+        }
+
+        this.setState({
+          autoSavedAt: moment()
+        })
+
+      }.bind(this))    
   },
 
   onSubmit(e){
     e.preventDefault()
-    let text = _.trim(this.refs.text.value)
-    let tags = this.state.tags
-    let tweet = this.refs.tweet && this.refs.tweet.checked
 
-    let story = {
-      text: text,
-      hashtags: tags,
-      tweet: tweet
-    }
-    
-    if(text.length === 0){
+    this.autoSaveStory.cancel();
+
+    this.story = this.story || {}
+    this.story.isPublished = true
+
+    if(this.refs.text.value.length === 0){
+      console.log('You need to write something.');
       return
     } else {
-      this.props.dispatch(meActions.saveStory(story))
-        .done((story) => {
+      this.saveStory()
+        .done((res) => {
+          debugger;
           this.reset();
-          _.isFunction(this.props.onStorySaved) && this.props.onStorySaved(story);
+          if(_.isFunction(this.props.onStorySaved)){
+            this.props.onStorySaved(this.story);
+          }
         }.bind(this))
     }
+  },
+
+  saveStory(){
+    let story = Object.assign({}, _.pick(this.story, ['id', 'text', 'hashtags', 'isPublished']), {
+      text: _.trim(this.refs.text.value),
+      hashtags: this.state.tags,
+      tweet: this.refs.tweet && this.refs.tweet.checked
+    })
+
+    this.story = story
+    
+    return this.props.dispatch(meActions.saveStory(story))
   },
 
   reset(){
     this.refs.text.value = '';
     this.setState({
-      tags: []
-    })    
+      tags: [],
+      autoSavedAt: undefined
+    })
+    this.story = undefined
   }
 });
 

@@ -27,6 +27,7 @@ export default (Story, validation) => {
 		let story = new Story()
 		story.text = _.trim(req.body.text)
 		story.hashtags = req.body.hashtags
+		story.isPublished = req.body.isPublished
 		story.userId = req.user.id
 
 		let err = story.validateSync();
@@ -39,12 +40,12 @@ export default (Story, validation) => {
 	 			} else {
 
 	 				// Check if user want's to tweet this story.
-	 				let tweet = req.body.tweet == 'true';
+	 				/*let tweet = req.body.tweet == 'true';
 	 				if(tweet && req.user.twitter && req.user.twitter.token && req.user.twitter.tokenSecret){
 	 					process.nextTick(function(){
 	 						tweetStory(story, req.user)
 	 					});	
-	 				}				
+	 				}*/			
 
 	 				res.status(200).json({story: story});
 	 			}
@@ -70,9 +71,23 @@ export default (Story, validation) => {
 	}
 
 	router.patch('/:storyId', validate(validation.patch), function(req, res, next){
-		var text = _.trim(req.body.text)
+		let text = _.trim(req.body.text)
+		let hashtags = req.body.hashtags
+		let isPublished = req.body.isPublished
 
-		Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
+		Story.update({_id: req.params.storyId}, {$set: {
+			text: text,
+			hashtags: hashtags,
+			isPublished: isPublished
+		}}, (err) => {
+			if(err){
+				return next(err);
+			} else {
+				res.status(200).send()
+			}
+		})
+
+		/*Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
 			function(err, story){
 				if(err){
 					return next(err);
@@ -95,7 +110,7 @@ export default (Story, validation) => {
 				 	}
 					
 				}
-			})
+			})*/
 	})
 
 	router.delete('/:storyId', validate(validation.delete), function(req, res, next){

@@ -1,4 +1,5 @@
 import ApiClient from '../../ApiClient';
+import _ from 'lodash'
 
 let SYNC_STATUS = {
 	WORKING: 'WORKING',
@@ -40,16 +41,32 @@ let me = {
 		}	
 	},
 
-	saveStory(story, tweet){
+	saveStory(story){
+		console.log('saveStory', story);
+
+		let storyId = story.id
+		let payload = _.pick(story, ['text', 'hashtags', 'isPublished'])
+
 		return dispatch => {
 			dispatch(this.requestSaveStory(story));
-			return ApiClient.post('/stories', story)
-				.done((story) => {
-					dispatch(this.receiveSaveStory(story));
-				}.bind(this))
-				.error((res) => {
-					dispatch(this.saveStoryError(res.responseJSON));
-				}.bind(this));
+			if(storyId){
+				return ApiClient.patch('/stories/'+storyId, payload)
+					.done((story) => {
+						debugger;
+						dispatch(this.receiveSaveStory(story));
+					}.bind(this))
+					.error((res) => {
+						dispatch(this.saveStoryError(res.responseJSON));
+					}.bind(this));
+			} else {
+				return ApiClient.post('/stories', payload)
+					.done((story) => {
+						dispatch(this.receiveSaveStory(story));
+					}.bind(this))
+					.error((res) => {
+						dispatch(this.saveStoryError(res.responseJSON));
+					}.bind(this));
+			}
 		}
 	},
 

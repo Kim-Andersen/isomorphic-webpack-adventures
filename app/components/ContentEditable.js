@@ -6,7 +6,7 @@ let ContentEditable = React.createClass({
 
   propTypes: {
     singleLine: PropTypes.bool,
-    whitelistRegex: PropTypes.string
+    whitelistRegex: PropTypes.object // A regular expression is an object.
   },
 
   KeyCodes: {

@@ -11,7 +11,7 @@ import pages from '../pages';
 export default (
   <Route path="/" component={App}>
   	<IndexRoute component={pages.Root}/>
-    <Route path="/settings" component={pages.Settings}/>
+    <Route path="/me/settings" component={pages.Settings}/>
   	<Route path="/signin" component={pages.SignIn}/>
     <Route path="/write" component={pages.Write}/>
 

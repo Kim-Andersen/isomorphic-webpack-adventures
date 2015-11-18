@@ -4,8 +4,7 @@ import _ from 'lodash';
 
 let UsernameAvailabilityInput = React.createClass({
 
-	debouncedCheckUsernameAvailability: undefined,
-  xhr: undefined,
+	xhr: undefined,
 
 	propTypes: {
 		username: React.PropTypes.string
@@ -15,6 +14,10 @@ let UsernameAvailabilityInput = React.createClass({
     return {
       username: ''
     };
+  },
+
+  componentDidMount: function(){
+    this.checkUsernameAvailability = _.debounce(this.checkUsernameAvailability, 1500, {leading: false});
   },
 
   componentWillUnmount(){
@@ -30,18 +33,13 @@ let UsernameAvailabilityInput = React.createClass({
 	  	}.bind(this));
   },
 
-  componentWillMount: function(){
-  	this.checkUsernameAvailability = _.debounce(this.checkUsernameAvailability, 1500, {leading: false});
-  },
-
   onUsernameChange: function(e){
   	var username = this.refs.username.value.trim();
   	
-  	if(this.debouncedCheckUsernameAvailability){
-  		this.debouncedCheckUsernameAvailability.cancel();
-  	}
+  	this.checkUsernameAvailability.cancel();
+
   	if(username.length > 0){
-  		this.debouncedCheckUsernameAvailability = this.checkUsernameAvailability(username);	
+  		this.checkUsernameAvailability(username);
   	}  	
 
   	this.props.onChange(username);
