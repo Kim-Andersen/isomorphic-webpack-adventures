@@ -1,5 +1,6 @@
 import User from './User'
 import Story from './Story'
+import Project from './Project'
 import _ from 'lodash'
 
 let ModelUtils = {
@@ -42,4 +43,4 @@ let ModelUtils = {
 	}
 };
 
-export { ModelUtils, User, Story }
+export { ModelUtils, User, Story, Project }

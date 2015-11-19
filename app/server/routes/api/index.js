@@ -1,17 +1,17 @@
 'use strict';
 
 import express from 'express';
-import { Story, User } from '../../../../models'
+import { Story, User, Project } from '../../../../models'
 import { requireApiToken } from '../middleware'
 import validate from 'express-validation'
 import validation from './validation'
-
 
 import stories from './stories'
 import signup from './signup'
 import signin from './signin'
 import me from './me'
 import profile from './profile'
+import projects from './projects'
 
 validate.options({
   flatten : true,
@@ -24,11 +24,12 @@ validate.options({
 
 let router = express.Router({mergeParams: true})
 
-router.use('/stories', requireApiToken, stories(validation.stories, Story))
+router.use('/stories', requireApiToken, stories(validation.story, Story))
 router.use('/signup', signup(validation.signup, User))
 router.use('/signin', signin)
-router.use('/me', requireApiToken, me(validation.me, User, Story))
+router.use('/me', requireApiToken, me(validation.me, User, Story, Project))
 router.use('/profile', profile(validation.profile, User))
+router.use('/projects', requireApiToken, projects(validation.project, Project))
 
 // API error handler
 router.use(function (err, req, res, next) {

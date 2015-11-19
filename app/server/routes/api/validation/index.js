@@ -1,13 +1,15 @@
 'use strict'
 import regex from '../../../../shared/regex'
 import me from './me'
-import stories from './stories'
+import story from './story'
 import signup from './signup'
 import profile from './profile'
+import project from './project'
 
 export default {
 	me: me,
-	stories: stories(regex),
+	story: story(regex),
 	signup: signup,
-	profile: profile
+	profile: profile,
+	project: project(regex)
 }
