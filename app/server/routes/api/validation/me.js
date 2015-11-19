@@ -16,6 +16,10 @@ export default {
 				name: Joi.any().optional(),
 				location: Joi.any().optional(),
 				bio: Joi.any().optional()
+			},
+			contact: {
+				email: Joi.string().email(),
+				phone: Joi.any().optional()
 			}
 		}
 	},

@@ -10,17 +10,7 @@ export default (validation, User, Story) => {
 	let router = express.Router({mergeParams: true})
 	
 	router.patch('/', validate(validation.patch), (req, res, next) => {
-		let update = undefined
-
-		if(_.isObject(req.body.profile)){
-			update = _.assign({}, update, {
-				profile: {
-					name: req.body.profile.name,
-					bio: req.body.profile.bio,
-					location: req.body.profile.location
-				}
-			})
-		}
+		let update = req.body
 
 		if(!update){
 			res.json(204);
@@ -31,20 +21,22 @@ export default (validation, User, Story) => {
 					return next(err);
 				} else {
 
-					if(_.isObject(update.profile)){
-						_.assign(user.profile, update.profile);
+					if(_.isObject(req.body.profile)){
+						_.assign(user.profile, req.body.profile);
 					}
-					console.log('user', user);
+					if(_.isObject(req.body.contact)){
+						_.assign(user.contact, req.body.contact);
+					}
 
 					let err = user.validateSync();
 					if(err){
-						res.status(400).json({message: 'Not valid'});
+						res.status(400).send()
 					} else {
 							user.save((err) => {
 							if(err) {
 								return next(err);
 							} else {
-								res.status(200).json({message: 'user updated'});
+								res.status(200).send()
 							}					
 						});
 					}

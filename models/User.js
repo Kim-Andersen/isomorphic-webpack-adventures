@@ -60,6 +60,10 @@ var userSchema = new mongoose.Schema({
     bio: { type: String, required: false },
     name: { type: String, required: false },
     location: { type: String, required: false }
+  },
+  contact: {
+    email: {type: String, required: false},
+    phone: {type: String, required: false}
   }
 });
 
@@ -74,7 +78,8 @@ userSchema.methods.toJSON = function() {
     'created', 
     'twitter',
     'latestStories',
-    'profile'
+    'profile',
+    'contact'
   );
 }
 

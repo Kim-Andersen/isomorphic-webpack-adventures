@@ -8,12 +8,20 @@ let Settings = React.createClass({
   render() {
     let user = this.props.user
     let profile = user.profile || {}
+    let contact = user.contact || {}
+
+    if(!contact.email){
+      contact.email = user.email
+    }
 
   	return (
       <div>
         <Helmet title="Settings"/>
 
         <form onSubmit={this.onSubmit} autoComplete="off">
+
+          <h3>Profile</h3>
+
           <div className="form-group text-left">
             <label htmlFor="name" className="control-label">Name</label>
             <input type="text" name="name" ref="name" defaultValue={profile.name} placeholder="Your name" className="form-control" />
@@ -26,6 +34,17 @@ let Settings = React.createClass({
             <label htmlFor="name" className="control-label">Bio</label>
             <textarea name="bio" ref="bio" defaultValue={profile.bio} placeholder="Your bio" className="form-control" rows="3"></textarea>
           </div>
+
+          <h3>Contact</h3>
+
+          <div className="form-group text-left">
+            <label htmlFor="name" className="control-label">E-mail</label>
+            <input type="email" name="email" ref="email" defaultValue={contact.email} placeholder="Your contact e-mail address" className="form-control" />
+          </div>
+          <div className="form-group text-left">
+            <label htmlFor="name" className="control-label">Phone</label>
+            <input type="text" name="phone" ref="phone" defaultValue={contact.phone} placeholder="Your phone no." className="form-control" />
+          </div>          
 
           <button type="submit" className="btn btn-default">Save</button>
         </form>
@@ -42,7 +61,15 @@ let Settings = React.createClass({
         name: _.trim(this.refs.name.value),
         location: _.trim(this.refs.location.value),
         bio: _.trim(this.refs.bio.value)
+      },
+      contact: {
+        phone: _.trim(this.refs.phone.value)
       }
+    }
+
+    let email = _.trim(this.refs.email.value)
+    if(email.length > 0){
+      payload['contact']['email'] = email
     }
 
     console.log('payload', payload);
