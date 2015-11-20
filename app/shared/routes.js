@@ -12,6 +12,7 @@ export default (
   <Route path="/" component={App}>
   	<IndexRoute component={pages.Root}/>
     <Route path="/me/stories" component={pages.MyStories}/>
+    <Route path="/me/projects" component={pages.MyProjects}/>
     <Route path="/me/settings" component={pages.Settings}/>
   	<Route path="/signin" component={pages.SignIn}/>
     <Route path="/write" component={pages.Write}/>

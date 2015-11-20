@@ -47,13 +47,20 @@ export default (validation, Project) => {
 	router.patch('/:projectId', validate(validation.patch), function(req, res, next){
 		let title = _.trim(req.body.title)
 
-		Project.update({_id: req.params.projectId}, {$set: {
-			title: title
-		}}, (err) => {
+		Project.findOne({_id: req.params.projectId, userId: req.user.id}, (err, project) => {
 			if(err){
 				return next(err);
+			} else if(!project){
+				res.status(404).send()
 			} else {
-				res.status(200).send()
+				project.title = _.trim(req.body.title)
+				project.save((err) => {
+					if(err){
+						return next(err);
+					} else {
+						res.status(200).json(project)
+					}
+				})
 			}
 		})
 	})

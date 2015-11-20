@@ -16,6 +16,7 @@ let Header = React.createClass({
             <ul className="dropdown-menu">
               <li><Link to={`/${user.username}`}>Profile</Link></li>
               <li><Link to="/me/stories">Stories</Link></li>
+              <li><Link to="/me/projects">Projects</Link></li>
               <li><Link to="/me/settings">Settings</Link></li>
               <li role="separator" className="divider"></li>
               <li><a href="/signout">Sign out</a></li>
