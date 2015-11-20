@@ -78,6 +78,8 @@ let StoryListItem = React.createClass({
 	render(){
 		let story = this.props.story
 
+		let projectNode = story.project ? (<div>Project: {story.project.title}</div>) : null
+
 		return(
 			<div className="row">
 				<div className="col-xs-12 col-sm-2 text-xs-left text-sm-right">
@@ -85,6 +87,8 @@ let StoryListItem = React.createClass({
 				</div>
 				<div className="col-xs-12 col-sm-10">
 					<p>{story.textShort}</p>
+					{projectNode}
+
 					{story.hashtags && story.hashtags.map(function(hashtag, index){
       			return (<a href="#" key={index}>#{hashtag}&nbsp;</a>)
       		})}

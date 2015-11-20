@@ -10,7 +10,8 @@ export default function(regex){
 			body: {
 		  	text: Joi.string().min(1).required(),
 				hashtags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
-				isPublished: Joi.boolean()
+				isPublished: Joi.boolean(),
+				project: Joi.string().regex(regex.OBJECT_ID)
 				//tweet: Joi.boolean()
 		  }
 		},
@@ -22,7 +23,8 @@ export default function(regex){
 			body: {
 		  	text: Joi.string().min(1).required(),
 				hashtags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
-				isPublished: Joi.boolean()
+				isPublished: Joi.boolean(),
+				project: Joi.string().regex(regex.OBJECT_ID)
 		  }
 		},
 

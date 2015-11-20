@@ -12,7 +12,7 @@ let Root = React.createClass({
 
 	   		  <hr />
           <InlineStoryComposer 
-            showTweetOption={true} />
+            showTweetOption={false} />
           <hr />
 
 	    	</div>      

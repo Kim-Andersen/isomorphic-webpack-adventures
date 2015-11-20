@@ -5,9 +5,9 @@ import { ModelUtils } from './'
 // Define our user schema
 var storySchema = new mongoose.Schema({
   userId: {
-    type: String,
-    required: true,
-    ref: 'User'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   text: {
     type: String,
@@ -38,10 +38,16 @@ var storySchema = new mongoose.Schema({
     type: Boolean, 
     default: false,
     required: false
+  },
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project',
+    required: false
   }
 });
 
 storySchema.pre('save', function(next) {
+  //console.log('storySchema.pre("save")', this)
   this.textShort = this.text.substring(0,140);
   next();
 })
@@ -70,14 +76,15 @@ storySchema.post('remove', function(story, next){
 storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
-  return _.pick(story, 'id', 'userId', 'text', 'textShort', 'createdAt', 'hashtags', 'isPublished');
+  return _.pick(story, 'id', 'userId', 'text', 'textShort', 'createdAt', 'hashtags', 'isPublished', 'project');
 }
 
 storySchema.pre('update', function() {
+  //console.log('storySchema.pre("update")', this)
   this.update({},{ 
     $set: { 
-      updatedAt: new Date(),
-      textShort: this.text.substring(0,140)
+      updatedAt: new Date()/*,
+      textShort: this.text.substring(0,140)*/
     } 
   });
 });

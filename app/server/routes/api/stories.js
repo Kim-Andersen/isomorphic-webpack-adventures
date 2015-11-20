@@ -24,11 +24,13 @@ export default (validation, Story) => {
 	})
 
 	router.post('/', validate(validation.post), function(req, res, next){
-		let story = new Story()
-		story.text = _.trim(req.body.text)
-		story.hashtags = req.body.hashtags
-		story.isPublished = req.body.isPublished
-		story.userId = req.user.id
+		let story = new Story({
+			userId: req.user.id,
+			text: _.trim(req.body.text),
+			hashtags: req.body.hashtags,
+			isPublished: req.body.isPublished,
+			project: req.body.project
+		})		
 
 		let err = story.validateSync();
 		if(err){
@@ -71,31 +73,18 @@ export default (validation, Story) => {
 	}
 
 	router.patch('/:storyId', validate(validation.patch), function(req, res, next){
-		let text = _.trim(req.body.text)
-		let hashtags = req.body.hashtags
-		let isPublished = req.body.isPublished
-
-		Story.update({_id: req.params.storyId}, {$set: {
-			text: text,
-			hashtags: hashtags,
-			isPublished: isPublished
-		}}, (err) => {
-			if(err){
-				return next(err);
-			} else {
-				res.status(200).send()
-			}
-		})
-
-		/*Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
+		Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
 			function(err, story){
 				if(err){
 					return next(err);
 				} else if (!story) {
 					res.status(404).json({message: 'Story not found'});
 				} else {
+					story.text = _.trim(req.body.text)
+					story.hashtags = req.body.hashtags
+					story.isPublished = req.body.isPublished
+					story.project = req.body.project
 
-					story.text = text;
 					let err = story.validateSync();
 					if(err){
 						res.json(422)
@@ -110,7 +99,7 @@ export default (validation, Story) => {
 				 	}
 					
 				}
-			})*/
+			})
 	})
 
 	router.delete('/:storyId', validate(validation.delete), function(req, res, next){

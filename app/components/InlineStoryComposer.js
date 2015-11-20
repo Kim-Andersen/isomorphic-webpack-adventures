@@ -3,14 +3,17 @@ import { connect } from 'react-redux'
 import { me as meActions } from '../shared/actions'
 import _ from 'lodash'
 import moment from 'moment'
+import ApiClient from '../ApiClient'
 import TagEditor from './TagEditor'
+import ProjectSelector from './ProjectSelector'
 
 let InlineStoryComposer = React.createClass({
 
   getInitialState: function(){
     return {
       tags: [],
-      autoSavedAt: undefined
+      autoSavedAt: undefined,
+      projectId: undefined
     }
   },
 
@@ -18,7 +21,13 @@ let InlineStoryComposer = React.createClass({
     this.autoSaveStory = _.throttle(this.autoSaveStory, 3000, {leading: false});
   },
 
+  componentDidMount(){
+    this.fetchProjects()
+  },
+
   render() {
+    let projects = this.state.projects// [{title: 'Hola', _id: '564dd9b1af75f35e37ab9768'}]
+
     return (
       <div className="inline-story-composer">
         <form onSubmit={this.onSubmit}>
@@ -31,6 +40,10 @@ let InlineStoryComposer = React.createClass({
           </textarea>
 
           <TagEditor onChange={this.onTagsChanged} />
+
+          {projects ? <ProjectSelector 
+            projects={projects} 
+            onChange={this.onProjectChange} /> : null}
           
           {this.props.showTweetOption ? 
             <div className="tweet-story">
@@ -43,6 +56,23 @@ let InlineStoryComposer = React.createClass({
         </form>
       </div>
     );
+  },
+
+  fetchProjects(){
+    ApiClient.get('/me/projects?limit=200')
+      .then((projects) => {
+        this.setState({
+          projects: projects
+        })
+      }.bind(this))
+  },
+
+  onProjectChange(projectId){
+    
+    this.setState({
+      projectId: projectId === "" ? undefined : projectId
+    })
+    this.autoSaveStory();
   },
 
   onTagsChanged(tags){
@@ -62,15 +92,14 @@ let InlineStoryComposer = React.createClass({
     this.saveStory()
       .then((story) => {
         
-        if(story){
-          this.story = story
-        }
-
         this.setState({
           autoSavedAt: moment()
         })
 
-      }.bind(this))    
+      }.bind(this))
+      .catch((reason) => {
+        console.log('Failed to auto-save:', reason)
+      })
   },
 
   onSubmit(e){
@@ -81,39 +110,50 @@ let InlineStoryComposer = React.createClass({
     this.story = this.story || {}
     this.story.isPublished = true
 
-    if(this.refs.text.value.length === 0){
-      return
-    } else {
-      this.saveStory()
-        .then((story) => {
-          alert('Published OK')
-          this.reset();
-          if(_.isFunction(this.props.onStorySaved)){
-            this.props.onStorySaved(this.story);
-          }
-        }.bind(this))
-    }
+    this.saveStory()
+      .then((story) => {
+        alert('Published OK')
+        this.reset();
+        if(_.isFunction(this.props.onStorySaved)){
+          this.props.onStorySaved(this.story);
+        }
+      }.bind(this))
   },
 
   saveStory(){
-    let story = Object.assign({}, _.pick(this.story, ['id', 'text', 'hashtags', 'isPublished']), {
-      text: _.trim(this.refs.text.value),
-      hashtags: this.state.tags,
-      tweet: this.refs.tweet && this.refs.tweet.checked
-    })
+    return new Promise((resolve, reject) => {
 
-    this.story = story
+      let story = Object.assign({}, _.pick(this.story, ['id', 'text', 'hashtags', 'isPublished']), {
+        text: _.trim(this.refs.text.value),
+        hashtags: this.state.tags,
+        project: this.state.projectId
+        //tweet: this.refs.tweet && this.refs.tweet.checked
+      })
 
-    if(story.text.length > 0){
-      return this.props.dispatch(meActions.saveStory(story))  
-    }
+      if(!this.isValid(story)){
+        reject('invalid')
+      } else {
+        console.log('story', story);
+
+        this.props.dispatch(meActions.saveStory(story))
+          .then((story) => {
+            this.story = story
+            resolve(story)
+          }.bind(this))
+      }
+    }.bind(this))
+  },
+
+  isValid(story){
+    return story.text.length > 0;
   },
 
   reset(){
     this.refs.text.value = '';
     this.setState({
       tags: [],
-      autoSavedAt: undefined
+      autoSavedAt: undefined,
+      projectId: undefined
     })
     this.story = undefined
   }
