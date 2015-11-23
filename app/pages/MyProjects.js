@@ -26,6 +26,10 @@ let MyProjects = React.createClass({
       <div>
         <Helmet title="Projects"/>
 
+        <button type="button" 
+        	onClick={this.onNewClick}
+        	className="btn btn-default">New</button>
+
         <div className="row">
         	<div className="col-xs-12 col-sm-6">
         		{showProjectsList ? 
@@ -38,7 +42,8 @@ let MyProjects = React.createClass({
         	<div className="col-xs-12 col-sm-6">
 						{editProject ? 
 							<EditProject 
-								project={this.state.editProject} 
+								project={editProject}
+								projectTypes={['Personal', 'Client']}
 								onSave={this.onSaveEditedProjectClick}
 								onDelete={this.onDeleteProjectClick} /> : null}
         	</div>
@@ -46,6 +51,14 @@ let MyProjects = React.createClass({
         
       </div>
     )
+  },
+
+  onNewClick(e){
+  	e.preventDefault()
+
+		this.setState({
+			editProject: {}
+		})  	
   },
 
   fetchStories(){
@@ -58,21 +71,33 @@ let MyProjects = React.createClass({
 	},
 
 	onSaveEditedProjectClick(project){
-		let payload = _.pick(project, 'title');
+		let payload = _.pick(project, 'title', 'type');
 		let projectId = project.id || project._id
-		ApiClient.patch('/projects/'+projectId, payload)
-			.then((project) => {
-				
-				// Update edited project in this.state.projects array.
-				let projects = this.state.projects
-				let index = _.indexOf(projects, _.find(projects, {id: project.id}));
-				projects.splice(index, 1, project);				
 
-				this.setState({
-					projects: projects,
-					editProject: undefined
-				})
-			}.bind(this))
+		if(projectId){
+			ApiClient.patch('/projects/'+projectId, payload)
+				.then(this.updateListedProject)
+		} else {
+			ApiClient.post('/projects', payload)
+				.then(this.updateListedProject)
+		}
+	},
+
+	// Update or add project element in this.state.projects array.
+	updateListedProject(project){		
+		let projects = this.state.projects
+		let index = _.indexOf(projects, _.find(projects, {_id: project.id}));
+
+		if(index >= 0){
+			projects.splice(index, 1, project);	
+		} else {
+			projects.unshift(project)
+		}		
+
+		this.setState({
+			projects: projects,
+			editProject: undefined
+		})
 	},
 
 	onDeleteProjectClick(projectId){

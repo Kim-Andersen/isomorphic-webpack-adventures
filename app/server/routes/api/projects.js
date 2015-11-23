@@ -25,7 +25,8 @@ export default (validation, Project) => {
 	router.post('/', validate(validation.post), function(req, res, next){
 		let project = new Project({
 			title: _.trim(req.body.title),
-			userId: req.user.id
+			type: _.trim(req.body.type),
+			user: req.user.id
 		})
 
 		let err = project.validateSync();
@@ -47,13 +48,14 @@ export default (validation, Project) => {
 	router.patch('/:projectId', validate(validation.patch), function(req, res, next){
 		let title = _.trim(req.body.title)
 
-		Project.findOne({_id: req.params.projectId, userId: req.user.id}, (err, project) => {
+		Project.findOne({_id: req.params.projectId, user: req.user.id}, (err, project) => {
 			if(err){
 				return next(err);
 			} else if(!project){
 				res.status(404).send()
 			} else {
 				project.title = _.trim(req.body.title)
+				project.type = _.trim(req.body.type)
 				project.save((err) => {
 					if(err){
 						return next(err);

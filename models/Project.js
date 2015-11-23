@@ -2,16 +2,10 @@ import mongoose from 'mongoose'
 import _ from 'lodash'
 
 var projectSchema = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  title: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 100
   },
   createdAt: { 
     type: Date, 
@@ -21,6 +15,16 @@ var projectSchema = new mongoose.Schema({
   updatedAt: {
     type: Date, 
     required: false
+  },
+  title: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 100
+  },
+  type: {
+    type: String,
+    required: false
   }
 });
 
@@ -29,10 +33,10 @@ projectSchema.methods.toJSON = function() {
   project['id'] = project._id;
   return _.pick(project, 
     'id',
-    'userId',
+    'user',
     'title', 
     'created', 
-    'twitter'
+    'type'
   );
 }
 

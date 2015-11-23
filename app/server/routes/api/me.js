@@ -69,9 +69,9 @@ export default (validation, User, Story, Project) => {
 		let MAX_LIMIT = 200
 
 		Project
-			.find({userId: req.user.id})
+			.find({user: req.user.id})
 			.lean()
-			.select('id userId title createdAt')
+			.select('id user createdAt title type')
 			.limit(req.query.limit || MAX_LIMIT)
 			.sort({'createdAt': 'desc'})
 			.exec(function(err, projects){

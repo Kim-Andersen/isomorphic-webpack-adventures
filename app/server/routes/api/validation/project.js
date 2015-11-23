@@ -1,6 +1,8 @@
 'use strict';
 import Joi from 'joi'
 
+let ValidProjectTypes = ['personal', 'client']
+
 export default function(regex){
 	return {
 		get: {
@@ -8,7 +10,8 @@ export default function(regex){
 
 		post: {
 			body: {
-		  	title: Joi.string().min(1).required()
+		  	title: Joi.string().min(1).required(),
+		  	type: Joi.any().valid(ValidProjectTypes)
 		  }
 		},
 
@@ -17,7 +20,8 @@ export default function(regex){
 				projectId: Joi.string().regex(regex.OBJECT_ID)
 			},
 			body: {
-		  	title: Joi.string().min(1).required()
+		  	title: Joi.string().min(1).required(),
+		  	type: Joi.any().valid(ValidProjectTypes)
 		  }
 		},
 

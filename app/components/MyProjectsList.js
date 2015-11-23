@@ -50,9 +50,8 @@ let ProjectListItem = React.createClass({
 
 		return(
 			<div>
-				<h4>
-					{project.title}
-				</h4>
+				<a onClick={this.onEditClick}><h4>{project.title}</h4></a>
+				{project.type}
 				<p>
 					<a href="#" onClick={this.onEditClick} className="btn btn-link">Edit</a>
 					<a href="#" onClick={this.onDeleteClick} className="btn btn-link">Delete</a>
