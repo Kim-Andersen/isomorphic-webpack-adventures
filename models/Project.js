@@ -25,6 +25,14 @@ var projectSchema = new mongoose.Schema({
   type: {
     type: String,
     required: false
+  },
+  startedAt: {
+    year: { type: Number, required: false },
+    month: { type: Number, required: false }
+  },
+  endedAt: {
+    year: { type: Number, required: false },
+    month: { type: Number, required: false }
   }
 });
 
@@ -36,7 +44,9 @@ projectSchema.methods.toJSON = function() {
     'user',
     'title', 
     'created', 
-    'type'
+    'type',
+    'startedAt',
+    'endedAt'
   );
 }
 

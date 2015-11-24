@@ -24,21 +24,21 @@ export default (validation, Project) => {
 
 	router.post('/', validate(validation.post), function(req, res, next){
 		let project = new Project({
+			user: req.user.id,
 			title: _.trim(req.body.title),
 			type: _.trim(req.body.type),
-			user: req.user.id
+			startedAt: req.body.startedAt,
+			endedAt: req.body.endedAt
 		})
 
 		let err = project.validateSync();
 		if(err){
 			res.status(422).json({message: 'Failed to validate project'})
 	 	} else {
-	 		console.log('saving project...');
 	 		project.save(function(err){
 	 			if(err){
 	 				return next(err)
 	 			} else {
-	 				console.log('project saved');
 	 				res.status(200).json(project);
 	 			}
 	 		})
@@ -56,6 +56,9 @@ export default (validation, Project) => {
 			} else {
 				project.title = _.trim(req.body.title)
 				project.type = _.trim(req.body.type)
+				project.startedAt = req.body.startedAt
+				project.endedAt = req.body.endedAt
+
 				project.save((err) => {
 					if(err){
 						return next(err);

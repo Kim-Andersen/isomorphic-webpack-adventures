@@ -69,7 +69,7 @@ export default (validation, User, Story, Project) => {
 
 		Project
 			.find({user: req.user.id})
-			.select('id user createdAt title type')
+			.select('id user createdAt title type startedAt endedAt')
 			.limit(req.query.limit || MAX_LIMIT)
 			.sort({'createdAt': 'desc'})
 			.exec(function(err, projects){

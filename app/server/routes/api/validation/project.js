@@ -11,7 +11,15 @@ export default function(regex){
 		post: {
 			body: {
 		  	title: Joi.string().min(1).required(),
-		  	type: Joi.any().valid(ValidProjectTypes)
+		  	type: Joi.any().valid(ValidProjectTypes),
+		  	startedAt: Joi.object({ 
+		  		year: Joi.number(),
+		  		month: Joi.number()
+		  	}).optional(),
+		  	endedAt: Joi.object({ 
+		  		year: Joi.number(),
+		  		month: Joi.number()
+		  	}).optional()
 		  }
 		},
 
@@ -21,7 +29,15 @@ export default function(regex){
 			},
 			body: {
 		  	title: Joi.string().min(1).required(),
-		  	type: Joi.any().valid(ValidProjectTypes)
+		  	type: Joi.any().valid(ValidProjectTypes),
+		  	startedAt: Joi.object({ 
+		  		year: Joi.number(),
+		  		month: Joi.number()
+		  	}).optional(),
+		  	endedAt: Joi.object({ 
+		  		year: Joi.number(),
+		  		month: Joi.number()
+		  	}).optional()
 		  }
 		},
 

@@ -76,7 +76,7 @@ let MyProjects = React.createClass({
 	},
 
 	onSaveEditedProjectClick(project){
-		let payload = _.pick(project, 'title', 'type');
+		let payload = _.pick(project, 'title', 'type', 'startedAt', 'endedAt');
 		let projectId = project.id || project._id
 
 		if(projectId){
