@@ -132,14 +132,25 @@ let MyProjects = React.createClass({
 		let projects = this.state.projects
 		
 		let removed = _.remove(projects, (project) => {
-			return project.id == projectId
+			return project.id === projectId
 		})
+
+		let updatedState = undefined;
 		
 		if(removed){
-			this.setState({
-				projects: projects
-			})
+			updatedState = {
+				projects: projects	
+			}
+
+			if(this.state.editProject && this.state.editProject.id === removed[0].id){
+				updatedState['editProject'] = undefined
+			}
 		}
+
+		if(updatedState){
+			this.setState(updatedState)	
+		}
+		
 	}
 
 });

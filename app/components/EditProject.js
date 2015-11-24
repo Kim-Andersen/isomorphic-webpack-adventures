@@ -12,34 +12,12 @@ let EditProject = React.createClass({
   	onDelete: PropTypes.func.isRequired
 	},
 
-  getInitialState(){
-    let thisYear = moment().year()
-    let thisMonth = moment().month()
-    let project = this.props.project
-
-    let startedAt = project.startedAt || {
-      year: thisYear,
-      month: thisMonth
-    }
-
-    let endedAt = project.endedAt || {
-      year: thisYear,
-      month: thisMonth
-    }
-
-    return {
-      startedAt: startedAt,
-      endedAt: endedAt
-    }
-  },
-
   render(){
     let project = this.props.project
-    console.log('this.state.startedAtYear', this.state.startedAt)
-    console.log('this.state.endedAtYear', this.state.endedAt)
-
+    
 		return (
-			<form onSubmit={this.onSubmit}>
+			<form onSubmit={this.onSubmit} onChange={_.once(this.onFormChange)}>
+
 				<div className="form-group text-left">
           <label htmlFor="title" className="control-label">Title</label>
           <input type="text" 
@@ -69,38 +47,97 @@ let EditProject = React.createClass({
           <div className="row">
             <div className="col-xs-12 col-md-6">
 
-              <div className="col-xs-6">
-                <MonthSelector
-                  onChange={this.onStartedAtMonthChange} 
-                  month={this.state.startedAt.month}/>
+              <div className="row">
+                <div className="col-xs-6">
+                  <MonthSelector
+                    onChange={this.onStartedAtMonthChange} 
+                    month={this.state.startedAt.month}/>
+                </div>
+                <div className="col-xs-6">
+                  <YearSelector 
+                    onChange={this.onStartedAtYearChange} 
+                    year={this.state.startedAt.year} />
+                </div>
               </div>
-              <div className="col-xs-6">
-                <YearSelector 
-                  onChange={this.onStartedAtYearChange} 
-                  year={this.state.startedAt.year} />
-              </div>
+
             </div>
+
             <div className="col-xs-12 col-md-6">
 
-              <div className="col-xs-6">
-                <MonthSelector 
-                  onChange={this.onEndedAtMonthChange} 
-                  month={this.state.endedAt.month}/>
-              </div>
-              <div className="col-xs-6">
-                <YearSelector 
-                  onChange={this.onEndedAtYearChange} 
-                  year={this.state.endedAt.year} />
+              <div className="row">
+                <div className="col-xs-6">
+                  <MonthSelector 
+                    onChange={this.onEndedAtMonthChange} 
+                    month={this.state.endedAt.month}/>
+                </div>
+                <div className="col-xs-6">
+                  <YearSelector 
+                    onChange={this.onEndedAtYearChange} 
+                    year={this.state.endedAt.year} />
+                </div>
               </div>
 
             </div>
+
           </div>
         </div>
 
-        <button type="submit" className="btn btn-default">Save</button>
+        <button 
+          type="submit" 
+          disabled={!this.state.formChanged}
+          className="btn btn-default">Save</button>
 			</form>
 		)
 	},
+
+  getInitialState(){
+    let project = _.extend({}, this.getDefaultProject(), this.props.project)
+
+    return {
+      formChanged: false,
+      startedAt: project.startedAt,
+      endedAt: project.endedAt
+    }
+  },
+
+  componentWillReceiveProps(props){
+    if(props.project){
+      let project = _.extend({}, this.getDefaultProject(), props.project)
+      
+      this.setState({
+        formChanged: false,
+        startedAt: project.startedAt,
+        endedAt: project.endedAt
+      })
+
+      this.refs.title.value = project.title
+      this.refs.type.value = project.type.toLowerCase()
+    }
+  },
+
+  getDefaultProject(){
+    let thisYear = moment().year()
+    let thisMonth = moment().month()
+
+    return {
+      title: '',
+      type: this.props.projectTypes[0],
+      startedAt: {
+        year: thisYear,
+        month: thisMonth
+      },
+      endedAt: {
+        year: thisYear,
+        month: thisMonth
+      }
+    }
+  },
+
+  onFormChange(){
+    this.setState({
+      formChanged: true
+    })
+  },
 
   onStartedAtMonthChange(month){
     let startedAt = this.state.startedAt
@@ -138,7 +175,7 @@ let EditProject = React.createClass({
 
     startedAt.year = year
     
-    if(startedAt.year < endedAt.year){
+    if(startedAt.year > endedAt.year){
       endedAt.year = startedAt.year
     }
     
@@ -154,7 +191,7 @@ let EditProject = React.createClass({
 
     endedAt.year = year
     
-    if(startedAt.year > endedAt.year){
+    if(endedAt.year < startedAt.year){
       startedAt.year = endedAt.year
     }
     
