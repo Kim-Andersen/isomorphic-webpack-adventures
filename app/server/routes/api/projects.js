@@ -68,7 +68,7 @@ export default (validation, Project) => {
 	})
 
 	router.delete('/:projectId', validate(validation.delete), function(req, res, next){
-		Project.findOne({_id: req.params.projectId, userId: req.user.id}, 
+		Project.findOne({_id: req.params.projectId, user: req.user.id}, 
 			function(err, project){
 				if(err){
 					return next(err);

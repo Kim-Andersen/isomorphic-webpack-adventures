@@ -5,14 +5,38 @@ let EditProject = React.createClass({
 	
 	propTypes: {
   	project: PropTypes.object.isRequired,
-  	projectTypes: PropTypes.array,
+  	projectTypes: PropTypes.array.isRequired,
   	onSave: PropTypes.func.isRequired,
   	onDelete: PropTypes.func.isRequired
 	},
 
+  getInitialState(){
+    return {
+      title: '',
+      type: ''
+    }
+  },
+
+  componentDidMount(){
+    this.updateState(this.props.project)
+  },
+
+  componentWillReceiveProps(nextProps){
+    this.updateState(nextProps.project)
+  },
+
+  updateState(project){
+    console.log('updateState', project)
+    this.setState(_.extend({
+      title: '', 
+      type: this.props.projectTypes[0]
+    }, project))
+  },
+
 	render(){
 		let project = this.props.project
-    let typeValue = project.type && project.type.toLowerCase() || ''
+    let typeValue = this.state.type.toLowerCase() || ''
+    console.log('typeValue', typeValue)
 
 		return (
 			<form onSubmit={this.onSubmit}>
@@ -21,7 +45,9 @@ let EditProject = React.createClass({
           <input type="text" 
           	name="title" 
           	ref="title"
-            defaultValue={project.title} 
+            defaultValue={this.state.title} 
+            value={this.state.title} 
+            onChange={this.onTitleChange}
           	placeholder="Name the project" 
           	className="form-control" 
           	/>
@@ -30,11 +56,13 @@ let EditProject = React.createClass({
         <div className="form-group">
           <label htmlFor="type" className="control-label">Type</label>
           <select 
-            defaultValue={typeValue} 
+            value={typeValue}
+            defaultValue={typeValue}
             ref="type" 
+            onChange={this.onTypeChange}
             className="form-control">
           	{this.props.projectTypes.map((type, index) => {
-          		return <option value={type} key={index}>{type}</option>
+          		return <option value={type.toLowerCase()} key={index}>{type}</option>
           	})}
           </select>
         </div>          
@@ -43,6 +71,22 @@ let EditProject = React.createClass({
 			</form>
 		)
 	},
+
+  onTitleChange(e){
+    e.preventDefault()
+
+    this.setState({
+      title: _.trim(this.refs.title.value)
+    })
+  },
+
+  onTypeChange(e){
+    e.preventDefault()
+
+    this.setState({
+      type: _.trim(this.refs.type.value)
+    })
+  },
 
 	onSubmit(e){
 		e.preventDefault()
