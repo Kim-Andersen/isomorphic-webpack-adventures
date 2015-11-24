@@ -10,33 +10,8 @@ let EditProject = React.createClass({
   	onDelete: PropTypes.func.isRequired
 	},
 
-  getInitialState(){
-    return {
-      title: '',
-      type: ''
-    }
-  },
-
-  componentDidMount(){
-    this.updateState(this.props.project)
-  },
-
-  componentWillReceiveProps(nextProps){
-    this.updateState(nextProps.project)
-  },
-
-  updateState(project){
-    console.log('updateState', project)
-    this.setState(_.extend({
-      title: '', 
-      type: this.props.projectTypes[0]
-    }, project))
-  },
-
-	render(){
-		let project = this.props.project
-    let typeValue = this.state.type.toLowerCase() || ''
-    console.log('typeValue', typeValue)
+  render(){
+    let project = this.props.project
 
 		return (
 			<form onSubmit={this.onSubmit}>
@@ -45,9 +20,7 @@ let EditProject = React.createClass({
           <input type="text" 
           	name="title" 
           	ref="title"
-            defaultValue={this.state.title} 
-            value={this.state.title} 
-            onChange={this.onTitleChange}
+            defaultValue={project.title}
           	placeholder="Name the project" 
           	className="form-control" 
           	/>
@@ -56,10 +29,8 @@ let EditProject = React.createClass({
         <div className="form-group">
           <label htmlFor="type" className="control-label">Type</label>
           <select 
-            value={typeValue}
-            defaultValue={typeValue}
+            defaultValue={project.type.toLowerCase()}
             ref="type" 
-            onChange={this.onTypeChange}
             className="form-control">
           	{this.props.projectTypes.map((type, index) => {
           		return <option value={type.toLowerCase()} key={index}>{type}</option>
@@ -71,22 +42,6 @@ let EditProject = React.createClass({
 			</form>
 		)
 	},
-
-  onTitleChange(e){
-    e.preventDefault()
-
-    this.setState({
-      title: _.trim(this.refs.title.value)
-    })
-  },
-
-  onTypeChange(e){
-    e.preventDefault()
-
-    this.setState({
-      type: _.trim(this.refs.type.value)
-    })
-  },
 
 	onSubmit(e){
 		e.preventDefault()

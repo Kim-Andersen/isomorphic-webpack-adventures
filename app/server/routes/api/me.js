@@ -51,7 +51,6 @@ export default (validation, User, Story, Project) => {
 
 		Story
 			.find({userId: req.user.id})
-			//.lean()
 			.select('id userId textShort hashtags createdAt isPublished project')
 			.populate('project', 'id title')
 			.limit(req.query.limit || MAX_LIMIT)
@@ -70,7 +69,6 @@ export default (validation, User, Story, Project) => {
 
 		Project
 			.find({user: req.user.id})
-			.lean()
 			.select('id user createdAt title type')
 			.limit(req.query.limit || MAX_LIMIT)
 			.sort({'createdAt': 'desc'})

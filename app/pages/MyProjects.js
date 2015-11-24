@@ -7,6 +7,8 @@ import EditProject from '../components/EditProject'
 
 let MyProjects = React.createClass({
 
+	projectTypes: ['Personal', 'Client'],	
+
 	getInitialState(){
 		return {
 			projects: [],
@@ -43,7 +45,7 @@ let MyProjects = React.createClass({
 						{editProject ? 
 							<EditProject 
 								project={editProject}
-								projectTypes={['Personal', 'Client']}
+								projectTypes={this.projectTypes}
 								onSave={this.onSaveEditedProjectClick}
 								onDelete={this.onDeleteProjectClick} /> : null}
         	</div>
@@ -57,7 +59,10 @@ let MyProjects = React.createClass({
   	e.preventDefault()
 
 		this.setState({
-			editProject: {}
+			editProject: {
+				title: '',
+				type: this.projectTypes[0]
+			}
 		})  	
   },
 
@@ -84,9 +89,9 @@ let MyProjects = React.createClass({
 	},
 
 	// Update or add project element in this.state.projects array.
-	updateListedProject(project){		
+	updateListedProject(project){
 		let projects = this.state.projects
-		let index = _.indexOf(projects, _.find(projects, {_id: project.id}));
+		let index = _.indexOf(projects, _.find(projects, {id: project.id}));
 
 		if(index >= 0){
 			projects.splice(index, 1, project);	
@@ -127,7 +132,7 @@ let MyProjects = React.createClass({
 		let projects = this.state.projects
 		
 		let removed = _.remove(projects, (project) => {
-			return project._id == projectId
+			return project.id == projectId
 		})
 		
 		if(removed){

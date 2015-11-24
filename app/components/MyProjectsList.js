@@ -67,7 +67,7 @@ let ProjectListItem = React.createClass({
 
 	onDeleteClick(e){
 		e.preventDefault();
-		this.props.onDeleteClick(this.props.project._id);
+		this.props.onDeleteClick(this.props.project.id);
 	}
 })
 
