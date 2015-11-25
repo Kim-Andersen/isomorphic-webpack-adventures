@@ -31,11 +31,22 @@ let InlineStoryComposer = React.createClass({
     return (
       <div className="inline-story-composer">
         <form onSubmit={this.onSubmit}>
+
           <textarea 
-            ref="text" 
+            ref="abstract" 
             rows="3" 
+            maxLength="140"
             className="form-control" 
-            placeholder="What are you working on?"
+            placeholder="What are you working on? (in 140 characters)"
+            onChange={this.onTextChange}>
+          </textarea>
+
+          <textarea 
+            ref="body" 
+            rows="6"
+            maxLength={4000}
+            className="form-control" 
+            placeholder="If you need to write more..."
             onChange={this.onTextChange}>
           </textarea>
 
@@ -67,8 +78,7 @@ let InlineStoryComposer = React.createClass({
       }.bind(this))
   },
 
-  onProjectChange(projectId){
-    
+  onProjectChange(projectId){    
     this.setState({
       projectId: projectId === "" ? undefined : projectId
     })
@@ -83,7 +93,7 @@ let InlineStoryComposer = React.createClass({
   },
 
   onTextChange(e){
-    if(this.refs.text.value.length > 0){
+    if(this.refs.abstract.value.length > 0){
       this.autoSaveStory();
     }    
   },
@@ -123,11 +133,11 @@ let InlineStoryComposer = React.createClass({
   saveStory(){
     return new Promise((resolve, reject) => {
 
-      let story = Object.assign({}, _.pick(this.story, ['id', 'text', 'hashtags', 'isPublished']), {
-        text: _.trim(this.refs.text.value),
-        hashtags: this.state.tags,
+      let story = Object.assign({}, _.pick(this.story, ['id', 'abstract', 'body', 'tags', 'isPublished']), {
+        abstract: _.trim(this.refs.abstract.value),
+        body: _.trim(this.refs.body.value),
+        tags: this.state.tags,
         project: this.state.projectId
-        //tweet: this.refs.tweet && this.refs.tweet.checked
       })
 
       if(!this.isValid(story)){
@@ -145,11 +155,12 @@ let InlineStoryComposer = React.createClass({
   },
 
   isValid(story){
-    return story.text.length > 0;
+    return story.abstract.length > 0;
   },
 
   reset(){
-    this.refs.text.value = '';
+    this.refs.abstract.value = '';
+    this.refs.body.value = '';
     this.setState({
       tags: [],
       autoSavedAt: undefined,

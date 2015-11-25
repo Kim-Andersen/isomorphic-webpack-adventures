@@ -45,7 +45,7 @@ let me = {
 		console.log('saveStory', story);
 
 		let storyId = story.id
-		let payload = _.pick(story, ['text', 'hashtags', 'isPublished', 'project'])
+		let payload = _.pick(story, ['abstract', 'body', 'tags', 'isPublished', 'project'])
 
 		return dispatch => {
 			dispatch(this.requestSaveStory(story));

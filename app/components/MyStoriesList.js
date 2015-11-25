@@ -58,7 +58,7 @@ let MyStoriesList = React.createClass({
 		let stories = this.state.stories
 		
 		let removed = _.remove(stories, (story) => {
-			return story._id == storyId
+			return story.id == storyId
 		})
 		
 		if(removed){
@@ -86,7 +86,7 @@ let StoryListItem = React.createClass({
 					{moment(story.createdAt).format('MMM DD')}
 				</div>
 				<div className="col-xs-12 col-sm-10">
-					<p>{story.textShort}</p>
+					<p>{story.abstract}</p>
 					{projectNode}
 
 					{story.hashtags && story.hashtags.map(function(hashtag, index){
@@ -102,7 +102,7 @@ let StoryListItem = React.createClass({
 	onDeleteClick(e){
 		e.preventDefault();
 		if(_.isFunction(this.props.onDeleteClick)){
-			this.props.onDeleteClick(this.props.story._id);
+			this.props.onDeleteClick(this.props.story.id);
 		}
 	},
 })

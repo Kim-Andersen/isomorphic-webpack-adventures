@@ -11,7 +11,7 @@ export default (validation, Story) => {
 
 	router.get('/', validate(validation.get), (req, res, next) => {
 		Story
-			.find({userId: req.user.id})
+			.find({user: req.user.id})
 			.sort({'createdAt': 'desc'})
 			.limit(10)
 			.exec(function(err, stories){
@@ -23,18 +23,33 @@ export default (validation, Story) => {
 			});		
 	})
 
+	router.get('/:storyId', validate(validation.getOne), function(req, res, next){
+		Story.findOne({_id: req.params.storyId}, 
+			function(err, story){
+				if(err){
+					return next(err);
+				} else if (!story) {
+					res.status(404).send();
+				} else {
+					res.status(200).json(story);
+				}
+			})
+	})
+
 	router.post('/', validate(validation.post), function(req, res, next){
 		let story = new Story({
-			userId: req.user.id,
-			text: _.trim(req.body.text),
-			hashtags: req.body.hashtags,
-			isPublished: req.body.isPublished,
+			user: req.user.id,
+			abstract: _.trim(req.body.abstract),
+			body: _.trim(req.body.body),
+			tags: req.body.tags,
+			isPublished: req.body.isPublished || false,
 			project: req.body.project
 		})		
 
 		let err = story.validateSync();
 		if(err){
-			res.status(422).json({message: 'Failed to validate story'})
+			res.status(422).json({message: 'Failed to validate story', error: err})
+			console.log('Failed to validate posted story', err);
 	 	} else {
 	 		story.save(function(err){
 	 			if(err){
@@ -73,21 +88,23 @@ export default (validation, Story) => {
 	}
 
 	router.patch('/:storyId', validate(validation.patch), function(req, res, next){
-		Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
+		Story.findOne({_id: req.params.storyId, user: req.user.id}, 
 			function(err, story){
 				if(err){
 					return next(err);
 				} else if (!story) {
 					res.status(404).json({message: 'Story not found'});
 				} else {
-					story.text = _.trim(req.body.text)
-					story.hashtags = req.body.hashtags
+					story.abstract = _.trim(req.body.abstract)
+					story.body = _.trim(req.body.body)
+					story.tags = req.body.tags
 					story.isPublished = req.body.isPublished
 					story.project = req.body.project
 
 					let err = story.validateSync();
 					if(err){
 						res.json(422)
+						console.log('Failed to validate patched story', err);
 				 	} else {
 				 		story.save(function(err){
 							if(err){
@@ -103,7 +120,7 @@ export default (validation, Story) => {
 	})
 
 	router.delete('/:storyId', validate(validation.delete), function(req, res, next){
-		Story.findOne({_id: req.params.storyId, userId: req.user.id}, 
+		Story.findOne({_id: req.params.storyId, user: req.user.id}, 
 			function(err, story){
 				if(err){
 					return next(err);

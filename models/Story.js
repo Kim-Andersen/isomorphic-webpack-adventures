@@ -4,22 +4,27 @@ import { ModelUtils } from './'
 
 // Define our user schema
 var storySchema = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  text: {
+  abstract: {
     type: String,
     unique: false,
     required: true,
-    minlength: 1
+    minlength: 1,
+    maxlength: 140
   },
-  textShort: {
+  body: {
     type: String,
     unique: false,
-    required: false,
-    maxlength: 140
+    required: false
+  },
+  hasBody: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   createdAt: { 
     type: Date, 
@@ -30,14 +35,14 @@ var storySchema = new mongoose.Schema({
     type: Date, 
     required: false
   },
-  hashtags: {
+  tags: {
     type: [String],
     required: false
   },
   isPublished: {
     type: Boolean, 
     default: false,
-    required: false
+    required: true
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
@@ -47,13 +52,12 @@ var storySchema = new mongoose.Schema({
 });
 
 storySchema.pre('save', function(next) {
-  //console.log('storySchema.pre("save")', this)
-  this.textShort = this.text.substring(0,140);
-  next();
-})
+  this.hasBody = (this.body && this.body.length > 0)
+  next()
+});
 
 storySchema.post('save', function(story, next){
-  ModelUtils.updateLatestStoriesOnUser(story.userId, function(err, user){
+  ModelUtils.updateLatestStoriesOnUser(story.user, function(err, user){
     if(err) {
       next(err)
     } else {
@@ -76,15 +80,13 @@ storySchema.post('remove', function(story, next){
 storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
-  return _.pick(story, 'id', 'userId', 'text', 'textShort', 'createdAt', 'hashtags', 'isPublished', 'project');
+  return _.pick(story, 'id', 'user', 'abstract', 'body', 'createdAt', 'tags', 'isPublished', 'project');
 }
 
 storySchema.pre('update', function() {
-  //console.log('storySchema.pre("update")', this)
   this.update({},{ 
     $set: { 
-      updatedAt: new Date()/*,
-      textShort: this.text.substring(0,140)*/
+      updatedAt: new Date()
     } 
   });
 });

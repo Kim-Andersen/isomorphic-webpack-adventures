@@ -141,19 +141,11 @@ userSchema.statics.getProfileByUsername = function(username, callback){
     .findOne({username_lower: username.toLowerCase()})
     .populate([{
       path: 'latestStories', 
-      select: 'id text createdAt hashtags'
+      select: 'id abstract hasBody createdAt tags'
     }])
     .exec(function(err, user){
+      console.log('user', user);
       callback(err, user)
-      /*if(err){
-        callback(err, null)
-      } else if(!user) {
-        callback(null, null)
-      } else {
-        user.populate({path: 'latestStories.project', model: 'Project', select: 'id title'}, function(err, user){          
-          callback(null, user)
-        })
-      }*/
     })
 }
 

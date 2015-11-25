@@ -29,7 +29,7 @@ let ProjectSelector = React.createClass({
           className="form-control">
           <option value="">Select a project...</option>
           {this.props.projects.map((project, index) => {
-            return (<option value={project._id} key={index}>{project.title}</option>)
+            return (<option value={project.id || project._id} key={index}>{project.title}</option>)
           })}
         </select>
       </div>

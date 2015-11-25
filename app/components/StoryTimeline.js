@@ -14,21 +14,14 @@ let StoryTimelineItem = React.createClass({
 		let className = 'story-timeline-item '+this.props.position
 		let mCreatedAt = moment(story.createdAt)
 		let uri = this.props.storyBaseUri+story._id
-		let text = story.text
-		let truncated = false
-
-		if(text.length > 200){
-			text = text.substring(0, 200) + '...'
-			truncated = true
-		}
-
+		
 		return(
 			<div className={className}>
 				<Link to={uri} className="content">
 					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMMM DD')}</time>
 					<p>
-						{text}
-						{truncated ? <span className="anchor">Read more</span> : null}
+						{story.abstract}<br/>
+						{story.hasBody ? <span className="anchor">Read&nbsp;more</span> : null}
 					</p>
 					<ul className="tag-list">
 						{story.hashtags && story.hashtags.map(function(hashtag, index){

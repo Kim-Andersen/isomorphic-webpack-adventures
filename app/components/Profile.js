@@ -21,7 +21,7 @@ let Profile = React.createClass({
 					<div className="container">
 						<h1 className="h3">{user.profile.name || user.username}</h1>
 						<p>{user.profile.location}</p>
-						<p style={{'max-width':'600px', 'margin': '0 auto'}}>{user.profile.bio}</p>
+						<p style={{'maxWidth':'600px', 'margin': '0 auto'}}>{user.profile.bio}</p>
 					</div>					
 				</header>
 

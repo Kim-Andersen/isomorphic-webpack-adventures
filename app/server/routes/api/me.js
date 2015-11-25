@@ -50,8 +50,8 @@ export default (validation, User, Story, Project) => {
 		let MAX_LIMIT = 200
 
 		Story
-			.find({userId: req.user.id})
-			.select('id userId textShort hashtags createdAt isPublished project')
+			.find({user: req.user.id})
+			.select('id userId abstract body tags createdAt isPublished project')
 			.populate('project', 'id title')
 			.limit(req.query.limit || MAX_LIMIT)
 			.sort({'createdAt': 'desc'})

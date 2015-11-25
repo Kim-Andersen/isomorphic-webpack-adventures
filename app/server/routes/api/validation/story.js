@@ -3,16 +3,21 @@ import Joi from 'joi'
 
 export default function(regex){
 	return {
-		get: {
+		get: {},
+
+		getOne: {
+			params: {
+				storyId: Joi.string().regex(regex.OBJECT_ID)
+			}
 		},
 
 		post: {
 			body: {
-		  	text: Joi.string().min(1).required(),
-				hashtags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
+				abstract: Joi.string().min(1).max(140).required(),
+		  	body: Joi.any().optional(),
+				tags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
 				isPublished: Joi.boolean(),
 				project: Joi.string().regex(regex.OBJECT_ID)
-				//tweet: Joi.boolean()
 		  }
 		},
 
@@ -21,8 +26,9 @@ export default function(regex){
 				storyId: Joi.string().regex(regex.OBJECT_ID)
 			},
 			body: {
-		  	text: Joi.string().min(1).required(),
-				hashtags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
+		  	abstract: Joi.string().min(1).max(140).required(),
+		  	body: Joi.any().optional(),
+				tags: Joi.array().unique().items(Joi.string().regex(regex.TAG)),
 				isPublished: Joi.boolean(),
 				project: Joi.string().regex(regex.OBJECT_ID)
 		  }

@@ -9,7 +9,7 @@ let ModelUtils = {
 
 		// Find top 10 latest stories for userId
 	  Story
-	    .find({userId: userId})
+	    .find({user: userId})
 	    .sort({'createdAt': 'desc'})
 	    .limit(10)
 	    .exec(function(err, stories){
