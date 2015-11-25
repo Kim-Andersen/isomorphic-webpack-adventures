@@ -24,6 +24,10 @@ h1,h2,h3,h4,h5,h6 {
 	text-rendering: optimizeLegibility;
 }
 
+.anchor {
+  text-decoration: underline;
+}
+
 /*  Utilities
 ============================================*/
 .text-left { text-align: left; }
@@ -206,6 +210,22 @@ time {
   font-weight: bold;
 }
 
+
+ul.tag-list {
+  list-style: none;
+  display: inline-block;
+
+  li {
+    float:left;
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    color: rgba(0,0,0,.4);
+    padding: 5px 6px;
+    font-size:.9em;
+  }
+}
+
 /*
   tag-editor
 ====================================================*/
@@ -263,6 +283,10 @@ time {
       > .content {
         padding: 0 110px 0 0;
         right: -60px;
+
+        .tag-list {
+          margin-right:-12px;
+        }
       }
     } 
 
@@ -277,6 +301,10 @@ time {
       > .content {
         padding: 0 0 0 110px;
         left: -60px;
+
+        .tag-list {
+          margin-left:-12px;
+        }
       }
     }
 
