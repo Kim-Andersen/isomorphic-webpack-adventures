@@ -17,21 +17,29 @@ let Profile = React.createClass({
 			<div className="profile">
 				<Helmet title={user.username}/>
 
-				<div className="row">
-				
-			  	<div className="col-xs-12 col-sm-3 col-md-2">
-			  		<h1 className="h3">{user.profile.name || user.username}</h1>
-			  		<p>{user.profile.location}</p>
-			  		<p>{user.profile.bio}</p>
+				<header>
+					<div className="container">
+						<h1 className="h3">{user.profile.name || user.username}</h1>
+						<p>{user.profile.location}</p>
+						<p style={{'max-width':'600px', 'margin': '0 auto'}}>{user.profile.bio}</p>
+					</div>					
+				</header>
 
-			  		<p>{user.contact.email}</p>
-			  		<p>{user.contact.phone}</p>
-			  	</div>
+				<div className="container">
+					<div className="row">
+					
+				  	<div className="col-xs-12 col-sm-3 col-md-2">
+				  		<p>{user.contact.email}</p>
+				  		<p>{user.contact.phone}</p>
+				  	</div>
 
-			  	<div className="col-xs-12 col-sm-9 col-md-10">
-			  		<StoryTimeline stories={latestStories} storyBaseUri={`/${user.username}/stories/`} />
-			  	</div>
+				  	<div className="col-xs-12 col-sm-9 col-md-10">
+				  		<StoryTimeline 
+				  			stories={latestStories} 
+				  			storyBaseUri={`/${user.username}/stories/`} />
+				  	</div>
 
+					</div>
 				</div>
 
 			</div>

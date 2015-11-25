@@ -48,7 +48,7 @@ let App = React.createClass({
           user={user} 
           onSignInButtonClick={this.onSignInButtonClick} />
         
-        <div className="container">
+        <div className="container-fluid nopadding">
           {this.props.children}
         </div>
 
