@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import Helmet from "react-helmet";
 import moment from 'moment'
 import StoryList from './StoryList'
+import StoryTimeline from './StoryTimeline'
 
 let Profile = React.createClass({
 	
@@ -28,7 +29,7 @@ let Profile = React.createClass({
 			  	</div>
 
 			  	<div className="col-xs-12 col-sm-9 col-md-10">
-			  		<StoryList stories={latestStories} />
+			  		<StoryTimeline stories={latestStories} storyBaseUri={`/${user.username}/stories/`} />
 			  	</div>
 
 				</div>

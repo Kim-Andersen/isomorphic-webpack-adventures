@@ -18,6 +18,7 @@ export default (
     <Route path="/write" component={pages.Write}/>
 
     /* Place /:username last so it doesn't catch other routes. */
-  	<Route path="/:username" component={pages.ProfilePage}/>  	
+  	<Route path="/:username" component={pages.ProfilePage} />
+    <Route path="/:username/stories/:storyId" component={pages.Write} />
   </Route>
 );

@@ -135,10 +135,26 @@ userSchema.statics.getProfileByUsername = function(username, callback){
   if(!_.isString(username) || username.length === 0) throw Error('Invalid param <username>.');
   if(!_.isFunction(callback)) throw Error('Invalid param <callback>.');
 
-  this
+  let User = this
+
+  User
     .findOne({username_lower: username.toLowerCase()})
-    .populate('latestStories', 'text createdAt hashtags')
-    .exec(callback)
+    .populate([{
+      path: 'latestStories', 
+      select: 'id text createdAt hashtags'
+    }])
+    .exec(function(err, user){
+      callback(err, user)
+      /*if(err){
+        callback(err, null)
+      } else if(!user) {
+        callback(null, null)
+      } else {
+        user.populate({path: 'latestStories.project', model: 'Project', select: 'id title'}, function(err, user){          
+          callback(null, user)
+        })
+      }*/
+    })
 }
 
 export default mongoose.model('User', userSchema)
