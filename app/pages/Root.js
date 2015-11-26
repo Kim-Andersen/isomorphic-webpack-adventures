@@ -8,19 +8,16 @@ let Root = React.createClass({
   render() {
 		if(this.props.session){
   		return (
-	    	<div>
+	    	<div className="container">
 
-	   		  <hr />
-          <InlineStoryComposer 
-            showTweetOption={false} />
-          <hr />
+          <InlineStoryComposer/>
 
 	    	</div>      
     	)
   	} else {
   		// Not authenticated, at the root = show landing page.
   		return (
-	    	<div>
+	    	<div className="container">
 	    		<h1>Landing Page</h1>
 	    	</div>      
     	)

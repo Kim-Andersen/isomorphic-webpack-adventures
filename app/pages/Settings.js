@@ -15,7 +15,7 @@ let Settings = React.createClass({
     }
 
   	return (
-      <div>
+      <div className="container">
         <Helmet title="Settings"/>
 
         <form onSubmit={this.onSubmit} autoComplete="off">

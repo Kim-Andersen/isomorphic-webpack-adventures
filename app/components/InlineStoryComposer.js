@@ -9,6 +9,9 @@ import ProjectSelector from './ProjectSelector'
 
 let InlineStoryComposer = React.createClass({
 
+  ABSTRACT_MAX_LENGTH: 140,
+  BODY_MAX_LENGTH: 2000,
+
   getInitialState: function(){
     return {
       tags: [],
@@ -31,37 +34,39 @@ let InlineStoryComposer = React.createClass({
     return (
       <div className="inline-story-composer">
         <form onSubmit={this.onSubmit}>
-
-          <textarea 
-            ref="abstract" 
-            rows="3" 
-            maxLength="140"
-            className="form-control" 
-            placeholder="What are you working on? (in 140 characters)"
-            onChange={this.onTextChange}>
-          </textarea>
-
-          <textarea 
-            ref="body" 
-            rows="6"
-            maxLength={4000}
-            className="form-control" 
-            placeholder="If you need to write more..."
-            onChange={this.onTextChange}>
-          </textarea>
-
-          <TagEditor onChange={this.onTagsChanged} />
-
-          {projects ? <ProjectSelector 
-            projects={projects} 
-            onChange={this.onProjectChange} /> : null}
           
-          {this.props.showTweetOption ? 
-            <div className="tweet-story">
-              <label htmlFor="tweet">Tweet</label>
-              <input type="checkbox" name="tweet" ref="tweet" />
-            </div> 
-          : null}
+          <div className="form-group">
+            <textarea 
+              ref="abstract" 
+              rows="3" 
+              className="form-control" 
+              placeholder="What are you working on? (in 140 characters)"
+              onChange={this.onAbstractChange}>
+            </textarea>
+          </div>
+
+          <div className="form-group">
+            <textarea 
+              ref="body" 
+              rows="6"
+              className="form-control" 
+              placeholder="If you need to write more..."
+              onChange={this.onBodyChange}>
+            </textarea>
+          </div>
+
+          <div className="form-group">
+            <TagEditor ref="tagEditor" onChange={this.onTagsChanged} />
+          </div>
+          
+          {projects ? 
+            <div className="form-group">
+              <ProjectSelector 
+                projects={projects} 
+                onChange={this.onProjectChange} />
+            </div>
+          : null}            
+          
           <button type="submit" className="btn btn-default">Publish</button>
           {this.state.autoSavedAt ? ' Auto-saved '+ moment(this.state.autoSavedAt).fromNow() : null}
         </form>
@@ -85,17 +90,33 @@ let InlineStoryComposer = React.createClass({
     this.autoSaveStory();
   },
 
+  onAbstractChange(e){
+    let text = _.trim(this.refs.abstract.value)
+
+    if(text.length > this.ABSTRACT_MAX_LENGTH){
+      text = this.refs.abstract.value = text.substring(0, this.ABSTRACT_MAX_LENGTH)
+    }
+
+    if(text.length > 0){
+      this.autoSaveStory();
+    }
+  },
+
+  onBodyChange(e){
+    let text = _.trim(this.refs.body.value)
+
+    if(text.length > this.BODY_MAX_LENGTH){
+      text = this.refs.body.value = text.substring(0, this.BODY_MAX_LENGTH)
+    }
+
+    this.autoSaveStory();
+  },
+
   onTagsChanged(tags){
     this.setState({
       tags: tags
     })
     this.autoSaveStory();
-  },
-
-  onTextChange(e){
-    if(this.refs.abstract.value.length > 0){
-      this.autoSaveStory();
-    }    
   },
 
   autoSaveStory(){
@@ -161,6 +182,7 @@ let InlineStoryComposer = React.createClass({
   reset(){
     this.refs.abstract.value = '';
     this.refs.body.value = '';
+    this.refs.tagEditor.empty()
     this.setState({
       tags: [],
       autoSavedAt: undefined,

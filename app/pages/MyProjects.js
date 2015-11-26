@@ -25,7 +25,7 @@ let MyProjects = React.createClass({
   	let editProject = this.state.editProject
 
     return (
-      <div>
+      <div className="container">
         <Helmet title="Projects"/>
 
         <button type="button" 

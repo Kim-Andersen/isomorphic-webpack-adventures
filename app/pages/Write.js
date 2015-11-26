@@ -12,7 +12,9 @@ let WritePage = React.createClass({
 
   render() {
     return (
-    	<div>write</div>
+    	<div className="container">
+        write
+      </div>
   	)
   }
 

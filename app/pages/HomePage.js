@@ -22,11 +22,10 @@ let HomePage = React.createClass({
     console.log('this.props.user', this.props.user);
 
     return (
-      <div>
+      <div className="container">
         <h1>Home page</h1>
 
         <InlineStoryComposer 
-          showTweetOption={true}
           onStorySaved={this.fetchMyStories} />
         <hr />
         

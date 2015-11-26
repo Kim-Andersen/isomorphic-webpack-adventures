@@ -46,6 +46,12 @@ let TagEditor = React.createClass({
     )
   },
 
+  empty(){
+    this.setState({
+      tags: []
+    })
+  },
+
   componentDidMount(){
     // Cache DOM node references.
     this.$tagInput = $(ReactDOM.findDOMNode(this.refs.tagInput))
