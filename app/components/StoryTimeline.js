@@ -7,7 +7,7 @@ let StoryTimeline = React.createClass({
 	propTypes: {
   	stories: PropTypes.array.isRequired,
   	storyBaseUri: PropTypes.string.isRequired,
-  	mode: PropTypes.oneOf(['kickstarter', 'timothy'])
+  	mode: PropTypes.oneOf(['kickstarter', 'timothy', 'hybrid'])
 	},
 
 	render(){

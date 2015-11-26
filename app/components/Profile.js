@@ -35,7 +35,7 @@ let Profile = React.createClass({
 
 				  	<div className="col-xs-12 col-sm-8 col-md-9">
 				  		<StoryTimeline 
-				  			mode="timothy"
+				  			mode="hybrid"
 				  			stories={latestStories} 
 				  			storyBaseUri={`/${user.username}/stories/`} />
 				  	</div>

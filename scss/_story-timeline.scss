@@ -126,6 +126,67 @@
   }
 }
 
+.story-timeline.mode-hybrid {
+  margin-top:5px;
+  max-width: 600px;
+
+  /* vertical center line */
+  &:after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background-color: #d9d9de;
+    left: 15px;
+    top: -5px;
+  }
+
+  > .story-timeline-item {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: right;
+    min-height: 130px;
+    left: 0;
+    text-align: left;
+
+    /* bubble marker */
+    &:before {
+      content: '';
+      position: absolute;
+      background-color: rgba(43,222,115,0.2);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      top: -5px;
+    }
+
+    > a.content {
+      position: relative;
+      display: inline-block;
+      color:inherit;
+      text-decoration: none;
+      padding: 0 110px 0 0;
+      right: -60px;
+
+      .tag-list {
+        position: relative;
+        left:-6px;
+        top:-2px;
+      }
+    }
+
+    p {
+      margin-top: 15px;
+
+      .readmore {
+        display: block;
+      }
+    }
+
+  }
+}
+
 .story-timeline.mode-timothy {
   max-width: 600px;
 
