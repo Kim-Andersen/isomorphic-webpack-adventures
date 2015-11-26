@@ -1,51 +1,20 @@
 import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router';
-
-let StoryTimelineItem = React.createClass({
-	propTypes: {
-  	story: PropTypes.object.isRequired,
-  	position: PropTypes.oneOf(['left', 'right']),
-  	storyBaseUri: PropTypes.string.isRequired
-	},
-
-	render(){
-		let story = this.props.story
-		let className = 'story-timeline-item '+this.props.position
-		let mCreatedAt = moment(story.createdAt)
-		let uri = this.props.storyBaseUri+story._id
-		
-		return(
-			<div className={className}>
-				<Link to={uri} className="content">
-					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMMM DD')}</time>
-					<p>
-						{story.abstract}<br/>
-						{story.hasBody ? <span className="anchor">Read&nbsp;more</span> : null}
-					</p>
-					<ul className="tag-list">
-						{story.hashtags && story.hashtags.map(function(hashtag, index){
-		      		return (<li key={index}>{hashtag} </li>)
-		      	})}
-					</ul>					
-				</Link>
-			</div>
-		)
-	}
-
-})
+import Classnames from 'classnames'
 
 let StoryTimeline = React.createClass({
 	propTypes: {
   	stories: PropTypes.array.isRequired,
-  	storyBaseUri: PropTypes.string.isRequired
+  	storyBaseUri: PropTypes.string.isRequired,
+  	mode: PropTypes.oneOf(['kickstarter', 'timothy'])
 	},
 
 	render(){
 		let storyBaseUri = this.props.storyBaseUri
 
 		let storyNodes = this.props.stories.map(function(story, index){
-			let position = index % 2 === 0 ? 'left' : 'right'
+			let position = index % 2 === 0 ? 'even' : 'odd'
 			return (
 				<StoryTimelineItem 
 					key={index} 
@@ -56,17 +25,64 @@ let StoryTimeline = React.createClass({
 		})
 
 		return (
-			<div className="story-timeline">
+			<div className={Classnames('story-timeline', 'mode-'+this.props.mode)}>
 				{storyNodes}
 			</div>
 		)
-	},
-
-	onStoryClick(storyId){
-		console.log('onStoryClick', storyId)
 	}
 })
 
+let StoryTimelineItem = React.createClass({
+	propTypes: {
+  	story: PropTypes.object.isRequired,
+  	position: PropTypes.oneOf(['even', 'odd']),
+  	storyBaseUri: PropTypes.string.isRequired
+	},
 
+	render(){
+		let story = this.props.story
+		let className = 'story-timeline-item '+this.props.position
+		let mCreatedAt = moment(story.createdAt)
+		let uri = this.props.storyBaseUri+story._id
+
+		/*return (
+			<div className="row">
+				<div className="col-xs-12 col-sm-3 col-md-2">
+					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMMM DD')}</time>
+				</div>
+				<div className="col-xs-12 col-sm-9 col-md-10">
+					<p>
+						{story.abstract}<br/>
+						{story.hasBody ? <span className="anchor">Read&nbsp;more</span> : null}
+					</p>
+					<ul className="tag-list">
+						{story.hashtags && story.hashtags.map(function(hashtag, index){
+		      		return (<li key={index}>{hashtag} </li>)
+		      	})}
+					</ul>
+				</div>
+			</div>
+		)*/
+		
+		return(
+			<div className={className}>
+				<Link to={uri} className="content">
+					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMM DD')}</time>
+					<section>
+						<p className="text">
+							{story.abstract}
+							{story.hasBody ? <span className="readmore anchor">Read&nbsp;more</span> : null}
+						</p>
+						<ul className="tag-list">
+							{story.tags && story.tags.map(function(hashtag, index){
+			      		return (<li key={index}>{hashtag} </li>)
+			      	})}
+						</ul>
+					</section>
+				</Link>
+			</div>
+		)
+	}
+})
 
 export default StoryTimeline

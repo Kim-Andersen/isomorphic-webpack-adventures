@@ -28,13 +28,14 @@ let Profile = React.createClass({
 				<div className="container">
 					<div className="row">
 					
-				  	<div className="col-xs-12 col-sm-3 col-md-2">
+				  	<div className="col-xs-12 col-sm-4 col-md-3">
 				  		<p>{user.contact.email}</p>
 				  		<p>{user.contact.phone}</p>
 				  	</div>
 
-				  	<div className="col-xs-12 col-sm-9 col-md-10">
+				  	<div className="col-xs-12 col-sm-8 col-md-9">
 				  		<StoryTimeline 
+				  			mode="timothy"
 				  			stories={latestStories} 
 				  			storyBaseUri={`/${user.username}/stories/`} />
 				  	</div>

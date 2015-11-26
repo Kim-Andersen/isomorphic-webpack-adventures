@@ -2,6 +2,7 @@
 @import 'bootstrap';
 @import 'keyframes';
 @import 'responsive-align';
+@import 'story-timeline';
 //@import url(https://fonts.googleapis.com/css?family=Noto+Serif|Open+Sans);
 
 html {
@@ -222,6 +223,7 @@ time {
 ul.tag-list {
   list-style: none;
   display: inline-block;
+  padding:0;
 
   li {
     float:left;
@@ -231,121 +233,6 @@ ul.tag-list {
     color: rgba(0,0,0,.4);
     padding: 5px 6px;
     font-size:.9em;
-  }
-}
-
-/*
-  tag-editor
-====================================================*/
-.story-timeline {
-  width: 100%;
-  position: relative;
-  text-align: center;
-
-  /* vertical center line */
-  &:after {
-    content: "";
-    position: absolute;
-    height: 100%;
-    width: 1px;
-    background-color: #d9d9de;
-    left: 50%;
-    top: 0px;
-  }
-  
-  > .story-timeline-item {
-    position: relative;
-    width: 50%;
-    margin-bottom: 0px;
-    text-align: right;
-    //margin-top:-100px;
-    min-height: 130px;
-
-    /* bubble marker */
-    &:before {
-      content: '';
-      position: absolute;
-      background-color: rgba(43,222,115,0.2);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      top: -5px;
-    }
-
-    > a.content {
-      position: relative;
-      display: inline-block;
-      color:inherit;
-      text-decoration: none;
-    }
-
-    &:first-child {
-      margin-top:0px;
-    }
-
-    &.left {
-      &:before {
-        right: -15px;
-      }
-
-      > .content {
-        padding: 0 110px 0 0;
-        right: -60px;
-
-        .tag-list {
-          margin-right:-12px;
-        }
-      }
-    } 
-
-    &.right {
-      left: 50%;
-      text-align: left;
-
-      &:before {
-        left: -15px;
-      }
-
-      > .content {
-        padding: 0 0 0 110px;
-        left: -60px;
-
-        .tag-list {
-          margin-left:-12px;
-        }
-      }
-    }
-
-    p {
-      margin-top: 15px;
-    }
-
-  }
-}
-
-@media (max-width: 768px) {
-  .story-timeline {
-    &:after {
-      display:none;
-    }
-
-    > .story-timeline-item {
-      width: 100%;
-      left:0 !important;
-      right:0 !important;
-      text-align: center !important;
-      margin-top:0;
-
-      &:before {
-        display: none;
-      }
-
-      > .content {
-        padding: 0  !important;
-        right: 0  !important;
-        left: 0  !important;
-      }
-    }
   }
 }
 
