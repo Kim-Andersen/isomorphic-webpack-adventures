@@ -65,7 +65,7 @@ let StoryTimelineItem = React.createClass({
 		)*/
 		
 		return(
-			<div className={className}>
+			<article className={className}>
 				<Link to={uri} className="content">
 					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMM DD')}</time>
 					<section>
@@ -80,7 +80,7 @@ let StoryTimelineItem = React.createClass({
 						</ul>
 					</section>
 				</Link>
-			</div>
+			</article>
 		)
 	}
 })
