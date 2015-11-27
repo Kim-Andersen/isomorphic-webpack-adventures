@@ -161,6 +161,16 @@ let InlineStoryComposer = React.createClass({
         project: this.state.projectId
       })
 
+      if(story.body.length === 0){
+        delete story['body']
+      }
+      if(!story.tags || story.tags.length === 0){
+        delete story['tags']
+      }
+      if(!story.project || story.project.length === 0){
+        delete story['project']
+      }
+
       if(!this.isValid(story)){
         reject('invalid')
       } else {

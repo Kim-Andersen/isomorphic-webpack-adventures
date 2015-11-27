@@ -74,7 +74,7 @@ let StoryTimelineItem = React.createClass({
 							{story.abstract}
 						</p>
 						<p className="body">
-							{_.trim(story.bodyExcerpt)+'...'}
+							{story.hasBody ? _.trim(story.bodyExcerpt.substring(0,100))+'...' : null}
 							{story.hasBody ? <span className="readmore anchor">Read&nbsp;more</span> : null}
 						</p>
 						<ul className="tag-list">

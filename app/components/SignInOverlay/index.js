@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Overlay, OverlayDialog} from '../Overlay';
 import SignInOverlayDialog from './SignInOverlayDialog';
@@ -11,6 +11,10 @@ import ErrorCodes from '../../shared/ErrorCodes';
 import { signIn as signInActionCreators } from '../../shared/actions/'
  
 let SignInOverlay = React.createClass({
+
+	propTypes: {
+  	onCloseClick: PropTypes.func.isRequired
+	},
 
 	render(){
 		var dialogComponent = this.getDialog(this.props.dialog);

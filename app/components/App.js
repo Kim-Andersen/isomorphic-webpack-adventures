@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Helmet from "react-helmet";
 import { connect } from 'react-redux'
-import { signIn } from '../shared/actions'
+import { signIn, writeStoryOverlay } from '../shared/actions'
 import Header from './Header'
 import SignInOverlay from './SignInOverlay'
 import { HomePage } from '../pages/'
+import WriteStoryOverlay from './WriteStoryOverlay'
 
 let LandingPage = React.createClass({
   render() {
@@ -34,6 +35,15 @@ let App = React.createClass({
     this.props.dispatch(signIn.hide());
   },
 
+  onHeaderWriteButtonClick(e){
+    this.props.dispatch(writeStoryOverlay.show());
+  },
+
+  onWriteStoryOverlayCloseClick(e){
+    e.preventDefault();
+    this.props.dispatch(writeStoryOverlay.hide());
+  },
+
   render() {
     let user = this.props.session && this.props.session.user
 
@@ -46,13 +56,15 @@ let App = React.createClass({
 
         <Header 
           user={user} 
-          onSignInButtonClick={this.onSignInButtonClick} />
+          onSignInButtonClick={this.onSignInButtonClick}
+          onWriteButtonClick={this.onHeaderWriteButtonClick} />
         
         <div className="container-fluid nopadding">
           {this.props.children}
         </div>
 
-        {this.props.signIn.show ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}        
+        {this.props.signIn.show ? <SignInOverlay onCloseClick={this.onSignInOverlayCloseClick} /> : null}
+        {this.props.writeStoryOverlay.show ? <WriteStoryOverlay onCloseClick={this.onWriteStoryOverlayCloseClick} /> : null}
       </div>
     )
   }
@@ -63,4 +75,3 @@ function select(state){
 }
 
 export default connect(select)(App);
-//export default App;

@@ -1,5 +1,6 @@
 import ApiClient from '../../ApiClient';
 import me from './me'
+import writeStoryOverlay from './writeStoryOverlay'
 
 /**
 	* action types
@@ -154,5 +155,6 @@ let actions = {
 
 export {
 	signIn,
-	me
+	me,
+	writeStoryOverlay
 };

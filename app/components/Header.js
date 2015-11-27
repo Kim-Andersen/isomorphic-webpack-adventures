@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 let Header = React.createClass({
+
+  propTypes: {
+    onSignInButtonClick: PropTypes.func.isRequired,
+    onWriteButtonClick: PropTypes.func.isRequired
+  },
 
   render() {
   	var user = this.props.user;
@@ -10,7 +15,7 @@ let Header = React.createClass({
   	if(this.props.user){
   		navbarRight = (
         <ul className="nav navbar-nav navbar-right">
-          <li><a href="/write">Write</a></li>
+          <li><a onClick={this.onWriteButtonClick} href="#">Write</a></li>
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{user.username} <span className="caret"></span></a>
             <ul className="dropdown-menu">
@@ -52,6 +57,11 @@ let Header = React.createClass({
         </div>
       </nav>
     )
+  },
+
+  onWriteButtonClick(e){
+    e.preventDefault()
+    this.props.onWriteButtonClick()
   }
 
 });

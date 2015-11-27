@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { signIn } from './signIn'
+import writeStoryOverlay from './writeStoryOverlay'
 import me from './me/'
 
 /**
@@ -18,5 +19,6 @@ export default combineReducers({
 	profile,
 	signIn,
 	session,
-	me
+	me,
+	writeStoryOverlay
 });
