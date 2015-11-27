@@ -144,7 +144,6 @@ userSchema.statics.getProfileByUsername = function(username, callback){
       select: 'id abstract hasBody bodyExcerpt createdAt tags'
     }])
     .exec(function(err, user){
-      console.log('user', user);
       callback(err, user)
     })
 }

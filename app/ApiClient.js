@@ -23,8 +23,6 @@ let ApiClient = {
 					body = undefined;
 				}
 
-				console.log('body', )
-
 				let opt = {
 					method: method.toUpperCase(),
 					body: JSON.stringify(body),
@@ -35,7 +33,7 @@ let ApiClient = {
 					.then(self.checkStatus)
 				  .then(self.parseJSON)
 				  .then(function(data) {
-				    console.log('request succeeded with JSON response', data)
+				    //console.log('request succeeded with JSON response', data)
 				    return data
 				  }).catch(function(error) {
 				    console.log('request failed', error)

@@ -9,21 +9,21 @@ let ProfilePage = React.createClass({
 
   getInitialState(){
     return {
-      user: null
+      user: undefined
     }
   },
 
   componentWillMount(){
-    if(this.props.profile){
+    if(this.props.user){
       this.setState({
-        user: this.props.profile.user
+        user: this.props.user
       })
     }
   },
 
   componentDidMount(){
     // Only fetch the profile if it's different from what the server rendered (via props/initial state)).
-    if(!this.props.profile || this.props.profile.user.username !== this.props.params.username){
+    if(!this.props.user || this.props.user.username !== this.props.params.username){
       
       this.setState({
         isLoading: true
@@ -93,4 +93,8 @@ let ProfilePage = React.createClass({
 
 });
 
-export default connect(state => state)(ProfilePage);
+function mapStateToProps(state) {
+  return { user: state.pub.user }
+}
+
+export default connect(mapStateToProps)(ProfilePage);

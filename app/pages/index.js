@@ -7,6 +7,7 @@ import Root from './Root'
 import Write from './Write'
 import MyStories from './MyStories'
 import MyProjects from './MyProjects'
+import OneStory from './OneStory'
 
 let pages = {
 	Root: Root,
@@ -15,9 +16,9 @@ let pages = {
 	Contact: Contact,
 	ProfilePage: ProfilePage,
 	Settings: Settings,
-	Write: Write,
 	MyStories: MyStories,
-	MyProjects: MyProjects
+	MyProjects: MyProjects,
+	OneStory: OneStory
 };
 
 export default pages;

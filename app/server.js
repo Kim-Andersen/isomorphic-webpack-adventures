@@ -27,6 +27,7 @@ import ErrorCodes from './shared/ErrorCodes';
 import { COOKIE_PARSER_SECRET } from '../authConfig'
 import { api } from './server/routes/'
 import twitterApi from './server/twitterAPI'
+import ApiClient from './ApiClient'
 
 const env = process.env;
 const mongoConnection = env.npm_package_config_appMongoConnection;
@@ -73,6 +74,17 @@ router.use('/api', api);
 //twitterApi.init({});
 //console.log('twitterApi', twitterApi.statuses);
 
+
+// Init ApiClient.
+ApiClient.init({
+  baseUrl: 'http://localhost:3000/api', 
+  timeout: 5000,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
+
 var sendJsonErrorCode = function(res, errCode, data){
   var json = {
     message: errCode.message, 
@@ -92,7 +104,9 @@ router.get('/signout', function(req, res){
   res.redirect('/');
 });
 
-function renderIsomorphicPage(req, res, next, initialState = {}){
+function isomorphicHandler(req, res, next){
+  
+  let initialState = req.state || {}
 
   if(req.isAuthenticated()){
     initialState['session'] = {
@@ -111,10 +125,11 @@ function renderIsomorphicPage(req, res, next, initialState = {}){
     if (renderProps == null) return next(error);
 
     let markup = renderToString(
-        <Provider store={store}>
-          <RoutingContext {...renderProps}/>
-        </Provider>
+      <Provider store={store}>
+        <RoutingContext {...renderProps}/>
+      </Provider>
     );
+
     let helmet = Helmet.rewind();
     let html = [
       `<!DOCTYPE html>`,
@@ -142,23 +157,23 @@ function renderIsomorphicPage(req, res, next, initialState = {}){
   });
 }
 
-// Public profile.
-var publicProfileHandler = (req, res, next) => {
-  console.log('publicProfileHandler');
+let publicUserProfileHandler = (req, res, next) => {
+  console.log('publicUserProfileHandler');
   if(_.isString(req.params.username)){
     User.getProfileByUsername(req.params.username, function(err, user){
       if(err){
         return next(err)
       } else if(!user) {
-        console.log('user not found');
+        console.log('publicUserProfile: user not found');
         next();
-      } else {        
-        let initialState = {
-          profile: {
+      } else {
+        req.state = _.extend({}, req.state, {
+          pub: {
             user: user
           }
-        };
-        renderIsomorphicPage(req, res, next, initialState)
+        })
+
+        next()
       }
     })
   } else {
@@ -166,20 +181,36 @@ var publicProfileHandler = (req, res, next) => {
   }
 }
 
-var isomorphicHandler = (req, res, next) => {
-  console.log('isomorphicHandler');
-  let initialState = {};
-  renderIsomorphicPage(req, res, next, initialState);
+let publicStoryHandler = (req, res, next) => {
+  console.log('publicStoryHandler');
+
+  if(_.isString(req.params.storyId)){
+    Story.getFullStoryById(req.params.storyId, function(err, story){
+      if(err){
+        return next(err)
+      } else if(!story) {
+        console.log('story not found');
+        next();
+      } else {
+        req.state = _.extend({}, req.state, {
+          pub: {
+            story: story  
+          }          
+        })
+
+        next()
+      }
+    })
+  } else {
+    next();
+  }
 }
 
-router.use(['/:username', '/*'], publicProfileHandler, isomorphicHandler)
+// Order is CRITICAL here! Most specific routes go first.
+router.get(['/:username/stories/:storyId'], publicUserProfileHandler, publicStoryHandler, isomorphicHandler)
+router.get(['/:username', '/*'], publicUserProfileHandler, isomorphicHandler)
 
-// Dynamic isomorphic routing.
-/*router.use('/*', (req, res, next) => {
-  let initialState = {};
 
-  renderIsomorphicPage(req, res, next, initialState);
-});*/
 
 router.use(function clientErrorHandler(err, req, res, next) {
   if (req.xhr) {

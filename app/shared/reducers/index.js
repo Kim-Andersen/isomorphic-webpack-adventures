@@ -11,14 +11,22 @@ function session(state = null, action){
 	return state;
 }
 
-function profile(state = null, action){
-	return state;
+
+let user = (state = null, action) => {
+	return state
 }
+let story = (state = null, action) => {
+	return state
+}
+let pub = combineReducers({
+	user,
+	story
+})
 
 export default combineReducers({
-	profile,
+	pub,
 	signIn,
 	session,
 	me,
-	writeStoryOverlay
-});
+	writeStoryOverlay,
+})

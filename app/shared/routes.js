@@ -15,10 +15,9 @@ export default (
     <Route path="/me/projects" component={pages.MyProjects}/>
     <Route path="/me/settings" component={pages.Settings}/>
   	<Route path="/signin" component={pages.SignIn}/>
-    <Route path="/write" component={pages.Write}/>
 
     /* Place /:username last so it doesn't catch other routes. */
   	<Route path="/:username" component={pages.ProfilePage} />
-    <Route path="/:username/stories/:storyId" component={pages.Write} />
+    <Route path="/:username/stories/:storyId" component={pages.OneStory} />
   </Route>
 );

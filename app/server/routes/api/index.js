@@ -24,7 +24,7 @@ validate.options({
 
 let router = express.Router({mergeParams: true})
 
-router.use('/stories', requireApiToken, stories(validation.story, Story))
+router.use('/stories', stories(validation.story, Story, requireApiToken))
 router.use('/signup', signup(validation.signup, User))
 router.use('/signin', signin)
 router.use('/me', requireApiToken, me(validation.me, User, Story, Project))

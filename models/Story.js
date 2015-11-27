@@ -112,6 +112,15 @@ storySchema.pre('update', function() {
   });
 });
 
+storySchema.statics.getFullStoryById = function(storyId, callback){
+  if(!_.isFunction(callback)) throw Error('Param <callback> is not a function.');
+  let Story = this
+  Story
+    .findOne({_id: storyId})
+    .populate('user', 'id username profile twitter')
+    .exec(callback)
+}
+
 storySchema.index({
   'body': 'text'
 })

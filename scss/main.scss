@@ -247,3 +247,36 @@ ul.tag-list {
     text-align: center;
   }
 }
+
+/*
+  profile
+====================================================*/
+
+article.story-full {
+  max-width:650px;
+  margin:0 auto;
+
+  > header {
+    color: rgba(0,0,0,.4);
+    margin-bottom:40px;
+  }
+
+  p.lead {
+    line-height: 1.5em
+  }
+
+  p:not(.lead) {
+    line-height: 1.9em
+  }
+}
+
+img.user-photo {
+  &.small {
+    max-width: 32px;
+    max-height: 32px;
+  }
+  &.medium {
+    max-width: 48px;
+    max-height: 48px;
+  }
+}

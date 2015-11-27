@@ -5,11 +5,11 @@ import _ from 'lodash';
 import twitterApi from '../../twitterApi'
 import validate from 'express-validation'
 
-export default (validation, Story) => {
+export default (validation, Story, requireApiToken) => {
 
 	let router = express.Router({mergeParams: true})
 
-	router.get('/', validate(validation.get), (req, res, next) => {
+	router.get('/', requireApiToken, validate(validation.get), (req, res, next) => {
 		Story
 			.find({user: req.user.id})
 			.sort({'createdAt': 'desc'})
@@ -23,20 +23,22 @@ export default (validation, Story) => {
 			});		
 	})
 
+	/*
+		Public on purpose bacause it's needed for server-side rendering.
+	*/
 	router.get('/:storyId', validate(validation.getOne), function(req, res, next){
-		Story.findOne({_id: req.params.storyId}, 
-			function(err, story){
-				if(err){
-					return next(err);
-				} else if (!story) {
-					res.status(404).send();
-				} else {
-					res.status(200).json(story);
-				}
-			})
+		Story.getFullStoryById(req.params.storyId, function(err, story){
+			if(err){
+				return next(err);
+			} else if (!story) {
+				res.status(404).send();
+			} else {
+				res.status(200).json(story);
+			}
+		})
 	})
 
-	router.post('/', validate(validation.post), function(req, res, next){
+	router.post('/', requireApiToken, validate(validation.post), function(req, res, next){
 		let story = new Story({
 			user: req.user.id,
 			abstract: _.trim(req.body.abstract),
@@ -78,7 +80,7 @@ export default (validation, Story) => {
     });
 	}
 
-	router.patch('/:storyId', validate(validation.patch), function(req, res, next){
+	router.patch('/:storyId', requireApiToken, validate(validation.patch), function(req, res, next){
 		Story.findOne({_id: req.params.storyId, user: req.user.id}, 
 			function(err, story){
 				if(err){
@@ -110,7 +112,7 @@ export default (validation, Story) => {
 			})
 	})
 
-	router.delete('/:storyId', validate(validation.delete), function(req, res, next){
+	router.delete('/:storyId', requireApiToken, validate(validation.delete), function(req, res, next){
 		Story.findOne({_id: req.params.storyId, user: req.user.id}, 
 			function(err, story){
 				if(err){
