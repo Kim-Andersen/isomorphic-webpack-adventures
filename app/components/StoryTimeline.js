@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router';
 import Classnames from 'classnames'
+import _ from 'lodash'
 
 let StoryTimeline = React.createClass({
 	propTypes: {
@@ -69,8 +70,11 @@ let StoryTimelineItem = React.createClass({
 				<Link to={uri} className="content">
 					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMM DD')}</time>
 					<section>
-						<p className="text">
+						<p className="lead">
 							{story.abstract}
+						</p>
+						<p className="body">
+							{_.trim(story.bodyExcerpt)+'...'}
 							{story.hasBody ? <span className="readmore anchor">Read&nbsp;more</span> : null}
 						</p>
 						<ul className="tag-list">

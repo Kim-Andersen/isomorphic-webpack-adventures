@@ -141,7 +141,7 @@ userSchema.statics.getProfileByUsername = function(username, callback){
     .findOne({username_lower: username.toLowerCase()})
     .populate([{
       path: 'latestStories', 
-      select: 'id abstract hasBody createdAt tags'
+      select: 'id abstract hasBody bodyExcerpt createdAt tags'
     }])
     .exec(function(err, user){
       console.log('user', user);

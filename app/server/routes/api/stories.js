@@ -55,15 +55,6 @@ export default (validation, Story) => {
 	 			if(err){
 	 				return next(err)
 	 			} else {
-
-	 				// Check if user want's to tweet this story.
-	 				/*let tweet = req.body.tweet == 'true';
-	 				if(tweet && req.user.twitter && req.user.twitter.token && req.user.twitter.tokenSecret){
-	 					process.nextTick(function(){
-	 						tweetStory(story, req.user)
-	 					});	
-	 				}*/			
-
 	 				res.status(200).json(story);
 	 			}
 	 		})

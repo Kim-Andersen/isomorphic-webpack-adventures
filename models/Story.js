@@ -7,19 +7,29 @@ var storySchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true
   },
   abstract: {
     type: String,
     unique: false,
     required: true,
     minlength: 1,
-    maxlength: 140
+    maxlength: 140,
+    trim: true
   },
   body: {
     type: String,
     unique: false,
-    required: false
+    required: false,
+    maxlength: 4000,
+    trim: true,
+    index: 'text'
+  },
+  bodyExcerpt: {
+    type: String,
+    required: false,
+    maxLength: 200
   },
   hasBody: {
     type: Boolean,
@@ -29,7 +39,8 @@ var storySchema = new mongoose.Schema({
   createdAt: { 
     type: Date, 
     default: Date.now, 
-    required: true
+    required: true,
+    index: true
   },
   updatedAt: {
     type: Date, 
@@ -37,22 +48,32 @@ var storySchema = new mongoose.Schema({
   },
   tags: {
     type: [String],
-    required: false
+    required: false,
+    index: true
   },
   isPublished: {
     type: Boolean, 
     default: false,
-    required: true
+    required: true,
+    index: true
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project',
-    required: false
+    required: false,
+    index: true
   }
 });
 
 storySchema.pre('save', function(next) {
-  this.hasBody = (this.body && this.body.length > 0)
+  if(this.body && this.body.length > 0){
+    this.hasBody = true
+    this.bodyExcerpt = this.body.substring(0, 200)
+  } else {
+    this.hasBody = false
+    delete this['bodyExcerpt']
+  }
+
   next()
 });
 
@@ -80,7 +101,7 @@ storySchema.post('remove', function(story, next){
 storySchema.methods.toJSON = function() {
   var story = this.toObject();
   story['id'] = story._id;
-  return _.pick(story, 'id', 'user', 'abstract', 'body', 'createdAt', 'tags', 'isPublished', 'project');
+  return _.pick(story, 'id', 'user', 'abstract', 'body', 'bodyExcerpt', 'createdAt', 'tags', 'isPublished', 'project');
 }
 
 storySchema.pre('update', function() {
@@ -90,5 +111,9 @@ storySchema.pre('update', function() {
     } 
   });
 });
+
+storySchema.index({
+  'body': 'text'
+})
 
 module.exports = mongoose.model('Story', storySchema);
