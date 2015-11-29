@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import moment from 'moment'
 import StoryList from './StoryList'
 import StoryTimeline from './StoryTimeline'
+import ActivityTimeline from './ActivityTimeline'
 
 let Profile = React.createClass({
 	
@@ -12,6 +13,37 @@ let Profile = React.createClass({
 
 		user.profile = user.profile || {};
 		user.contact = user.contact || {};
+
+		let activities = [
+			{
+				type: 'experimenting',
+				text: 'Playing with isomorphic web applications using React and Express',
+				project: {
+					title: 'Hola'
+				},
+				story: {
+					body: 'Thanksgiving doesnt really rhyme with Star Wars Episode VII, but given that Disney wants to break the record of trailers before a theatrical release, heres a brand new trailer full of exclusive footage. You should stop reading right here if you dont want to get spoilers.'
+				}
+			},
+			{
+				type: 'learning',
+				text: 'Taking on MongoDB (mongoose+express) by building a RESTful service API. Pure joy.'
+			},
+			{
+				type: 'inspired',
+				text: 'Trying a new approach with "verb-based" status updates. Could prove to be a UX challenge, but worth a shot.',
+				story: {
+					body: 'You should stop reading right here if you dont want to get spoilers.'
+				}
+			},
+			{
+				type: 'building',
+				text: 'Trying a new approach with "verb-based" status updates. Could prove to be a UX challenge, but worth a shot.',
+				story: {
+					body: 'You should stop reading right here if you dont want to get spoilers.'
+				}
+			}
+		]
 
 		return (
 			<div className="profile">
@@ -35,6 +67,9 @@ let Profile = React.createClass({
 				  	</div>
 
 				  	<div className="col-xs-12 col-sm-8 col-md-9">
+
+				  		<ActivityTimeline activities={activities} />
+
 				  		<StoryTimeline 
 				  			mode="kickstarter"
 				  			stories={latestStories} 

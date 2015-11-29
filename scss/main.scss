@@ -250,7 +250,7 @@ ul.tag-list {
 ====================================================*/
 .profile {
   > header {
-    height:200px;
+    height:110px;
     background-color:#f5f5f5;
     text-align: center;
   }
@@ -319,5 +319,109 @@ img.user-photo {
     min-height: 48px;
     max-width: 48px;
     max-height: 48px;
+  }
+}
+
+/*
+  Activity Timeline
+====================================================*/
+.activity-timeline {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  min-width: 300px;
+  max-width: 600px;
+  margin:40px auto 40px auto;
+
+  // vertical center line
+  &:after {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    background-color: #d9d9de;
+    left: 14px;
+    top: 0px;
+    bottom:0px;
+  }
+
+  > article {
+    position: relative;
+    margin-bottom: 30px;
+    padding-left: 50px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+
+    // bubble 
+    &:before {
+      transition: all 150ms ease;
+      content: '';
+      position: absolute;
+      z-index: 2;
+      background-color: #eee;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      left: 6px;
+    }
+
+    &:hover {
+      &:before {
+        transform: scale3d(1.2, 1.2, 1.2);
+      }
+    }
+
+    > h6.type {
+      position: relative;
+      top: 3px;
+      text-transform: capitalize;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      font-size: .7em;
+      text-transform: uppercase;
+      /*position: relative;
+      top: -1px;
+      text-transform: capitalize;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      font-size: .7em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin: 0 6px 0 0;
+      padding: 4px;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+      opacity: .4;*/
+    }
+
+    > p {
+      
+      margin:0;
+    }
+    > p.story-snippet {
+      opacity:.7;
+      font-size: .9em;
+      margin-top:9px;
+      padding-left:15px;
+    }
+
+    &.type-learning:before { background-color:#79235C; }
+    &.type-experimenting:before { background-color:#F06D70; }
+    &.type-building:before { background-color:#5C90B7; }
+    &.type-inspired:before { background-color:#E7DF70; }
+
+    .project {
+      margin-left: 2px;
+      > .in { 
+        opacity:.5; 
+      }
+      > a {
+        text-decoration: underline;
+        color: inherit;
+        opacity: .7;
+      }
+    }
   }
 }
