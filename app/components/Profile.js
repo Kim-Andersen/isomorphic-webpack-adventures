@@ -21,7 +21,6 @@ let Profile = React.createClass({
 					<div className="container">
 						<h1 className="h3">{user.profile.name || user.username}</h1>
 						<p>{user.profile.location}</p>
-						<p style={{'maxWidth':'600px', 'margin': '0 auto'}}>{user.profile.bio.substring(0,200)+'...'}</p>
 					</div>					
 				</header>
 
@@ -29,13 +28,15 @@ let Profile = React.createClass({
 					<div className="row">
 					
 				  	<div className="col-xs-12 col-sm-4 col-md-3">
+				  		<p dangerouslySetInnerHTML={{__html: user.profile.bio.substring(0,200)+'...'.replace(/(?:\r\n|\r|\n)/g, '<br />')}} />
+				  		
 				  		<p>{user.contact.email}</p>
 				  		<p>{user.contact.phone}</p>
 				  	</div>
 
 				  	<div className="col-xs-12 col-sm-8 col-md-9">
 				  		<StoryTimeline 
-				  			mode="hybrid"
+				  			mode="kickstarter"
 				  			stories={latestStories} 
 				  			storyBaseUri={`/${user.username}/stories/`} />
 				  	</div>

@@ -219,7 +219,7 @@ label {
 }
 
 time {
-  font-weight: bold;
+  //font-weight: bold;
 }
 
 
@@ -262,23 +262,41 @@ ul.tag-list {
 
 article.story-full {
   max-width:650px;
-  margin:0 auto 40px auto;
+  margin:35px auto 40px auto;
 
   > header {
     color: rgba(0,0,0,.4);
-    margin-bottom:40px;
+    margin-bottom:20px;
+
+    .user-photo {
+      position: relative;
+      top: -2px;
+      margin-right: 15px;
+    }
   }
 
   p.lead {
-    line-height: 1.5em
+    font-size:1.8em;
+    margin-bottom:40px;
   }
 
   p:not(.lead) {
-    line-height: 1.9em
+    line-height: 1.9em;
+    font-size:1.1em;
   }
 
   > footer {
     margin-top:40px;
+  }
+}
+
+@media (min-width: 768px) {
+  article.story-full {
+    header .user-photo {
+      position: absolute;
+      left: -35px;
+      margin-top: -2px;
+    }
   }
 }
 

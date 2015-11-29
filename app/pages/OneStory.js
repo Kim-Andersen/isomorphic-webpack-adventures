@@ -46,6 +46,8 @@ let OneStory = React.createClass({
   
   render() {
     let story = this.state.story
+    let displayName = this.getDisplayName(story.user)
+    let userPhoto = (<UserPhoto user={story.user} type='circle' size="small" />)
 
     return (
     	<div className="container">
@@ -53,9 +55,15 @@ let OneStory = React.createClass({
         {!story ? 'Sorry about that, coulnd\'t find that story' : 
           <article className="story-full">
             <header>
-              <UserPhoto user={story.user} type='circle' size="small" />
-              <h4 className="center">{story.user.name || story.user.username}</h4>
-              <time>{moment(story.createdAt).calendar()}</time>
+              <div className="row">
+                <div className="col-xs-12 col-sm-7">
+                  {userPhoto}
+                  {displayName}
+                </div>
+                <div className="col-xs-12 col-sm-5 text-xs-left text-sm-right">
+                  <time>{moment(story.createdAt).calendar()}</time>
+                </div>
+              </div>
             </header>
             <p className="lead">
               {story.abstract}
@@ -73,6 +81,16 @@ let OneStory = React.createClass({
         }
       </div>
   	)
+  },
+
+  getDisplayName(user){
+    let name = ''
+    if(user.profile && user.profile.name && user.profile.name.length > 0){
+      name = user.profile.name
+    } else {
+      name = user.name || user.username
+    }
+    return name
   },
 
   fetchStory(storyId){
