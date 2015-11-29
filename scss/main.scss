@@ -37,6 +37,18 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+/*  Labels
+============================================*/
+.label {
+  font-weight: normal;
+  border-radius: 0;
+
+  &.label-clear {
+    color: inherit;
+    border: solid 1px rgba(0, 0, 0, 0.06);
+  }
+}
+
 /*  Utilities
 ============================================*/
 .text-left { text-align: left; }
@@ -100,22 +112,13 @@ label {
   margin: 0;
   border: 0;
 
-  > .overlay-close {
+  > button.close {
     position: absolute;
-    top: 0;
-    right: 10px;
-    font-size: 32px;
-    letter-spacing: 0;
-    font-weight: 300;
-    font-style: normal;
-    font-size: 26px;
-    font-family: "Open Sans",sans-serif;
-    color: rgba(0,0,0,0.3);
+    top: 5px;
+    right: 12px;
     outline: none !important;
-
-    &:hover {
-      text-decoration: none;
-      color: rgba(0,0,0,0.5);
+    > span {
+      font-size: 28px;
     }
   }
 
@@ -234,6 +237,7 @@ ul.tag-list {
     color: rgba(0,0,0,.4);
     padding: 5px 6px;
     font-size:.9em;
+    border:solid 1px #eee;
 
     &:hover{
       text-decoration: underline;
@@ -253,12 +257,12 @@ ul.tag-list {
 }
 
 /*
-  profile
+  story
 ====================================================*/
 
 article.story-full {
   max-width:650px;
-  margin:0 auto;
+  margin:0 auto 40px auto;
 
   > header {
     color: rgba(0,0,0,.4);
@@ -272,7 +276,15 @@ article.story-full {
   p:not(.lead) {
     line-height: 1.9em
   }
+
+  > footer {
+    margin-top:40px;
+  }
 }
+
+/*
+  user photo
+====================================================*/
 
 img.user-photo {
   &.small {

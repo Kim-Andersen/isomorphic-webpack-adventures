@@ -170,8 +170,9 @@
           }
 
           &.body {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             opacity: .7;
+            transition: all 150ms ease;
           }
 
           > span.readmore {
@@ -180,11 +181,17 @@
           }
         }
 
-        .tag-list {
+        > .project.label {
+          float: left;
+          display: inline-block;
+          margin-right: 10px;
+          top: 5px;
           position: relative;
-          left:-6px;
-          top:0px;
-        }  
+        }
+
+        > .tag-list {
+          position: relative;
+        }
       }      
     }
   }
@@ -209,9 +216,15 @@
       position: relative;
       white-space: nowrap;
 
-      &:hover:before {
-        transform: scale3d(1.2, 1.2, 1.2);
-        background-color: rgba(43,222,115,0.2);
+      &:hover {
+        &:before {
+          transform: scale3d(1.2, 1.2, 1.2);
+          background-color: rgba(43,222,115,0.2);
+        }
+
+        p.body {
+          opacity: .9 !important;
+        }
       }
 
       // bubble 
@@ -224,11 +237,11 @@
         border-radius: 50%;
         top: -3px;
         left: 87px;
-        transition: all 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 150ms ease;
       }
 
       > a.content {
-        time {
+        > time {
           display: inline-block;
           float: left;
           white-space: normal;
@@ -237,18 +250,14 @@
           padding-right: 40px;
         }
 
-        section {
+        > section {
           display: inline-block;
           white-space: normal;
           padding-left:40px;
           padding-right: 100px;
           
-          p {
+          > p {
             margin-top: -1px;
-
-            .readmore {
-              //display: block;
-            }
           }
         }
       }

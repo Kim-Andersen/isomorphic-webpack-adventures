@@ -16,7 +16,14 @@ let Overlay = React.createClass({
   render() {
     return (
       <div className="overlay">
-				{this.props.showCloseButton ? <button onClick={this.props.onClose} className="overlay-close btn btn-link">x</button> : null}
+        {this.props.showCloseButton ? 
+          <button onClick={this.props.onClose} 
+            type="button" 
+            className="close" 
+            aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        : null}
 				{this.props.children}
 			</div>
     )

@@ -45,26 +45,8 @@ let StoryTimelineItem = React.createClass({
 		let className = 'story-timeline-item '+this.props.position
 		let mCreatedAt = moment(story.createdAt)
 		let uri = this.props.storyBaseUri+story._id
+		let projectNode = story.project ? (<span className="label label-clear project">{story.project.title}</span>) : null
 
-		/*return (
-			<div className="row">
-				<div className="col-xs-12 col-sm-3 col-md-2">
-					<time dateTime={mCreatedAt.toISOString()}>{mCreatedAt.format('MMMM DD')}</time>
-				</div>
-				<div className="col-xs-12 col-sm-9 col-md-10">
-					<p>
-						{story.abstract}<br/>
-						{story.hasBody ? <span className="anchor">Read&nbsp;more</span> : null}
-					</p>
-					<ul className="tag-list">
-						{story.hashtags && story.hashtags.map(function(hashtag, index){
-		      		return (<li key={index}>{hashtag} </li>)
-		      	})}
-					</ul>
-				</div>
-			</div>
-		)*/
-		
 		return(
 			<article className={className}>
 				<Link to={uri} className="content">
@@ -77,6 +59,7 @@ let StoryTimelineItem = React.createClass({
 							{story.hasBody ? _.trim(story.bodyExcerpt.substring(0,100))+'...' : null}
 							{story.hasBody ? <span className="readmore anchor">Read&nbsp;more</span> : null}
 						</p>
+						{projectNode}
 						<ul className="tag-list">
 							{story.tags && story.tags.map(function(hashtag, index){
 			      		return (<li key={index}>{hashtag} </li>)

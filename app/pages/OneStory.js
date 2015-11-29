@@ -62,6 +62,13 @@ let OneStory = React.createClass({
             </p>
             <p dangerouslySetInnerHTML={{__html: story.body.replace(/(?:\r\n|\r|\n)/g, '<br />')}}>
             </p>
+            <footer>
+              <ul className="tag-list">
+                {story.tags && story.tags.map(function(hashtag, index){
+                  return (<li key={index}>{hashtag} </li>)
+                })}
+              </ul>
+            </footer>
           </article>
         }
       </div>

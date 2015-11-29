@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+let deepPopulate = require('mongoose-deep-populate')(mongoose);
 import bcrypt from 'bcrypt-nodejs'
 import jwt from 'jsonwebtoken'
 import _ from 'lodash'
@@ -66,6 +67,18 @@ var userSchema = new mongoose.Schema({
     phone: {type: String, required: false}
   }
 });
+
+// https://github.com/buunguyen/mongoose-deep-populate
+userSchema.plugin(deepPopulate, {
+  whitelist: [
+    'latestStories.project'
+  ],
+  populate: {
+    'latestStories.project': {
+      select: 'id title type'
+    }
+  }
+})
 
 userSchema.methods.toJSON = function() {
   var user = this.toObject();
@@ -141,8 +154,9 @@ userSchema.statics.getProfileByUsername = function(username, callback){
     .findOne({username_lower: username.toLowerCase()})
     .populate([{
       path: 'latestStories', 
-      select: 'id abstract hasBody bodyExcerpt createdAt tags'
+      select: 'id abstract hasBody bodyExcerpt createdAt'
     }])
+    //.deepPopulate('latestStories.project')
     .exec(function(err, user){
       callback(err, user)
     })
