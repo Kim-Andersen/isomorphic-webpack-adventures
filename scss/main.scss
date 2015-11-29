@@ -294,8 +294,8 @@ article.story-full {
   article.story-full {
     header .user-photo {
       position: absolute;
-      left: -35px;
-      margin-top: -2px;
+      left: -34px;
+      margin-top: -4px;
     }
   }
 }
@@ -305,11 +305,18 @@ article.story-full {
 ====================================================*/
 
 img.user-photo {
+  padding: 3px;
+  border:solid 1px rgba(0,0,0,.1);
+
   &.small {
-    max-width: 32px;
-    max-height: 32px;
+    min-width: 36px;
+    min-height: 36px;
+    max-width: 36px;
+    max-height: 36px;
   }
   &.medium {
+    min-width: 48px;
+    min-height: 48px;
     max-width: 48px;
     max-height: 48px;
   }
