@@ -5,7 +5,7 @@ import _ from 'lodash';
 import validate from 'express-validation'
 import bodyParser from 'body-parser'
 
-export default (validation, User, Story, Project) => {
+export default (validation, User, Story, Project, Activity) => {
 
 	let router = express.Router({mergeParams: true})
 	
@@ -77,6 +77,23 @@ export default (validation, User, Story, Project) => {
 					return next(err)
 				} else {
 					res.status(200).json(projects)
+				}
+		})
+	})
+
+	router.get('/activities', validate(validation.activities.get), function(req, res, next){
+		let MAX_LIMIT = 200
+
+		Activity
+			.find({user: req.user.id})
+			//.select('id user createdAt title type startedAt endedAt')
+			.limit(req.query.limit || MAX_LIMIT)
+			.sort({'createdAt': 'desc'})
+			.exec(function(err, activities){
+				if(err){
+					return next(err)
+				} else {
+					res.status(200).json(activities)
 				}
 		})
 	})

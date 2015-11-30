@@ -38,6 +38,15 @@ export default {
 				limit: Joi.number().min(1).max(200).optional()
 			}
 		}
+	},
+
+	activities: {
+		get: {
+			query: {
+				limit: Joi.number().min(1).max(200).optional()
+			}
+		}
 	}
+	
 }
 
