@@ -167,6 +167,7 @@ let publicUserProfileHandler = (req, res, next) => {
         console.log('publicUserProfile: user not found');
         next();
       } else {
+        console.log('publicUserProfile: user found:', user);
         req.state = _.extend({}, req.state, {
           pub: {
             user: user
@@ -209,7 +210,6 @@ let publicStoryHandler = (req, res, next) => {
 // Order is CRITICAL here! Most specific routes go first.
 router.get(['/:username/stories/:storyId'], publicUserProfileHandler, publicStoryHandler, isomorphicHandler)
 router.get(['/:username', '/*'], publicUserProfileHandler, isomorphicHandler)
-
 
 
 router.use(function clientErrorHandler(err, req, res, next) {

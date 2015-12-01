@@ -5,6 +5,7 @@ import { Story, User, Project, Activity } from '../../../../models'
 import { requireApiToken } from '../middleware'
 import validate from 'express-validation'
 import validation from './validation'
+import activityController from '../../controllers/activityController'
 
 import stories from './stories'
 import signup from './signup'
@@ -12,7 +13,7 @@ import signin from './signin'
 import me from './me'
 import profile from './profile'
 import projects from './projects'
-import activities from './activities'
+//import activities from './activities'
 
 validate.options({
   flatten : true,
@@ -31,7 +32,10 @@ router.use('/signin', signin)
 router.use('/me', requireApiToken, me(validation.me, User, Story, Project, Activity))
 router.use('/profile', profile(validation.profile, User))
 router.use('/projects', requireApiToken, projects(validation.project, Project))
-router.use('/activities', requireApiToken, activities(validation.activity, Activity))
+
+router.get('/activities', requireApiToken, activityController.get)
+router.post('/activities', requireApiToken, validate(validation.activity.post), activityController.post)
+router.delete('/activities/:activityId', requireApiToken, validate(validation.activity.delete), activityController.delete)
 
 // API error handler
 router.use(function (err, req, res, next) {

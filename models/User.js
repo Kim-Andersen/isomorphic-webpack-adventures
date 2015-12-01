@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt-nodejs'
 import jwt from 'jsonwebtoken'
 import _ from 'lodash'
 import { API_TOKEN_SECRET } from '../authConfig'
+import Activity from './Activity'
 
 let Schema = mongoose.Schema
 
@@ -56,7 +57,8 @@ var userSchema = new mongoose.Schema({
     username: { type: String, required: false },
     photo: { type: String, required: false }
   },
-  latestStories : [{ type: Schema.Types.ObjectId, ref: 'Story' }],
+  //latestStories : [{ type: Schema.Types.ObjectId, ref: 'Story' }],
+  latestActivities : [{ type: Schema.Types.ObjectId, ref: 'Activity' }],
   profile: {
     bio: { type: String, required: false },
     name: { type: String, required: false },
@@ -69,7 +71,7 @@ var userSchema = new mongoose.Schema({
 });
 
 // https://github.com/buunguyen/mongoose-deep-populate
-userSchema.plugin(deepPopulate, {
+/*userSchema.plugin(deepPopulate, {
   whitelist: [
     'latestStories.project'
   ],
@@ -78,7 +80,7 @@ userSchema.plugin(deepPopulate, {
       select: 'id title type'
     }
   }
-})
+})*/
 
 userSchema.methods.toJSON = function() {
   var user = this.toObject();
@@ -90,9 +92,9 @@ userSchema.methods.toJSON = function() {
     'name', 
     'created', 
     'twitter',
-    'latestStories',
+    'latestActivities',
     'profile',
-    'contact'
+    'contact',
   );
 }
 
@@ -144,6 +146,25 @@ userSchema.methods.generateApiToken = function(){
   return token;
 };
 
+userSchema.statics.setLatestActivities = function(userId, activities){
+  this.findById(userId, function(err, user){
+    if(err){
+      console.log('Failed to update "latestActivities" on user. Error', userId, err);
+    } else if(!user) {
+      console.log('Failed to update "latestActivities" on user. User not found', userId);
+    } else {
+      user.latestActivities = _.pluck(activities || [], '_id');
+      user.save(function(err){
+        if(err){
+          console.log('Failed to update "latestActivities" on user. Error saving user', userId, err);
+        } else {
+          console.log('Updated "latestActivities" on user.', userId);
+        }              
+      });
+    }
+  })
+}
+
 userSchema.statics.getProfileByUsername = function(username, callback){
   if(!_.isString(username) || username.length === 0) throw Error('Invalid param <username>.');
   if(!_.isFunction(callback)) throw Error('Invalid param <callback>.');
@@ -153,12 +174,18 @@ userSchema.statics.getProfileByUsername = function(username, callback){
   User
     .findOne({username_lower: username.toLowerCase()})
     .populate([{
-      path: 'latestStories', 
-      select: 'id abstract hasBody bodyExcerpt createdAt'
+      path: 'latestActivities'
+      //select: 'id abstract hasBody bodyExcerpt createdAt'
     }])
     //.deepPopulate('latestStories.project')
     .exec(function(err, user){
-      callback(err, user)
+      if(err) {
+        callback(err, null)
+      } else if(!user) {
+        callback(null, null)
+      } else {
+        callback(null, user)
+      }
     })
 }
 

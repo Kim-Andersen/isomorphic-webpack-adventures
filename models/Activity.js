@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import _ from 'lodash'
+import User from './User'
 
 var schema = new mongoose.Schema({
   user: {

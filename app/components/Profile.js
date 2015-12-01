@@ -6,15 +6,20 @@ import StoryTimeline from './StoryTimeline'
 import ActivityTimeline from './ActivityTimeline'
 
 let Profile = React.createClass({
+
+	propTypes: {
+	  user: PropTypes.object.isRequired
+	},
 	
 	render(){
-		var user = this.props.user,
-				latestStories = user.latestStories || [];
+		let user = this.props.user,
+				latestStories = user.latestStories || [],
+				activities = user.latestActivities || []
 
 		user.profile = user.profile || {};
 		user.contact = user.contact || {};
 
-		let activities = [
+		/*let activities = [
 			{
 				type: 'experimenting',
 				text: 'Playing with isomorphic web applications using React and Express',
@@ -43,7 +48,7 @@ let Profile = React.createClass({
 					body: 'You should stop reading right here if you dont want to get spoilers.'
 				}
 			}
-		]
+		]*/
 
 		return (
 			<div className="profile">
@@ -70,10 +75,10 @@ let Profile = React.createClass({
 
 				  		<ActivityTimeline activities={activities} />
 
-				  		<StoryTimeline 
+				  		{latestStories ? <StoryTimeline 
 				  			mode="kickstarter"
 				  			stories={latestStories} 
-				  			storyBaseUri={`/${user.username}/stories/`} />
+				  			storyBaseUri={`/${user.username}/stories/`} /> : null}
 				  	</div>
 
 					</div>
@@ -84,9 +89,5 @@ let Profile = React.createClass({
 	}
 
 })
-
-Profile.propTypes = {
-  user: PropTypes.object.isRequired
-}
 
 export default Profile

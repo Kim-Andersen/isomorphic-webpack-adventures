@@ -18,6 +18,7 @@ let user = (state = null, action) => {
 let story = (state = null, action) => {
 	return state
 }
+
 let pub = combineReducers({
 	user,
 	story

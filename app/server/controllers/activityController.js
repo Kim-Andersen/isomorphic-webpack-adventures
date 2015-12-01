@@ -1,28 +1,22 @@
-'use strict';
+import { Activity, User } from '../../../models'
 
-import express from 'express';
-import _ from 'lodash';
-import validate from 'express-validation'
+let activityController = {
 
-export default (validation, Activity) => {
-
-	let router = express.Router({mergeParams: true})
-
-	router.get('/', (req, res, next) => {
+	get: (req, res, next) => {
 		Activity
-			.find({userId: req.user.id})
+			.find({user: req.user.id})
 			.sort({'createdAt': 'desc'})
 			.limit(10)
-			.exec(function(err, activitys){
+			.exec(function(err, activities){
 				if(err){
 					return next(err);
 				} else {
-					res.status(200).json(activitys);
+					res.status(200).json(activities);
 				}
-			});		
-	})
+			});
+	},
 
-	router.post('/', validate(validation.post), function(req, res, next){
+	post: (req, res, next) => {
 		let activity = new Activity({
 			user: req.user.id,
 			text: req.body.text,
@@ -39,13 +33,14 @@ export default (validation, Activity) => {
 	 			if(err){
 	 				return next(err)
 	 			} else {
+	 				updateUsersLatestActivities(req.user.id)
 	 				res.status(200).json(activity);
 	 			}
 	 		})
 	 	}
-	})
-	
-	router.delete('/:activityId', validate(validation.delete), function(req, res, next){
+	},
+
+	delete: (req, res, next) => {
 		Activity.findOne({_id: req.params.activityId, user: req.user.id}, 
 			function(err, activity){
 				if(err){
@@ -57,12 +52,29 @@ export default (validation, Activity) => {
 						if(err){
 							return next(err);
 						} else {
+							updateUsersLatestActivities(req.user.id)
 							res.status(200).send();
 						}
 					});
 				}
 			})
-	})
-
-	return router
+	}
 }
+
+function updateUsersLatestActivities(userId){
+	console.log('updateUsersLatestActivities()')
+	Activity
+		.find({user: userId})
+		.select('id')
+		.sort({'createdAt': 'desc'})
+		.limit(10)
+		.exec(function(err, activities){
+			if(err){
+				return next(err);
+			} else {
+				User.setLatestActivities(userId, activities)
+			}
+		});
+}
+
+export default activityController
