@@ -34,36 +34,29 @@ let ActivityTimelineItem = React.createClass({
 	render(){
 		let activity = this.props.activity
 
+		let longTextSnippet = undefined
+		if(activity.longTextSnippet){
+			longTextSnippet = activity.longTextSnippet + '...'
+		}
+
 		let projectNode = activity.project && (
 			<span className="project">
 				<span className="in"> in project </span>
-				<a href="#">{activity.project.title}</a>
+				<Link to={'/kim/projects/'+activity.project._id}>{activity.project.title}</Link>
 			</span>)
-
-		let storySnippetNode = null
-		if(activity.story){
-			let storyText = activity.story.body
-			let storyTextShortened = false
-			if(activity.story.body.length > 200) {
-				storyText = activity.story.body.substring(0,200) + '...'
-				storyTextShortened = true
-			} 
-			storySnippetNode = (
-				<p className="story-snippet">
-					{storyText}
-					{storyTextShortened ? <span>&nbsp;<a href="#" className="readmore anchor">Read&nbsp;more</a></span> : null}
-				</p>
-			)
-		}
 
 		return(
 			<article className={'type-'+Classnames(activity.type)}>
 				<h6 className="type">{activity.type}</h6>
 				<p>
-					{activity.text}
+					{activity.shortText}
 					{projectNode}
 				</p>
-				{storySnippetNode}
+				{longTextSnippet ? 
+					<p className="story-snippet">
+						{longTextSnippet} <span>&nbsp;<Link to={'/kim/update/'+activity._id} className="readmore anchor">Read&nbsp;more</Link></span>
+					</p>
+				: null}
 			</article>
 		)
 	}

@@ -71,16 +71,16 @@ var userSchema = new mongoose.Schema({
 });
 
 // https://github.com/buunguyen/mongoose-deep-populate
-/*userSchema.plugin(deepPopulate, {
+userSchema.plugin(deepPopulate, {
   whitelist: [
-    'latestStories.project'
+    'latestActivities.project'
   ],
   populate: {
-    'latestStories.project': {
+    'latestActivities.project': {
       select: 'id title type'
     }
   }
-})*/
+})
 
 userSchema.methods.toJSON = function() {
   var user = this.toObject();
@@ -177,7 +177,7 @@ userSchema.statics.getProfileByUsername = function(username, callback){
       path: 'latestActivities'
       //select: 'id abstract hasBody bodyExcerpt createdAt'
     }])
-    //.deepPopulate('latestStories.project')
+    .deepPopulate('latestActivities.project')
     .exec(function(err, user){
       if(err) {
         callback(err, null)

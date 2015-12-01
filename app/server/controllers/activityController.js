@@ -19,7 +19,8 @@ let activityController = {
 	post: (req, res, next) => {
 		let activity = new Activity({
 			user: req.user.id,
-			text: req.body.text,
+			shortText: req.body.shortText,
+			longText: req.body.longText,
 			type: req.body.type,
 			tags: req.body.tags,
 			project: req.body.project
